@@ -10,11 +10,13 @@ import java.util.List;
 public class Task {
     private String title;
     private List<String> step;
+    private String todayDate;
     private String dueDay;
     private String createdDate;
     private String note;
     private boolean isImportant;
-    private String todayDate;
+    private boolean isComplete;
+    private boolean isVisible;
 
 
     public Task(String title, String dueDay, String note, boolean isImportant)
@@ -26,6 +28,8 @@ public class Task {
         step = new ArrayList<>();
         setNote(note);
         setImportant(isImportant);
+        isComplete = false;
+        isVisible = true;
     }
 
     public Task() throws InvalidDateException {
@@ -67,10 +71,27 @@ public class Task {
         createdDate = todayDate;
     }
 
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
 
 
 
 
+
+
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
 
     public boolean isImportant() {
         return isImportant;
