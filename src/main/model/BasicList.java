@@ -33,6 +33,7 @@ public abstract class BasicList {
         taskList.remove(index);
     }
 
+
     public void sortListAlphabetically() {
         taskList.sort(Comparator.comparing(Task::getTitle));
     }
@@ -100,5 +101,9 @@ public abstract class BasicList {
 
     public void setListTitle(String listTitle) {
         this.listTitle = listTitle;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
     }
 }
