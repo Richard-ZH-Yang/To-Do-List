@@ -10,10 +10,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.sun.tools.javac.jvm.ByteCodes.swap;
-import static java.util.Collections.checkedCollection;
-import static java.util.Collections.swap;
-
 public abstract class BasicList {
     public static final int MAX_LENGTH = 1000;
     protected List<Task> taskList;
