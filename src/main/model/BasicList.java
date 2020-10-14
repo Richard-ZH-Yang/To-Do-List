@@ -203,10 +203,9 @@ public abstract class BasicList {
         }
     }
 
-
-    // setter method:
-
-    public void setListTitle(String listTitle) {
+    // MODIFIES: this
+    // EFFECTS: set the title
+    protected void setListTitle(String listTitle) {
         this.listTitle = listTitle;
     }
 

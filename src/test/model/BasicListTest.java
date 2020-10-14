@@ -24,9 +24,9 @@ public class BasicListTest {
 
     @BeforeEach
     public void setup() throws InvalidDateException {
-        list1 = new TasksList();
-        list2 = new TasksList();
-        list3 = new TasksList();
+        list1 = new DefaultList();
+        list2 = new DefaultList();
+        list3 = new DefaultList();
 
         task1 = new Task("Task1");
         task2 = new Task("Task2");
@@ -297,6 +297,7 @@ public class BasicListTest {
             assertEquals(3, list1.getTaskList().size());
             assertEquals(2, list1.getCompletedTaskList().size());
         }
+
 
     }
 
