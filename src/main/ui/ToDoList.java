@@ -4,6 +4,7 @@ import exceptions.InvalidDateException;
 import exceptions.InvalidIndexException;
 import exceptions.ListFullException;
 import model.*;
+import sun.misc.InnocuousThread;
 
 
 import java.util.ArrayList;
@@ -67,23 +68,68 @@ public class ToDoList {
             System.out.println(list.getListTitle());
         }
         System.out.println("Lists inside Customized List:");
-        for (BasicList list: customizedList) {
-            System.out.println(list.getListTitle());
-        }
+        displayAllCustomizedListIndexNTitle();
 
     }
 
-    public int inputNumber(int lower, int upper, String tipsForInput) throws InvalidIndexException {
-        System.out.println(tipsForInput);
-        int number = Integer.parseInt(keyboard.nextLine());
-        isValid(lower, upper, number);
-        return number;
+    public void displayAllCustomizedListIndexNTitle() {
+        for (int i = 0; i < customizedList.size(); i++) {
+            System.out.println(i + ". " + customizedList.get(i).getListTitle());
+        }
     }
 
     public void isValid(int lower, int upper, int value) throws InvalidIndexException {
         boolean isWorking = (value >= lower) && (value <= upper);
         if (!isWorking) {
             throw  new InvalidIndexException("Number out of bound");
+        }
+    }
+
+    public void operationInCustomizedListModule() throws InvalidIndexException,
+            ListFullException, InvalidDateException {
+        System.out.println("0 - Add a customized list, 1 - delete a customized list, 2 - rename a customized list"
+                + ", 3 - edit the list");
+        int whichCustomizedListOperation = Integer.parseInt(keyboard.nextLine());
+        isValid(0, 3, whichCustomizedListOperation);
+        if (whichCustomizedListOperation == 0) {
+            addCustomizedList();
+        } else if (whichCustomizedListOperation == 1) {
+            deleteCustomizedList();
+        } else if (whichCustomizedListOperation == 2) {
+
+        } else if (whichCustomizedListOperation == 3) {
+
+        }
+    }
+
+    public void addCustomizedList() {
+        System.out.println("What's the name of the new Customized List?");
+        customizedList.add(new CustomizedList(keyboard.nextLine()));
+    }
+
+    public void deleteCustomizedList() throws InvalidIndexException {
+        if (customizedList.size() == 0) {
+            System.out.println("Sorry, the list is empty");
+        } else {
+            displayAllCustomizedListIndexNTitle();
+            System.out.println("What's the index of the list to delete? (starts from 0)");
+            int indexToDelete = Integer.parseInt(keyboard.nextLine());
+            isValid(0, customizedList.size() - 1, indexToDelete);
+            customizedList.remove(indexToDelete);
+        }
+    }
+
+    public void renameCustomizedList() throws InvalidIndexException {
+        if (customizedList.size() == 0) {
+            System.out.println("Sorry, the list is empty");
+        } else {
+            displayAllCustomizedListIndexNTitle();
+            System.out.println("What's the index of the list to rename? (starts from 0)");
+            int indexToRename = Integer.parseInt(keyboard.nextLine());
+            isValid(0, customizedList.size() - 1, indexToRename);
+            System.out.println("What's the new list name?");
+            String listName = keyboard.nextLine();
+            customizedList.get(indexToRename).setListTitle(listName);
         }
     }
 
@@ -95,8 +141,6 @@ public class ToDoList {
         int whichList = Integer.parseInt(keyboard.nextLine());
         isValid(0, defaultList.size() - 1, whichList);
         operationInDefaultList(whichList);
-
-
     }
 
     public int displayEachTasks(BasicList list) {
@@ -121,31 +165,23 @@ public class ToDoList {
                 + "4 - complete a task, 5 - undo complete a task)");
         int totalTaskNumStarts0 = displayEachTasks(targetedList);
         int whichOperation = Integer.parseInt(keyboard.nextLine());
-
         isValid(0, 5, whichOperation); // NOW IT HAS THREE OPERATIONS, If change the switch below,
                                                     // need to change this and String literal above
 
-        switch (whichOperation) {
-            case 0: // add task
-                addTaskOperation(targetedList);
-                break;
-            case 1: // delete task
-                removeTaskOperation(targetedList, totalTaskNumStarts0);
-                break;
-            case 2: // edit the specific task
-                editTaskOperation(targetedList, totalTaskNumStarts0);
-                break;
-            case 3: // sort list
-                sortListOperation(targetedList);
-                break;
-            case 4: // complete task
-                finishTask(targetedList);
-                break;
-            case 5: // undo complete a task
-                undoFinishTask(targetedList);
-                break;
-            default:
-                System.out.println("ERROR! check operationInDefaultList");
+        if (whichOperation == 0) { // add task
+            addTaskOperation(targetedList);
+        } else if (whichOperation == 1) { // delete task
+            removeTaskOperation(targetedList, totalTaskNumStarts0);
+        } else if (whichOperation == 2) { // edit the specific task
+            editTaskOperation(targetedList, totalTaskNumStarts0);
+        } else if (whichOperation == 3) { // sort list
+            sortListOperation(targetedList);
+        } else if (whichOperation == 4) { // complete task
+            finishTask(targetedList);
+        } else if (whichOperation == 5) { // undo complete a task
+            undoFinishTask(targetedList);
+        } else {
+            System.out.println("ERROR! check operationInDefaultList");
         }
 
     }
@@ -253,45 +289,53 @@ public class ToDoList {
                 + "4 - change due date, 5 - change importance, 6 - change note");
         int whichEditTaskOption = Integer.parseInt(keyboard.nextLine());
         isValid(0, 6, whichEditTaskOption);
-        switch (whichEditTaskOption) {
-            case 0:
-                System.out.println("What's the new title?");
-                targetedTask.setTitle(keyboard.nextLine());
-                break;
-            case 1:
-                System.out.println("What's the step");
-                targetedTask.addStep(keyboard.nextLine());
-                break;
-            case 2:             // TODO this needs improvement, situation where step is empty
-                displayAllSteps(targetedTask);
-                System.out.println("Which step to delete? (index start with 0)");
-                int stepIndex = Integer.parseInt(keyboard.nextLine());
-                isValid(0, targetedTask.getStep().size() - 1, stepIndex);
-                targetedTask.deleteStep(stepIndex);
-                break;
-            case 3:
-                displayAllSteps(targetedTask);
-                System.out.println("Which step to complete? (index start with 0)");
-                int stepIndexComplete = Integer.parseInt(keyboard.nextLine());
-                isValid(0, targetedTask.getStep().size() - 1, stepIndexComplete);
-                targetedTask.completeStep(stepIndexComplete);
-                break;
-            case 4:
-                System.out.println("What's the new date?(in the format of \"year-mn-dy\" please, total is 10 digits");
-                targetedTask.setDueDay(keyboard.nextLine());
-                break;
-            case 5:
-                System.out.println("Please enter true or false");
-                targetedTask.setImportant(Boolean.parseBoolean(keyboard.nextLine()));
-                break;
-            case 6:
-                System.out.println("What's the new note?");
-                targetedTask.setNote(keyboard.nextLine());
-                break;
-            default:
-                System.out.println("ERROR in editTaskOptions ");
+        if (whichEditTaskOption == 0) {
+            System.out.println("What's the new title?");
+            targetedTask.setTitle(keyboard.nextLine());
+        } else if (whichEditTaskOption == 1) {
+            System.out.println("What's the step");
+            targetedTask.addStep(keyboard.nextLine());
+        } else if (whichEditTaskOption == 2) {             // TODO this needs improvement, situation where step is empty
+            deleteStep(targetedTask);
+        } else if (whichEditTaskOption == 3) {
+            completeStep(targetedTask);
+        } else if (whichEditTaskOption == 4) {
+            System.out.println("What's the new date?(in the format of \"year-mn-dy\" please, total is 10 digits");
+            targetedTask.setDueDay(keyboard.nextLine());
+        } else if (whichEditTaskOption == 5) {
+            changeImportance(targetedTask);
+        } else if (whichEditTaskOption == 6) {
+            System.out.println("What's the new note?");
+            targetedTask.setNote(keyboard.nextLine());
         }
+    }
 
+    // MODIFIES: targetedTask
+    // EFFECTS: mark the step to complete in the targetedTask
+    public void completeStep(Task targetedTask) throws InvalidIndexException {
+        displayAllSteps(targetedTask);
+        System.out.println("Which step to complete? (index start with 0)");
+        int stepIndexComplete = Integer.parseInt(keyboard.nextLine());
+        isValid(0, targetedTask.getStep().size() - 1, stepIndexComplete);
+        targetedTask.completeStep(stepIndexComplete);
+    }
+
+    // MODIFIES: targetedTask
+    // EFFECTS: delete the step from targetedTask
+    public void deleteStep(Task targetedTask) throws InvalidIndexException {
+        displayAllSteps(targetedTask);
+        System.out.println("Which step to delete? (index start with 0)");
+        int stepIndex = Integer.parseInt(keyboard.nextLine());
+        isValid(0, targetedTask.getStep().size() - 1, stepIndex);
+        targetedTask.deleteStep(stepIndex);
+    }
+
+    // REQUIRES: user only can input true or false
+    // MODIFIES: targetedTask
+    // EFFECTS: change the importance of targetedTask
+    public void changeImportance(Task targetedTask) {
+        System.out.println("Please enter true or false");
+        targetedTask.setImportant(Boolean.parseBoolean(keyboard.nextLine()));
     }
 
     public void displayAllSteps(Task task) {

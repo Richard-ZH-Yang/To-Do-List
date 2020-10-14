@@ -1,8 +1,6 @@
 package model;
 
 import exceptions.InvalidDateException;
-import model.CustomizedList;
-import model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -60,7 +58,7 @@ public class CustomizedListTest {
     @Test
     public void testSetListTittle() {
         assertEquals("Untitled List", list1.getListTitle());
-        list1.renameList("List 1");
+        list1.setListTitle("List 1");
         assertEquals("List 1", list1.getListTitle());
     }
 }

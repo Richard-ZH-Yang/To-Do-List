@@ -201,7 +201,7 @@ public abstract class BasicList {
 
     // MODIFIES: this
     // EFFECTS: set the title
-    protected void setListTitle(String listTitle) {
+    public void setListTitle(String listTitle) {
         this.listTitle = listTitle;
     }
 
