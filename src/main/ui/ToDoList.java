@@ -23,24 +23,20 @@ public class ToDoList {
             displayHomeScreen();
             try {
                 int whichModule = Integer.parseInt(keyboard.nextLine());
-                switch (whichModule) {
-                    case 0:
-                        endProgram = true;
-                        System.out.println("Thank you for using this program");
-                        break;
-                    case 1:
-                        operationInDefaultListModule();
-                        break;
-                    case 2:
-                        break;
-                    default:
-                        throw new InvalidIndexException("Number out of bound");
+                if (whichModule == 0) {
+                    endProgram = true;
+                    System.out.println("Thank you for using this program");
+                } else if (whichModule == 1) {
+                    operationInDefaultListModule();
+                } else if (whichModule == 2) {
+                    operationInCustomizedListModule();
+                } else {
+                    throw new InvalidIndexException("Number out of bound");
                 }
             } catch (RuntimeException | InvalidIndexException | ListFullException | InvalidDateException exception) {
                 System.out.println(exception.getMessage());
                 System.out.println("Please try again");
             }
-
         } while (!endProgram);
 
     }
@@ -96,9 +92,14 @@ public class ToDoList {
         } else if (whichCustomizedListOperation == 1) {
             deleteCustomizedList();
         } else if (whichCustomizedListOperation == 2) {
-
+            renameCustomizedList();
         } else if (whichCustomizedListOperation == 3) {
-
+            System.out.println("Which list do you want to operate:   ");
+            displayAllCustomizedListIndexNTitle();
+            int whichList = Integer.parseInt(keyboard.nextLine());
+            isValid(0, customizedList.size() - 1, whichList);
+            BasicList targetedList = customizedList.get(whichList);
+            operationInList(targetedList);
         }
     }
 
@@ -140,7 +141,9 @@ public class ToDoList {
         }
         int whichList = Integer.parseInt(keyboard.nextLine());
         isValid(0, defaultList.size() - 1, whichList);
-        operationInDefaultList(whichList);
+
+        BasicList targetedList = defaultList.get(whichList);
+        operationInList(targetedList);
     }
 
     public int displayEachTasks(BasicList list) {
@@ -157,9 +160,8 @@ public class ToDoList {
         return index;
     }
 
-    public void operationInDefaultList(int whichList) throws InvalidIndexException,
+    public void operationInList(BasicList targetedList) throws InvalidIndexException,
             InvalidDateException, ListFullException {
-        BasicList targetedList = defaultList.get(whichList);
         System.out.println("which operation do you want to do in this List? \n"
                 + "(0 - add task, 1 - delete task, 2 - edit task, 3 - sort the list, "
                 + "4 - complete a task, 5 - undo complete a task)");
@@ -183,7 +185,6 @@ public class ToDoList {
         } else {
             System.out.println("ERROR! check operationInDefaultList");
         }
-
     }
 
     public void addTaskOperation(BasicList targetedList) throws InvalidDateException, ListFullException {
