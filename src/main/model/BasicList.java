@@ -6,8 +6,13 @@ import exceptions.ListFullException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.sun.tools.javac.jvm.ByteCodes.swap;
+import static java.util.Collections.checkedCollection;
+import static java.util.Collections.swap;
 
 public abstract class BasicList {
     public static final int MAX_LENGTH = 1000;
@@ -18,6 +23,7 @@ public abstract class BasicList {
 
     public BasicList() {
         taskList = new ArrayList<>();
+        completedTaskList = new ArrayList<>();
         isVisible = true;
         listTitle = "Untitled List";
     }
@@ -27,6 +33,8 @@ public abstract class BasicList {
     public void addTask(Task task) throws ListFullException {
         if (taskList.size() >= MAX_LENGTH) {
             throw new ListFullException("List is full, cannot add another task");
+        } else if (task.isComplete()) {
+            completedTaskList.add(task);
         } else {
             taskList.add(task);
         }
@@ -92,31 +100,57 @@ public abstract class BasicList {
 
     }
 
-    public void sortListAlphabetically() {
+    // MODIFIES: this
+    // EFFECTS: sort both the taskList and completedTaskList Alphabetically in ascending order
+    public void sortListAlphabeticallyAscending() {
         taskList.sort(Comparator.comparing(Task::getTitle));
+        completedTaskList.sort(Comparator.comparing(Task::getTitle));
     }
 
-    public void sortListDueDate() {
+    // MODIFIES: this
+    // EFFECTS: sort both the taskList and completedTaskList Alphabetically in descending order
+    public void sortListAlphabeticallyDescending() {
+        taskList.sort(Comparator.comparing(Task::getTitle).reversed());
+        completedTaskList.sort(Comparator.comparing(Task::getTitle).reversed());
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sort both the taskList and completedTaskList based on due date in ascending order
+    public void sortListDueDateAscending() {
         taskList.sort(Comparator.comparing(Task::getDueDay));
+        completedTaskList.sort(Comparator.comparing(Task::getDueDay));
     }
 
-    public void sortListCreationDate() {
-        taskList.sort(Comparator.comparing(Task::getCreatedDate).reversed());
+    // MODIFIES: this
+    // EFFECTS: sort both the taskList and completedTaskList based on due date in descending order
+    public void sortListDueDateDescending() {
+        taskList.sort(Comparator.comparing(Task::getDueDay).reversed());
+        completedTaskList.sort(Comparator.comparing(Task::getDueDay).reversed());
     }
 
+    // MODIFIES: this
+    // EFFECTS: sort both the taskList and completedTaskList based on the importance. The first part of list is
+    //          important tasks and the rest are not important tasks
     public void sortListImportance() {
-        Task temporary;
-        for (Task task : taskList) {
-            if (task.isImportant()) {
-                temporary = task;
-                for (Task task1 : taskList) {
-                    if (!task1.isImportant()) {
-                        task = task1;
-                        task1 = temporary;
-                    }
-                }
+        sortSingleListImportance(taskList);
+        sortSingleListImportance(completedTaskList);
+    }
+
+    // MODIFIES: parameter
+    // EFFECTS: sort the parameter list in the order that important tasks is first
+    public static void sortSingleListImportance(List<Task> taskList) {
+        List<Task> newList = new ArrayList<>();
+        List<Task> list2 = new ArrayList<>();
+        for (int i = 0; i < taskList.size(); i++) {
+            if (taskList.get(i).isImportant()) {
+                newList.add(taskList.get(i));
+            } else {
+                list2.add(taskList.get(i));
             }
+            taskList.remove(i);
         }
+        taskList.addAll(newList);
+        taskList.addAll(list2);
     }
 
 //    public void changeTheme() {
@@ -127,40 +161,50 @@ public abstract class BasicList {
 //
 //    }
 
-    public void saveInTextFile() throws IOException {
-        String fileNameLocation = "../data/savedToDoList/" + listTitle + "_unfinishedTasks-" + taskList.size();
-        PrintWriter outputFile = new PrintWriter(fileNameLocation);
-        outputFile.println(listTitle);
-        outputFile.println("Unfinished tasks:");
-        for (Task task : taskList) {
-            outputFile.println(task.getTitle());
-        }
-        outputFile.println("Finished tasks:");
-        for (Task task : completedTaskList) {
-            outputFile.println(task.getTitle());
-        }
-        outputFile.close();
-    }
+//    public void saveInTextFile() throws IOException {
+//        String fileNameLocation = "../data/savedToDoList/" + listTitle + "_unfinishedTasks-" + taskList.size();
+//        PrintWriter outputFile = new PrintWriter(fileNameLocation);
+//        outputFile.println(listTitle);
+//        outputFile.println("Unfinished tasks:");
+//        for (Task task : taskList) {
+//            outputFile.println(task.getTitle());
+//        }
+//        outputFile.println("Finished tasks:");
+//        for (Task task : completedTaskList) {
+//            outputFile.println(task.getTitle());
+//        }
+//        outputFile.close();
+//    }
+
+//    // MODIFIES: this
+//    // EFFECTS:
+//    public void toggleCompleteTaskVisibility() {
+//        isVisible = !isVisible;
+//        for (Task t : taskList) {
+//            if (isVisible) {
+//                t.setVisible(true);
+//            } else {
+//                t.setVisible(!t.isComplete());
+//            }
+//        }
+//    }
+
 
     // MODIFIES: this
-    // EFFECTS:
-    public void toggleCompleteTaskVisibility() {
-        isVisible = !isVisible;
-        for (Task t : taskList) {
-            if (isVisible) {
-                t.setVisible(true);
-            } else {
-                t.setVisible(!t.isComplete());
-            }
+    // EFFECTS: if parameter visible is true, set the filed to visible and set and both taskList and completedTaskList
+    //          corresponding boolean value.
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+        for (Task task : taskList) {
+            task.setVisible(isVisible);
+        }
+        for (Task task : completedTaskList) {
+            task.setVisible(isVisible);
         }
     }
 
 
     // setter method:
-
-    public void setVisible(boolean visible) {
-        isVisible = visible;
-    }
 
     public void setListTitle(String listTitle) {
         this.listTitle = listTitle;
@@ -181,7 +225,4 @@ public abstract class BasicList {
         return listTitle;
     }
 
-    public boolean isVisible() {
-        return isVisible;
-    }
 }
