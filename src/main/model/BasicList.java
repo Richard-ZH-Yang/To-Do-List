@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.InvalidIndexException;
 import exceptions.ListFullException;
 
 import java.io.IOException;
@@ -18,21 +19,78 @@ public abstract class BasicList {
     public BasicList() {
         taskList = new ArrayList<>();
         isVisible = true;
-        listTitle = "ATitle";
+        listTitle = "Untitled List";
     }
 
+    // MODIFIES: this
+    // EFFECTS: It will throw ListFullException if taskList is full. otherwise it will add the task to uncompleted list
     public void addTask(Task task) throws ListFullException {
         if (taskList.size() >= MAX_LENGTH) {
-            throw new ListFullException();
+            throw new ListFullException("List is full, cannot add another task");
         } else {
             taskList.add(task);
         }
     }
 
-    public void removeTask(int index) {
-        taskList.remove(index);
+    // MODIFIES: this
+    // EFFECTS: throw InvalidIndexException if index is not valid. Otherwise take the parameter int as an index from
+    //         taskList, set the task status to complete. Add that task to completedTaskList and remove it from taskList
+    public void finishTask(int index) throws InvalidIndexException {
+        if (index < 0 || index >= taskList.size()) {
+            throw new InvalidIndexException("index for uncompleted list is invalid, out of the bound. "
+                    + "Index starts with 0");
+        } else {
+            taskList.get(index).setComplete(true);
+            Task myTask = taskList.get(index);
+            completedTaskList.add(myTask);
+            taskList.remove(index);
+        }
     }
 
+    // MODIFIES: this
+    // EFFECTS: throw InvalidIndexException if index is not valid. Otherwise take the parameter int as an index from
+    //          completedTaskList, set the task status to incomplete. Add that task to taskList and remove it from
+    //          completedTaskList
+    public void undoFinishTask(int index) throws InvalidIndexException {
+        if (index < 0 || index >= completedTaskList.size()) {
+            throw new InvalidIndexException("index for uncompleted list is invalid, out of the bound. "
+                    + "Index starts with 0");
+        } else {
+            completedTaskList.get(index).setComplete(false);
+            Task myTask = completedTaskList.get(index);
+            taskList.add(myTask);
+            completedTaskList.remove(index);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: Firstly it will check if the index is 0 or 1, if not, it will throw InvalidIndexException. And then it
+    //          will throw another InvalidIndexException if index for that list is out of bound
+    //          If everything is valid, it will remove the task from that list
+    public void removeTask(int whichList, int index) throws InvalidIndexException {
+        switch (whichList) {
+            case 0:
+                if (index < 0 || index >= taskList.size()) {
+                    throw new InvalidIndexException("index for uncompleted list is invalid, out of the bound. "
+                            + "Index starts with 0");
+                } else {
+                    taskList.remove(index);
+                }
+                break;
+            case 1:
+                if (index < 0 || index >= completedTaskList.size()) {
+                    throw new InvalidIndexException("index for completedTaskList is invalid, out of the bound. "
+                            + "Index starts with 0");
+                } else {
+                    completedTaskList.remove(index);
+                }
+                break;
+            default:
+                throw new InvalidIndexException("whichList is invalid, it has to be 0 or 1. 0 for uncompleted tasks "
+                        + "and 1 for completed tasks.");
+        }
+
+    }
 
     public void sortListAlphabetically() {
         taskList.sort(Comparator.comparing(Task::getTitle));
@@ -84,6 +142,8 @@ public abstract class BasicList {
         outputFile.close();
     }
 
+    // MODIFIES: this
+    // EFFECTS:
     public void toggleCompleteTaskVisibility() {
         isVisible = !isVisible;
         for (Task t : taskList) {
@@ -95,12 +155,30 @@ public abstract class BasicList {
         }
     }
 
-    public String getListTitle() {
-        return listTitle;
+
+    // setter method:
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 
     public void setListTitle(String listTitle) {
         this.listTitle = listTitle;
+    }
+
+
+    // simple getters methods, haven't deep copied
+
+    public List<Task> getTaskList() {
+        return taskList;
+    }
+
+    public List<Task> getCompletedTaskList() {
+        return completedTaskList;
+    }
+
+    public String getListTitle() {
+        return listTitle;
     }
 
     public boolean isVisible() {
