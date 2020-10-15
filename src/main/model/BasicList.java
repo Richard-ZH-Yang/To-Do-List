@@ -10,12 +10,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class BasicList {
-    public static final int MAX_LENGTH = 1000;
-    protected List<Task> taskList;
-    protected List<Task> completedTaskList;
-    protected String listTitle;
-    protected boolean isVisible;
+// The superclass of CustomizedList and DefaultList
+public class BasicList {
+    public static final int MAX_LENGTH = 1000;  // the maximum length a List<Task> can have
+    protected List<Task> taskList;  // uncompleted tasks
+    protected List<Task> completedTaskList; // completed tasks
+    protected String listTitle; // the tile of the task list
+    protected boolean isVisible;    // decide whether the completed task can be seen
 
     public BasicList() {
         taskList = new ArrayList<>();

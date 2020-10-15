@@ -8,14 +8,15 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+// Task class collects different properties for each task
 public class Task {
     private String title;
-    private List<String> step;
-    private List<Boolean> isStepComplete;
-    private String todayDate;
-    private String dueDay;
-    private String createdDate;
-    private String note;
+    private List<String> step;      // the step title list
+    private List<Boolean> isStepComplete;   // list of status for each step, true means step is complete
+    private String todayDate;   // using JAVA's library to obtain. Time zone is America/Vancouver
+    private String dueDay;      // can be set within 10 years of today's date
+    private String createdDate; // equal to today's date when created, difference is that today's date can update
+    private String note;        // note for each tasks
     private boolean isImportant;
     private boolean isComplete;
     private boolean isVisible;
@@ -38,20 +39,6 @@ public class Task {
         setImportant(false);
         isComplete = false;
         isVisible = true;
-    }
-
-    // EFFECTS: display all the information about this task. Including steps and steps status
-    public void displayAllInformation() {
-        System.out.println("Task Title: " + title + "\nCompleted?    " + isComplete + "\nImportant?   " + isImportant
-                    + "\nVisible?   " + isVisible + "\nOverdue?   " + isOverDue);
-        if (step.size() == 0) {
-            System.out.println("-- no steps --");
-        } else {
-            for (int i = 0; i < step.size(); i++) {
-                System.out.println(i + ". " + step.get(i) + "       Finished?  " + isStepComplete.get(i));
-            }
-        }
-        System.out.println("Due Date: " + dueDay + "\nNotes: " + note + "\n Created date: " + createdDate);
     }
 
     // MODIFIES: this

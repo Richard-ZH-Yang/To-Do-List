@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// create an instance of this class to start the to do list program
 public class ToDoList {
-    List<BasicList> defaultList;
-    List<BasicList> customizedList;
-    boolean endProgram = false;
-    Scanner keyboard = new Scanner(System.in);
+    List<BasicList> defaultList;    // contains a list of default list
+    List<BasicList> customizedList; // contains a list of customized list
+    boolean endProgram = false;     // when equal to true, the program will end
+    Scanner keyboard = new Scanner(System.in);  // for user input
 
     public ToDoList() {
         initialize();
@@ -228,7 +229,7 @@ public class ToDoList {
             if (targetedList.getTaskList().size() != 0) {
                 for (int i = 0; i < targetedList.getTaskList().size(); i++) {
                     System.out.println("\n" + i);
-                    targetedList.getTaskList().get(i).displayAllInformation();
+                    displayAllInformation(targetedList.getTaskList().get(i));
                 }
             } else {
                 System.out.println("----------------empty uncompleted task list----------------");
@@ -237,14 +238,31 @@ public class ToDoList {
             System.out.println("\n------------------Completed Tasks------------------");
 
             if (targetedList.getCompletedTaskList().size() != 0) {
-                for (int i = 0; i < targetedList.getTaskList().size(); i++) {
+                for (int i = 0; i < targetedList.getCompletedTaskList().size(); i++) {
                     System.out.println("\n" + i);
-                    targetedList.getCompletedTaskList().get(i).displayAllInformation();
+                    displayAllInformation(targetedList.getCompletedTaskList().get(i));
                 }
             } else {
                 System.out.println("----------------empty completed task list----------------");
             }
         }
+    }
+
+    // EFFECTS: display all the information about this targetedTask. Including steps and steps status
+    public void displayAllInformation(Task targetedTask) {
+        System.out.println("Task Title: " + targetedTask.getTitle() + "\nCompleted?    "
+                + targetedTask.isComplete() + "\nImportant?   " + targetedTask.isImportant()
+                + "\nVisible?   " + targetedTask.isVisible() + "\nOverdue?   " + targetedTask.isOverDue());
+        if (targetedTask.getStep().size() == 0) {
+            System.out.println("-- no steps --");
+        } else {
+            for (int i = 0; i < targetedTask.getStep().size(); i++) {
+                System.out.println(i + ". " + targetedTask.getStep().get(i) + "       Finished?  "
+                        + targetedTask.getIsStepComplete().get(i));
+            }
+        }
+        System.out.println("Due Date: " + targetedTask.getDueDay()
+                + "\nNotes: " + targetedTask.getNote() + "\n Created date: " + targetedTask.getCreatedDate());
     }
 
     // MODIFIES: this
@@ -308,7 +326,7 @@ public class ToDoList {
     // EFFECTS: let user choose which way to sort the targetedList
     public void sortListOperation(BasicList targetedList) throws InvalidIndexException {
         System.out.println("How do you want your list sorted? (0 - sortListAlphabeticallyAscending, "
-                + "1 - sortListAlphabeticallyDescending, 2 - sortListDueDateAscending, 3 - sortListDueDateDescending"
+                + "1 - sortListAlphabeticallyDescending, 2 - sortListDueDateAscending, 3 - sortListDueDateDescending, "
                 + "4 - sortListImportance)");
         int sortOption = Integer.parseInt(keyboard.nextLine());
         isValid(0, 4, sortOption);

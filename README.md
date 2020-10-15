@@ -35,9 +35,9 @@ I can demonstrate the concept of polymorphism of Java in this application smooth
  smy programming skill.  
 
 ## User Stories
+**Please Grade the following four user stories:**
 - As a user, I want to be able to add a task to my to-do list
-- As a user, I want to be able to delete a task from my to-do-list
-- As a user, I want to be able to change the properties of my to-do list tasks
 - As a user, I want to be able to view the list of tasks on my to-do list
+- As a user, I want to be able to change the properties of my to-do list tasks
+- As a user, I want to be able to sort the list in different orders
 
-- As a user, I want to be able to see the number of incomplete and number of completed tasks on each to-do list
