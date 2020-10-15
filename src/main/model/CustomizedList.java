@@ -11,9 +11,4 @@ public class CustomizedList extends BasicList {
         super();
     }
 
-    // MODIFIES: this
-    // EFFECTS: change the list title
-    public void setListTitle(String listTitle) {
-        super.listTitle = listTitle;
-    }
 }

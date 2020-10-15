@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CustomizedListTest {
-    CustomizedList list1;
-    CustomizedList list2;
+public class DefaultListTest {
+    DefaultList list1;
+    DefaultList list2;
 
     Task task1;
     Task task2;
@@ -19,8 +19,8 @@ public class CustomizedListTest {
 
     @BeforeEach
     public void setup() throws InvalidDateException {
-        list1 = new CustomizedList();
-        list2 = new CustomizedList("Task List 2");
+        list1 = new DefaultList();
+        list2 = new DefaultList("Task List 2");
 
         task1 = new Task("Task1");
         task2 = new Task("Task2");
