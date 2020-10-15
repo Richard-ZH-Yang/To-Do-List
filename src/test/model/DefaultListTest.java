@@ -60,6 +60,7 @@ public class DefaultListTest {
     @Test
     public void testConstructor() {
         assertEquals("Task List 2", list2.getListTitle());
+        assertEquals("Untitled List", list1.getListTitle());
     }
 
 }
