@@ -9,7 +9,8 @@ improve user's experience. The to-do List has **four default list**, which are
  - Tasks
 
 And user can also add their customized list to contain their *to-do tasks*. User can add and delete the customized list,
-but cannot delete or add default list. There are some functions that appear both in customized list and default list, which are:
+but cannot delete or add default list. There are some functions that appear both in customized list and default list in 
+the future, which are:
 - sort
 - change background colour
 - print list

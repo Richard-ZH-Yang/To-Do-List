@@ -59,7 +59,7 @@ public class Task {
     public void addStep(String stepTitle) {
         step.add(stepTitle);
         isStepComplete.add(false);
-        assert (step.size() == isStepComplete.size());
+        //assert (step.size() == isStepComplete.size());
     }
 
     // MODIFIES: this
@@ -72,14 +72,14 @@ public class Task {
         } else {
             step.remove(index);
             isStepComplete.remove(index);
-            assert (step.size() == isStepComplete.size());
+            //assert (step.size() == isStepComplete.size());
         }
     }
 
     // MODIFIES: this
     // EFFECTS: If index is invalid, throw InvalidIndexException. Otherwise, set the boolean in isStepComplete to true
     public void completeStep(int index) throws InvalidIndexException {
-        assert (step.size() == isStepComplete.size());
+        //assert (step.size() == isStepComplete.size());
         if (index < 0 || step.size() <= index) {
             throw new InvalidIndexException("Index out of bound, there are " + step.size() + " elements in the list. "
                     + "And index should start with 0");
