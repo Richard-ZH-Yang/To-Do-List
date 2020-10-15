@@ -284,7 +284,6 @@ public class ToDoList {
             int taskIndexToDelete = Integer.parseInt(keyboard.nextLine());
             isValid(0, totalTaskNumStarts0, taskIndexToDelete);
 
-            // TODO check this if statement
             if (taskIndexToDelete >= targetedList.getTaskList().size()) {
                 targetedList.removeTask(1, taskIndexToDelete - targetedList.getTaskList().size());
             } else {
@@ -361,7 +360,6 @@ public class ToDoList {
             isValid(0, totalTaskNumStarts0, taskIndexToEdit);
 
             Task targetedTask;
-            // TODO check this if statement
             if (taskIndexToEdit >= targetedList.getTaskList().size()) {
                 // completed Task List
                 int completedListIndex = taskIndexToEdit - targetedList.getTaskList().size();

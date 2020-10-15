@@ -42,5 +42,5 @@ I can demonstrate the concept of polymorphism of Java in this application smooth
 - As a user, I want to be able to add a task to my to-do list
 - As a user, I want to be able to view the list of tasks from a specific task list
 - As a user, I want to be able to delete a task from my to-do list
-- As a user, I want to be able to sort the list in different orders
+- As a user, I want to be able to mark a task as complete on my to-do list
 
