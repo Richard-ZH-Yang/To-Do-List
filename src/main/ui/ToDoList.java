@@ -285,7 +285,7 @@ public class ToDoList {
             isValid(0, totalTaskNumStarts0, taskIndexToDelete);
 
             // TODO check this if statement
-            if (taskIndexToDelete > targetedList.getTaskList().size()) {
+            if (taskIndexToDelete >= targetedList.getTaskList().size()) {
                 targetedList.removeTask(1, taskIndexToDelete - targetedList.getTaskList().size());
             } else {
                 targetedList.removeTask(0, taskIndexToDelete);
@@ -316,7 +316,7 @@ public class ToDoList {
             System.out.println("Sorry, that list is empty");
         } else {
             System.out.println("Which task do you want to undo finish?");
-            int taskIndexToIncomplete = Integer.parseInt(keyboard.nextLine());
+            int taskIndexToIncomplete = Integer.parseInt(keyboard.nextLine()) - targetedList.getTaskList().size();
             isValid(0, targetedList.getCompletedTaskList().size() - 1, taskIndexToIncomplete);
 
             targetedList.undoFinishTask(taskIndexToIncomplete);
@@ -362,7 +362,7 @@ public class ToDoList {
 
             Task targetedTask;
             // TODO check this if statement
-            if (taskIndexToEdit > targetedList.getTaskList().size()) {
+            if (taskIndexToEdit >= targetedList.getTaskList().size()) {
                 // completed Task List
                 int completedListIndex = taskIndexToEdit - targetedList.getTaskList().size();
                 targetedTask = targetedList.getCompletedTaskList().get(completedListIndex);

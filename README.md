@@ -11,13 +11,16 @@ improve user's experience. The to-do List has **four default list**, which are
 And user can also add their customized list to contain their *to-do tasks*. User can add and delete the customized list,
 but cannot delete or add default list. There are some functions that appear both in customized list and default list in 
 the future, which are:
-- sort
-- change background colour
-- print list
-- hide complete tasks
+- sort the list
+- add task
+- delete task
+- edit task
+- complete a task
+- undo complete a task
+- display all the task information
+- hide complete tasks(in future phases)
 
-Each lists contain two sections, one being the unfinished tasks and other being completed tasks, user can choose to 
-hide the complete tasks.
+Each lists contain two sections, one being the unfinished tasks and other being completed tasks.
 
 
 ## Who will use it?
@@ -37,7 +40,7 @@ I can demonstrate the concept of polymorphism of Java in this application smooth
 ## User Stories
 **Please Grade the following four user stories:**
 - As a user, I want to be able to add a task to my to-do list
-- As a user, I want to be able to view the list of tasks on my to-do list
-- As a user, I want to be able to change the properties of my to-do list tasks
+- As a user, I want to be able to view the list of tasks from a specific task list
+- As a user, I want to be able to delete a task from my to-do list
 - As a user, I want to be able to sort the list in different orders
 
