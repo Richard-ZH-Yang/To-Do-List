@@ -60,14 +60,15 @@ public class ToDoList {
     // EFFECTS: Display the home screen, including every task list titles from default module and customized module
     public void displayHomeScreen() {
         System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println("Which module of list do you want to get access? (0 - End the program,"
-                + "1 - Default List, 2 - Customized List)");
-        System.out.println("\n○ Lists inside Default List:");
+        System.out.println("○ Lists inside Default List:");
         for (BasicList list: defaultList) {
             System.out.println(list.getListTitle());
         }
         System.out.println("\n○ Lists inside Customized List:");
         displayAllCustomizedListIndexNTitle();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.println("Which module of list do you want to get access? (0 - End the program,"
+                + "1 - Default List, 2 - Customized List)");
 
     }
 
@@ -166,22 +167,6 @@ public class ToDoList {
         operationInList(targetedList);
     }
 
-    // EFFECTS: display every task's title in a task list, differed by whether the task is complete.
-    //          And then return how (have many tasks in complete and incomplete combined - 1 )
-    public int displayEachTasks(BasicList list) {
-        int index = 0;
-        for (int i = 0; i < list.getTaskList().size(); i++) {
-            System.out.println(index + ". " + list.getTaskList().get(i).getTitle());
-            index++;
-        }
-
-        for (int i = 0; i < list.getCompletedTaskList().size(); i++) {
-            System.out.println(index + ". " + list.getCompletedTaskList().get(i).getTitle());
-            index++;
-        }
-        return index;
-    }
-
     // EFFECTS: used by both default module and customized module. Able to perform basic operations in a task list.
     public void operationInList(BasicList targetedList) throws InvalidIndexException,
             InvalidDateException, ListFullException {
@@ -190,7 +175,7 @@ public class ToDoList {
                 + "4 - complete a task, 5 - undo complete a task, 6 - display all the task information)");
         int totalTaskNumStarts0 = displayEachTasks(targetedList);
         int whichOperation = Integer.parseInt(keyboard.nextLine());
-        isValid(0, 5, whichOperation); // NOW IT HAS THREE OPERATIONS, If change the switch below,
+        isValid(0, 6, whichOperation); // NOW IT HAS THREE OPERATIONS, If change the switch below,
                                                     // need to change this and String literal above
 
         if (whichOperation == 0) { // add task
@@ -212,6 +197,27 @@ public class ToDoList {
         }
     }
 
+    // EFFECTS: display every task's title in a task list, differed by whether the task is complete.
+    //          And then return how (have many tasks in complete and incomplete combined - 1 )
+    public int displayEachTasks(BasicList list) {
+        if (list.getTaskList().size() == 0 && list.getCompletedTaskList().size() == 0) {
+            System.out.println("---------empty list ------------");
+            return 0;
+        } else {
+            int index = 0;
+            for (int i = 0; i < list.getTaskList().size(); i++) {
+                System.out.println(index + ". " + list.getTaskList().get(i).getTitle());
+                index++;
+            }
+
+            for (int i = 0; i < list.getCompletedTaskList().size(); i++) {
+                System.out.println(index + ". " + list.getCompletedTaskList().get(i).getTitle());
+                index++;
+            }
+            return index;
+        }
+    }
+
     // EFFECTS: if the task list is not empty,
     //          display every task's details with task's index, differed by whether the task is complete.
     public void displayAllTheTaskInformation(BasicList targetedList) {
@@ -219,14 +225,24 @@ public class ToDoList {
             System.out.println("Sorry, that list is empty");
         } else {
             System.out.println("\n\n------------------Uncompleted Tasks------------------");
-            for (int i = 0; i < targetedList.getTaskList().size(); i++) {
-                System.out.println("\n" + i);
-                targetedList.getTaskList().get(i).displayAllInformation();
+            if (targetedList.getTaskList().size() != 0) {
+                for (int i = 0; i < targetedList.getTaskList().size(); i++) {
+                    System.out.println("\n" + i);
+                    targetedList.getTaskList().get(i).displayAllInformation();
+                }
+            } else {
+                System.out.println("----------------empty uncompleted task list----------------");
             }
+
             System.out.println("\n------------------Completed Tasks------------------");
-            for (int i = 0; i < targetedList.getTaskList().size(); i++) {
-                System.out.println("\n" + i);
-                targetedList.getCompletedTaskList().get(i).displayAllInformation();
+
+            if (targetedList.getCompletedTaskList().size() != 0) {
+                for (int i = 0; i < targetedList.getTaskList().size(); i++) {
+                    System.out.println("\n" + i);
+                    targetedList.getCompletedTaskList().get(i).displayAllInformation();
+                }
+            } else {
+                System.out.println("----------------empty completed task list----------------");
             }
         }
     }
