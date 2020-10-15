@@ -34,12 +34,25 @@ public class Task {
         setTitle("");
         step = new ArrayList<>();
         isStepComplete = new ArrayList<>();
-        setNote("");
+        setNote("NA");
         setImportant(false);
         isComplete = false;
         isVisible = true;
     }
 
+    // EFFECTS: display all the information about this task. Including steps and steps status
+    public void displayAllInformation() {
+        System.out.println("Task Title: " + title + "\nCompleted?    " + isComplete + "\nImportant?   " + isImportant
+                    + "\nVisible?   " + isVisible + "\nOverdue?   " + isOverDue);
+        if (step.size() == 0) {
+            System.out.println("-- no steps --");
+        } else {
+            for (int i = 0; i < step.size(); i++) {
+                System.out.println(i + ". " + step.get(i) + "       Finished?  " + isStepComplete.get(i));
+            }
+        }
+        System.out.println("Due Date: " + dueDay + "\nNotes: " + note + "\n Created date: " + createdDate);
+    }
 
     // MODIFIES: this
     // EFFECTS: add a step to the step list

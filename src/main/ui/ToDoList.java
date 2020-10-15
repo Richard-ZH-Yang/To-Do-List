@@ -4,7 +4,6 @@ import exceptions.InvalidDateException;
 import exceptions.InvalidIndexException;
 import exceptions.ListFullException;
 import model.*;
-import sun.misc.InnocuousThread;
 
 
 import java.util.ArrayList;
@@ -41,6 +40,9 @@ public class ToDoList {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: initialize defaultList and customizedList field in this class. And add four default task list to the
+    //          default task list module.
     public void initialize() {
         defaultList = new ArrayList<>();
         customizedList = new ArrayList<>();
@@ -53,27 +55,34 @@ public class ToDoList {
         defaultList.add(important);
         defaultList.add(planned);
         defaultList.add(tasks);
-
     }
 
+    // EFFECTS: Display the home screen, including every task list titles from default module and customized module
     public void displayHomeScreen() {
+        System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println("Which module of list do you want to get access? (0 - End the program,"
                 + "1 - Default List, 2 - Customized List)");
-        System.out.println("Lists inside Default List:");
+        System.out.println("\n○ Lists inside Default List:");
         for (BasicList list: defaultList) {
             System.out.println(list.getListTitle());
         }
-        System.out.println("Lists inside Customized List:");
+        System.out.println("\n○ Lists inside Customized List:");
         displayAllCustomizedListIndexNTitle();
 
     }
 
+    // EFFECTS: if the customized module is empty, display empty. Other wise display all the task list title in
+    //          customized module with index
     public void displayAllCustomizedListIndexNTitle() {
+        if (customizedList.size() == 0) {
+            System.out.println("-- empty --");
+        }
         for (int i = 0; i < customizedList.size(); i++) {
             System.out.println(i + ". " + customizedList.get(i).getListTitle());
         }
     }
 
+    // EFFECTS: if the third parameter value is outside of the integral [lower, upper], throw InvalidIndexException
     public void isValid(int lower, int upper, int value) throws InvalidIndexException {
         boolean isWorking = (value >= lower) && (value <= upper);
         if (!isWorking) {
@@ -81,6 +90,7 @@ public class ToDoList {
         }
     }
 
+    // EFFECTS: display and let user choose the unique operations that can only preform in customized module
     public void operationInCustomizedListModule() throws InvalidIndexException,
             ListFullException, InvalidDateException {
         System.out.println("0 - Add a customized list, 1 - delete a customized list, 2 - rename a customized list"
@@ -103,11 +113,16 @@ public class ToDoList {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: add a new customized task list to customized module. And let user decide the task list title
     public void addCustomizedList() {
         System.out.println("What's the name of the new Customized List?");
         customizedList.add(new CustomizedList(keyboard.nextLine()));
     }
 
+    // MODIFIES: this
+    // EFFECTS: delete a customized task list in the customized module. If customized module is not empty,
+    //          let user decide which task list to delete, then delete it.
     public void deleteCustomizedList() throws InvalidIndexException {
         if (customizedList.size() == 0) {
             System.out.println("Sorry, the list is empty");
@@ -120,6 +135,9 @@ public class ToDoList {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: rename a customized list in the customized module. If the customized module is not empty,
+    //          let user rename the task list based on the index and new name.
     public void renameCustomizedList() throws InvalidIndexException {
         if (customizedList.size() == 0) {
             System.out.println("Sorry, the list is empty");
@@ -134,6 +152,8 @@ public class ToDoList {
         }
     }
 
+    // EFFECTS:: display all the task list in default module first, then
+    //          let user choose which task list inside the default module that is need to operate
     public void operationInDefaultListModule() throws InvalidIndexException, ListFullException, InvalidDateException {
         System.out.println("Which list do you want to operate:   ");
         for (int i = 0; i < defaultList.size(); i++) { // display the title for each list
@@ -146,6 +166,8 @@ public class ToDoList {
         operationInList(targetedList);
     }
 
+    // EFFECTS: display every task's title in a task list, differed by whether the task is complete.
+    //          And then return how (have many tasks in complete and incomplete combined - 1 )
     public int displayEachTasks(BasicList list) {
         int index = 0;
         for (int i = 0; i < list.getTaskList().size(); i++) {
@@ -160,11 +182,12 @@ public class ToDoList {
         return index;
     }
 
+    // EFFECTS: used by both default module and customized module. Able to perform basic operations in a task list.
     public void operationInList(BasicList targetedList) throws InvalidIndexException,
             InvalidDateException, ListFullException {
         System.out.println("which operation do you want to do in this List? \n"
                 + "(0 - add task, 1 - delete task, 2 - edit task, 3 - sort the list, "
-                + "4 - complete a task, 5 - undo complete a task)");
+                + "4 - complete a task, 5 - undo complete a task, 6 - display all the task information)");
         int totalTaskNumStarts0 = displayEachTasks(targetedList);
         int whichOperation = Integer.parseInt(keyboard.nextLine());
         isValid(0, 5, whichOperation); // NOW IT HAS THREE OPERATIONS, If change the switch below,
@@ -182,17 +205,43 @@ public class ToDoList {
             finishTask(targetedList);
         } else if (whichOperation == 5) { // undo complete a task
             undoFinishTask(targetedList);
+        } else if (whichOperation == 6) {
+            displayAllTheTaskInformation(targetedList);
         } else {
             System.out.println("ERROR! check operationInDefaultList");
         }
     }
 
+    // EFFECTS: if the task list is not empty,
+    //          display every task's details with task's index, differed by whether the task is complete.
+    public void displayAllTheTaskInformation(BasicList targetedList) {
+        if (targetedList.getTaskList().size() == 0 && targetedList.getCompletedTaskList().size() == 0) {
+            System.out.println("Sorry, that list is empty");
+        } else {
+            System.out.println("\n\n------------------Uncompleted Tasks------------------");
+            for (int i = 0; i < targetedList.getTaskList().size(); i++) {
+                System.out.println("\n" + i);
+                targetedList.getTaskList().get(i).displayAllInformation();
+            }
+            System.out.println("\n------------------Completed Tasks------------------");
+            for (int i = 0; i < targetedList.getTaskList().size(); i++) {
+                System.out.println("\n" + i);
+                targetedList.getCompletedTaskList().get(i).displayAllInformation();
+            }
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: add a new Task into the targetedList. let user decide the title for the new task
     public void addTaskOperation(BasicList targetedList) throws InvalidDateException, ListFullException {
         System.out.println("What's the new task title?");
         String taskTitle = keyboard.nextLine();
         targetedList.addTask(new Task(taskTitle));
     }
 
+    // MODIFIES: this
+    // EFFECTS: if the targetedList is not empty, remove the task from the targetedList based on the new index that
+    //          includes all the completed and in completed tasks
     public void removeTaskOperation(BasicList targetedList, int totalTaskNumStarts0) throws InvalidIndexException {
         if (targetedList.getTaskList().size() == 0 && targetedList.getCompletedTaskList().size() == 0) {
             System.out.println("Sorry, that list is empty");
@@ -210,6 +259,9 @@ public class ToDoList {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: if the targetedList is not empty, set a task's isComplete to true from the targetedList based on
+    //          the new index that includes all the completed and in completed tasks
     public void finishTask(BasicList targetedList) throws InvalidIndexException {
         if (targetedList.getTaskList().size() == 0 && targetedList.getCompletedTaskList().size() == 0) {
             System.out.println("Sorry, that list is empty");
@@ -222,6 +274,9 @@ public class ToDoList {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: if the targetedList is not empty, set a task's isComplete to false from the targetedList based on
+    //          the new index that includes all the completed and in completed tasks
     public void undoFinishTask(BasicList targetedList) throws InvalidIndexException {
         if (targetedList.getTaskList().size() == 0 && targetedList.getCompletedTaskList().size() == 0) {
             System.out.println("Sorry, that list is empty");
@@ -234,8 +289,7 @@ public class ToDoList {
         }
     }
 
-
-
+    // EFFECTS: let user choose which way to sort the targetedList
     public void sortListOperation(BasicList targetedList) throws InvalidIndexException {
         System.out.println("How do you want your list sorted? (0 - sortListAlphabeticallyAscending, "
                 + "1 - sortListAlphabeticallyDescending, 2 - sortListDueDateAscending, 3 - sortListDueDateDescending"
@@ -262,6 +316,7 @@ public class ToDoList {
         }
     }
 
+    // EFFECTS: let user choose which task from targetedList that needs to bew edited.
     public void editTaskOperation(BasicList targetedList, int totalTaskNumStarts0) throws InvalidIndexException,
             InvalidDateException {
         if (targetedList.getTaskList().size() == 0 && targetedList.getCompletedTaskList().size() == 0) {
@@ -285,6 +340,7 @@ public class ToDoList {
 
     }
 
+    // EFFECTS: let user choose which operation to perform on targetedTask
     public void editTaskOptions(Task targetedTask) throws InvalidIndexException, InvalidDateException {
         System.out.println("0 - change task title, 1 - add step, 2 - delete step, 3 - complete a step, "
                 + "4 - change due date, 5 - change importance, 6 - change note");
@@ -339,6 +395,7 @@ public class ToDoList {
         targetedTask.setImportant(Boolean.parseBoolean(keyboard.nextLine()));
     }
 
+    // EFFECTS: display all the steps and whether or not it is finished from the task parameter
     public void displayAllSteps(Task task) {
         for (int i = 0; i < task.getStep().size(); i++) {
             System.out.println(i + ". " + task.getStep().get(i) + " -- " + task.getIsStepComplete().get(i));

@@ -54,6 +54,21 @@ public class TaskTest {
     }
 
     @Test
+    public void testDisplayAllTheInformation() {
+        task2.displayAllInformation();
+        try {
+            task2.deleteStep(1);
+            task2.completeStep(0);
+        } catch (InvalidIndexException invalidIndexException) {
+            fail("This should have not thrown an exception.");
+        }
+        task2.displayAllInformation();
+
+        task1.displayAllInformation();
+
+    }
+
+    @Test
     public void testSetTodayDate() {
         task3.setTodayDate();
         assertEquals(task1.getTodayDate(), task2.getTodayDate());
