@@ -44,3 +44,9 @@ I can demonstrate the concept of polymorphism of Java in this application smooth
 - As a user, I want to be able to delete a task from my to-do list
 - As a user, I want to be able to mark a task as complete on my to-do list
 
+
+- As a user, I want to be able to save my to-do list to file
+- As a user, I want to be able to be able to load my to-do list from file 
+- As a user, when I select the quit option from the application menu, I want to be reminded to save my to-do list 
+to file and have the option to do so or not.
+- As a user, when I start the application, I want to be given the option to load my to-do list from file.

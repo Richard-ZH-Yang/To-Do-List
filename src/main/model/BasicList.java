@@ -2,6 +2,9 @@ package model;
 
 import exceptions.InvalidIndexException;
 import exceptions.ListFullException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 // The superclass of CustomizedList and DefaultList
-public class BasicList {
+public class BasicList implements Writable {
     public static final int MAX_LENGTH = 1000;  // the maximum length a List<Task> can have
     protected List<Task> taskList;  // uncompleted tasks
     protected List<Task> completedTaskList; // completed tasks
@@ -24,6 +27,41 @@ public class BasicList {
         isVisible = true;
         listTitle = "Untitled List";
     }
+
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("MAX_LENGTH", MAX_LENGTH);
+        json.put("taskList", taskListToJson());
+        json.put("completedTaskList", completedTaskListToJson());
+        json.put("listTitle", listTitle);
+        json.put("isVisible", isVisible);
+        return json;
+    }
+
+    // EFFECTS: returns taskList as a JSON array
+    private JSONArray taskListToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Task t : taskList) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    // EFFECTS: returns completedTaskList as a JSON array
+    private JSONArray completedTaskListToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Task t : completedTaskList) {
+            jsonArray.put(t.toJson());
+        }
+
+        return jsonArray;
+    }
+
 
     // MODIFIES: this
     // EFFECTS: It will throw ListFullException if taskList is full. otherwise it will add the task to uncompleted list

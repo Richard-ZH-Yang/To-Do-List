@@ -2,6 +2,9 @@ package model;
 
 import exceptions.InvalidDateException;
 import exceptions.InvalidIndexException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -9,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Task class collects different properties for each task
-public class Task {
+public class Task implements Writable {
     private String title;
     private List<String> step;      // the step title list
     private List<Boolean> isStepComplete;   // list of status for each step, true means step is complete
@@ -21,7 +24,6 @@ public class Task {
     private boolean isComplete;
     private boolean isVisible;
     private boolean isOverDue;
-
 
     public Task(String title) throws InvalidDateException {
         this();
@@ -39,6 +41,45 @@ public class Task {
         setImportant(false);
         isComplete = false;
         isVisible = true;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("title", title);
+        json.put("step", stepToJson());
+        json.put("isStepComplete", isStepCompleteToJson());
+        json.put("todayDate", todayDate);
+        json.put("dueDay", dueDay);
+        json.put("createdDate", createdDate);
+        json.put("note", note);
+        json.put("isImportant", isImportant);
+        json.put("isComplete", isComplete);
+        json.put("isVisible", isVisible);
+        json.put("isOverDue", isOverDue);
+        return json;
+    }
+
+    // EFFECTS: return step list as a JSON array
+    private JSONArray stepToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (String step: step) {
+            jsonArray.put(step);
+        }
+
+        return jsonArray;
+    }
+
+    // EFFECTS: return isStepComplete list as a JSON array
+    private JSONArray isStepCompleteToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Boolean status: isStepComplete) {
+            jsonArray.put(status.toString());
+        }
+
+        return jsonArray;
     }
 
     // MODIFIES: this
@@ -140,6 +181,8 @@ public class Task {
     }
 
 
+
+
     // normal setters methods
 
     public void setImportant(boolean important) {
@@ -209,5 +252,4 @@ public class Task {
         setTodayDate();
         return todayDate;
     }
-
 }
