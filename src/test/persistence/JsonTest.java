@@ -29,7 +29,7 @@ public class JsonTest {
 
     }
 
-    // EFFECTS: compare every element in step with task.getStep(). Assert they are equal, performs deep copy
+    // EFFECTS: compare every element in step with task.getStep(). Assert they are equal
     private void checkStep(List<String> step, Task task) {
         assertEquals(step.size(), task.getStep().size());
 
@@ -55,9 +55,10 @@ public class JsonTest {
     }
 
     private void checkTaskList(List<Task> taskList, BasicList basicList) {
+        assertEquals(taskList, basicList.getTaskList());
         assertEquals(taskList.size(), basicList.getTaskList().size());
         for (int i = 0; i < taskList.size(); i++) {
-            checkTask(taskList.get(i), basicList.getTaskList().get(i));
+//            checkTask(taskList.get(i).getTitle(), taskList.get(i).getTitle(), taskList.get(i).getTitle(), taskList.get(i).getTitle(), basicList.getTaskList().get(i));
         }
     }
 }
