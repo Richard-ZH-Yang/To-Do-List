@@ -24,9 +24,9 @@ public class BasicListTest {
 
     @BeforeEach
     public void setup() throws InvalidDateException {
-        list1 = new DefaultList();
-        list2 = new DefaultList();
-        list3 = new DefaultList();
+        list1 = new BasicList();
+        list2 = new BasicList();
+        list3 = new BasicList();
 
         task1 = new Task("Task1");
         task2 = new Task("Task2");

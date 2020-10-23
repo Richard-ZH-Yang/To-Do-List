@@ -28,6 +28,10 @@ public class BasicList implements Writable {
         listTitle = "Untitled List";
     }
 
+    public BasicList(String listTitle) {
+        this();
+        setListTitle(listTitle);
+    }
 
     @Override
     public JSONObject toJson() {
