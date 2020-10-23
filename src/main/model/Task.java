@@ -82,6 +82,12 @@ public class Task implements Writable {
         return jsonArray;
     }
 
+    // EFFECTS: compare every element in the task to other task objects
+    public boolean equals(Task task2) {
+        boolean isEqual = false;
+
+    }
+
     // MODIFIES: this
     // EFFECTS: add a step to the step list
     public void addStep(String stepTitle) {
