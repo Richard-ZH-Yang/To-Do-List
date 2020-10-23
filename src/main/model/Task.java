@@ -1,7 +1,6 @@
 package model;
 
 import exceptions.InvalidDateException;
-import exceptions.InvalidIndexException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -97,11 +96,12 @@ public class Task implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: If index is invalid, throw InvalidIndexException. Otherwise remove the step
+    // EFFECTS: If index is invalid, throw IndexOutOfBoundsException. Otherwise remove the step
     //          and isStepComplete from the two lists based on the index. Index should start with 0
-    public void deleteStep(int index) throws InvalidIndexException {
+    public void deleteStep(int index) {
         if (index < 0 || step.size() <= index) {
-            throw new InvalidIndexException("Index out of bound, there are " + step.size() + " elements in the list. "
+            throw new IndexOutOfBoundsException("Index out of bound, there are " + step.size()
+                    + " elements in the list. "
                     + "And index should start with 0");
         } else {
             step.remove(index);
@@ -111,11 +111,13 @@ public class Task implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: If index is invalid, throw InvalidIndexException. Otherwise, set the boolean in isStepComplete to true
-    public void completeStep(int index) throws InvalidIndexException {
+    // EFFECTS: If index is invalid, throw IndexOutOfBoundsException. Otherwise, set the boolean in isStepComplete to
+    //          true
+    public void completeStep(int index) {
         //assert (step.size() == isStepComplete.size());
         if (index < 0 || step.size() <= index) {
-            throw new InvalidIndexException("Index out of bound, there are " + step.size() + " elements in the list. "
+            throw new IndexOutOfBoundsException("Index out of bound, there are " + step.size()
+                    + " elements in the list. "
                     + "And index should start with 0");
         } else {
             isStepComplete.set(index, Boolean.TRUE);

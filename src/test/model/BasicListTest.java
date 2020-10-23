@@ -1,7 +1,6 @@
 package model;
 
 import exceptions.InvalidDateException;
-import exceptions.InvalidIndexException;
 import exceptions.ListFullException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -146,7 +145,7 @@ public class BasicListTest {
         try {
             assertEquals(false, list1.taskList.get(1).isComplete());
             list1.finishTask(1);
-        } catch (InvalidIndexException invalidIndexException) {
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
             fail("This should have not thrown an exception.");
         } finally {
             assertEquals(2, list1.taskList.size());
@@ -158,14 +157,14 @@ public class BasicListTest {
 
         try {
             list1.finishTask(2);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
 
         try {
             list1.finishTask(-2);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
     }
 
@@ -174,7 +173,7 @@ public class BasicListTest {
         addTasksToList1();
         try {
             list1.undoFinishTask(1);
-        } catch (InvalidIndexException invalidIndexException) {
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
             fail("This should have not thrown an exception.");
         } finally {
             assertEquals(4, list1.taskList.size());
@@ -187,14 +186,14 @@ public class BasicListTest {
 
         try {
             list1.undoFinishTask(1);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
 
         try {
             list1.undoFinishTask(-2);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
     }
 
@@ -203,7 +202,7 @@ public class BasicListTest {
         addTasksToList1();
         try {
             list1.removeTask(0, 0);
-        } catch (InvalidIndexException invalidIndexException) {
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
             fail("This should have not thrown an exception.");
         } finally {
             assertEquals(task2, list1.getTaskList().get(0));
@@ -213,7 +212,7 @@ public class BasicListTest {
 
         try {
             list1.removeTask(1, 1);
-        } catch (InvalidIndexException invalidIndexException) {
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
             fail("This should have not thrown an exception.");
         } finally {
             assertEquals(task3, list1.getCompletedTaskList().get(0));
@@ -227,8 +226,8 @@ public class BasicListTest {
         addTasksToList1();
         try {
             list1.removeTask(2, 0);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         } finally {
             assertEquals(task1, list1.getTaskList().get(0));
             assertEquals(3, list1.getTaskList().size());
@@ -243,8 +242,8 @@ public class BasicListTest {
 
         try {
             list1.removeTask(0, 3);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         } finally {
             assertEquals(3, list1.getTaskList().size());
             assertEquals(2, list1.getCompletedTaskList().size());
@@ -252,8 +251,8 @@ public class BasicListTest {
 
         try {
             list1.removeTask(0, 4);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         } finally {
             assertEquals(3, list1.getTaskList().size());
             assertEquals(2, list1.getCompletedTaskList().size());
@@ -262,8 +261,8 @@ public class BasicListTest {
 
         try {
             list1.removeTask(0, -1);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         } finally {
             assertEquals(3, list1.getTaskList().size());
             assertEquals(2, list1.getCompletedTaskList().size());
@@ -272,8 +271,8 @@ public class BasicListTest {
         // invalid index number for whichList = 1
         try {
             list1.removeTask(1, 2);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         } finally {
             assertEquals(3, list1.getTaskList().size());
             assertEquals(2, list1.getCompletedTaskList().size());
@@ -281,8 +280,8 @@ public class BasicListTest {
 
         try {
             list1.removeTask(1, 3);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         } finally {
             assertEquals(3, list1.getTaskList().size());
             assertEquals(2, list1.getCompletedTaskList().size());
@@ -291,8 +290,8 @@ public class BasicListTest {
 
         try {
             list1.removeTask(1, -1);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         } finally {
             assertEquals(3, list1.getTaskList().size());
             assertEquals(2, list1.getCompletedTaskList().size());

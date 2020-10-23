@@ -1,7 +1,6 @@
 package model;
 
 import exceptions.InvalidDateException;
-import exceptions.InvalidIndexException;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
@@ -92,7 +91,7 @@ public class TaskTest {
         assertEquals(3, task2.getStep().size());
         try {
             task2.deleteStep(1);
-        } catch (InvalidIndexException invalidIndexException) {
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
             fail("This should have not thrown an exception.");
         }
         assertEquals(2, task2.getStep().size());
@@ -104,32 +103,29 @@ public class TaskTest {
 
         try {
             task2.deleteStep(100);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            fail("This should have not thrown an exception.");
+            fail("This should have throw an IndexOutOfBoundsException.");
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
 
 
         try {
             task2.deleteStep(-4);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            fail("This should have not thrown an exception.");
+            fail("This should have throw an IndexOutOfBoundsException.");
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
 
         try {
             task2.deleteStep(2);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            fail("This should have not thrown an exception.");
+            fail("This should have throw an IndexOutOfBoundsException.");
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
 
         try {
             task2.deleteStep(1);
-        } catch (InvalidIndexException | IndexOutOfBoundsException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             fail("This should have not thrown an exception.");
         } finally {
             assertEquals(1, task2.getStep().size());
@@ -141,34 +137,31 @@ public class TaskTest {
     public void testCompleteStep() {
         try {
             task2.completeStep(100);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            fail("This should have not thrown an exception.");
+            fail("This should have throw an IndexOutOfBoundsException.");
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
 
 
         try {
             task2.completeStep(-4);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            fail("This should have not thrown an exception.");
+            fail("This should have throw an IndexOutOfBoundsException.");
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
 
         try {
             task2.completeStep(3);
-        } catch (InvalidIndexException invalidIndexException) {
-            System.out.println(invalidIndexException.getMessage());
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            fail("This should have not thrown an exception.");
+            fail("This should have throw an IndexOutOfBoundsException.");
+        } catch (IndexOutOfBoundsException IndexOutOfBoundsException) {
+            System.out.println(IndexOutOfBoundsException.getMessage());
         }
 
         assertEquals(false, task2.getIsStepComplete().get(2));
 
         try {
             task2.completeStep(2);
-        } catch (InvalidIndexException | IndexOutOfBoundsException exception) {
+        } catch (IndexOutOfBoundsException exception) {
             fail("This should have not thrown an exception.");
         } finally {
             assertEquals(3, task2.getStep().size());
