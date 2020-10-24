@@ -59,6 +59,7 @@ public class JsonTest {
         assertEquals(taskList.size(), basicList.getTaskList().size());
         for (int i = 0; i < taskList.size(); i++) {
 //            checkTask(taskList.get(i).getTitle(), taskList.get(i).getTitle(), taskList.get(i).getTitle(), taskList.get(i).getTitle(), basicList.getTaskList().get(i));
+            assertEquals(taskList, basicList.getTaskList());
         }
     }
 }
