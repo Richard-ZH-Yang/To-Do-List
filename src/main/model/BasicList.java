@@ -110,8 +110,8 @@ public class BasicList implements Writable {
     }
 
     // MODIFIES: this
-    // EFFECTS: Firstly it will check if the index is 0 or 1, if not, it will throw IndexOutOfBoundsException. And then it
-    //          will throw another IndexOutOfBoundsException if index for that list is out of bound
+    // EFFECTS: Firstly it will check if the index is 0 or 1, if not, it will throw IndexOutOfBoundsException.
+    //          And then it will throw another IndexOutOfBoundsException if index for that list is out of bound
     //          If everything is valid, it will remove the task from that list
     public void removeTask(int whichList, int index) {
         switch (whichList) {
@@ -132,7 +132,8 @@ public class BasicList implements Writable {
                 }
                 break;
             default:
-                throw new IndexOutOfBoundsException("whichList is invalid, it has to be 0 or 1. 0 for uncompleted tasks "
+                throw new IndexOutOfBoundsException("whichList is invalid, it has to be 0 or 1."
+                        + " 0 for uncompleted tasks "
                         + "and 1 for completed tasks.");
         }
 

@@ -5,26 +5,30 @@ import exceptions.InvalidDateException;
 import exceptions.ListFullException;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import model.*;
 
 // create an instance of this class to start the to do list program
 public class Console {
-    List<BasicList> defaultList;    // contains a list of default list
-    List<BasicList> customizedList; // contains a list of customized list
-    boolean endProgram = false;     // when equal to true, the program will end
-    Scanner keyboard = new Scanner(System.in);  // for user input
+    ToDoListProgram toDoListProgram;
+    Scanner keyboard;
+    List<BasicList> defaultList;
+    List<BasicList> customizedList;
+
 
     public Console() {
-        initialize();
+        toDoListProgram = new ToDoListProgram();
+        keyboard = new Scanner(System.in);  // for user input
+        defaultList = toDoListProgram.getDefaultList();
+        customizedList = toDoListProgram.getCustomizedList();
+        
         do {
             displayHomeScreen();
             try {
                 int whichModule = Integer.parseInt(keyboard.nextLine());
                 if (whichModule == 0) {
-                    endProgram = true;
+                    toDoListProgram.setEndProgram(true);
                     System.out.println("Thank you for using this program");
                 } else if (whichModule == 1) {
                     operationInDefaultListModule();
@@ -37,26 +41,10 @@ public class Console {
                 System.out.println(exception.getMessage());
                 System.out.println("Please try again");
             }
-        } while (!endProgram);
+        } while (!toDoListProgram.isEndProgram());
 
     }
 
-    // MODIFIES: this
-    // EFFECTS: initialize defaultList and customizedList field in this class. And add four default task list to the
-    //          default task list module.
-    public void initialize() {
-        defaultList = new ArrayList<>();
-        customizedList = new ArrayList<>();
-
-        BasicList important = new BasicList("Important");
-        BasicList tasks = new BasicList("Tasks");
-        BasicList myDay = new BasicList("My Day");
-        BasicList planned = new BasicList("Planned");
-        defaultList.add(myDay);
-        defaultList.add(important);
-        defaultList.add(planned);
-        defaultList.add(tasks);
-    }
 
     // EFFECTS: Display the home screen, including every task list titles from default module and customized module
     public void displayHomeScreen() {
@@ -84,20 +72,12 @@ public class Console {
         }
     }
 
-    // EFFECTS: if the third parameter value is outside of the integral [lower, upper], throw IndexOutOfBoundsException
-    public void isValid(int lower, int upper, int value) {
-        boolean isWorking = (value >= lower) && (value <= upper);
-        if (!isWorking) {
-            throw  new IndexOutOfBoundsException("Number out of bound");
-        }
-    }
-
     // EFFECTS: display and let user choose the unique operations that can only preform in customized module
     public void operationInCustomizedListModule() throws ListFullException, InvalidDateException {
         System.out.println("0 - Add a customized list, 1 - delete a customized list, 2 - rename a customized list"
                 + ", 3 - edit the list");
         int whichCustomizedListOperation = Integer.parseInt(keyboard.nextLine());
-        isValid(0, 3, whichCustomizedListOperation);
+        toDoListProgram.isValid(0, 3, whichCustomizedListOperation);
         if (whichCustomizedListOperation == 0) {
             addCustomizedList();
         } else if (whichCustomizedListOperation == 1) {
@@ -108,7 +88,7 @@ public class Console {
             System.out.println("Which list do you want to operate:   ");
             displayAllCustomizedListIndexNTitle();
             int whichList = Integer.parseInt(keyboard.nextLine());
-            isValid(0, customizedList.size() - 1, whichList);
+            toDoListProgram.isValid(0, customizedList.size() - 1, whichList);
             BasicList targetedList = customizedList.get(whichList);
             operationInList(targetedList);
         }
@@ -131,7 +111,7 @@ public class Console {
             displayAllCustomizedListIndexNTitle();
             System.out.println("What's the index of the list to delete? (starts from 0)");
             int indexToDelete = Integer.parseInt(keyboard.nextLine());
-            isValid(0, customizedList.size() - 1, indexToDelete);
+            toDoListProgram.isValid(0, customizedList.size() - 1, indexToDelete);
             customizedList.remove(indexToDelete);
         }
     }
@@ -146,7 +126,7 @@ public class Console {
             displayAllCustomizedListIndexNTitle();
             System.out.println("What's the index of the list to rename? (starts from 0)");
             int indexToRename = Integer.parseInt(keyboard.nextLine());
-            isValid(0, customizedList.size() - 1, indexToRename);
+            toDoListProgram.isValid(0, customizedList.size() - 1, indexToRename);
             System.out.println("What's the new list name?");
             String listName = keyboard.nextLine();
             customizedList.get(indexToRename).setListTitle(listName);
@@ -161,7 +141,7 @@ public class Console {
             System.out.println(i + " - " + defaultList.get(i).getListTitle() + ",       ");
         }
         int whichList = Integer.parseInt(keyboard.nextLine());
-        isValid(0, defaultList.size() - 1, whichList);
+        toDoListProgram.isValid(0, defaultList.size() - 1, whichList);
 
         BasicList targetedList = defaultList.get(whichList);
         operationInList(targetedList);
@@ -174,7 +154,7 @@ public class Console {
                 + "4 - complete a task, 5 - undo complete a task, 6 - display all the task information)");
         int totalTaskNumStarts0 = displayEachTasks(targetedList);
         int whichOperation = Integer.parseInt(keyboard.nextLine());
-        isValid(0, 6, whichOperation); // NOW IT HAS THREE OPERATIONS, If change the switch below,
+        toDoListProgram.isValid(0, 6, whichOperation); // NOW IT HAS THREE OPERATIONS, If change the switch below,
         // need to change this and String literal above
 
         if (whichOperation == 0) { // add task
@@ -280,7 +260,7 @@ public class Console {
         } else {
             System.out.println("Which task do you want to delete?");
             int taskIndexToDelete = Integer.parseInt(keyboard.nextLine());
-            isValid(0, totalTaskNumStarts0, taskIndexToDelete);
+            toDoListProgram.isValid(0, totalTaskNumStarts0, taskIndexToDelete);
 
             if (taskIndexToDelete >= targetedList.getTaskList().size()) {
                 targetedList.removeTask(1, taskIndexToDelete - targetedList.getTaskList().size());
@@ -299,7 +279,7 @@ public class Console {
         } else {
             System.out.println("Which task do you want to complete?");
             int taskIndexToComplete = Integer.parseInt(keyboard.nextLine());
-            isValid(0, targetedList.getTaskList().size() - 1, taskIndexToComplete);
+            toDoListProgram.isValid(0, targetedList.getTaskList().size() - 1, taskIndexToComplete);
 
             targetedList.finishTask(taskIndexToComplete);
         }
@@ -314,7 +294,7 @@ public class Console {
         } else {
             System.out.println("Which task do you want to undo finish?");
             int taskIndexToIncomplete = Integer.parseInt(keyboard.nextLine()) - targetedList.getTaskList().size();
-            isValid(0, targetedList.getCompletedTaskList().size() - 1, taskIndexToIncomplete);
+            toDoListProgram.isValid(0, targetedList.getCompletedTaskList().size() - 1, taskIndexToIncomplete);
 
             targetedList.undoFinishTask(taskIndexToIncomplete);
         }
@@ -326,7 +306,7 @@ public class Console {
                 + "1 - sortListAlphabeticallyDescending, 2 - sortListDueDateAscending, 3 - sortListDueDateDescending, "
                 + "4 - sortListImportance)");
         int sortOption = Integer.parseInt(keyboard.nextLine());
-        isValid(0, 4, sortOption);
+        toDoListProgram.isValid(0, 4, sortOption);
         switch (sortOption) {
             case 0:
                 targetedList.sortListAlphabeticallyAscending();
@@ -354,7 +334,7 @@ public class Console {
         } else {
             System.out.println("Which task do you want to edit?");
             int taskIndexToEdit = Integer.parseInt(keyboard.nextLine());
-            isValid(0, totalTaskNumStarts0, taskIndexToEdit);
+            toDoListProgram.isValid(0, totalTaskNumStarts0, taskIndexToEdit);
 
             Task targetedTask;
             if (taskIndexToEdit >= targetedList.getTaskList().size()) {
@@ -374,7 +354,7 @@ public class Console {
         System.out.println("0 - change task title, 1 - add step, 2 - delete step, 3 - complete a step, "
                 + "4 - change due date, 5 - change importance, 6 - change note");
         int whichEditTaskOption = Integer.parseInt(keyboard.nextLine());
-        isValid(0, 6, whichEditTaskOption);
+        toDoListProgram.isValid(0, 6, whichEditTaskOption);
         if (whichEditTaskOption == 0) {
             System.out.println("What's the new title?");
             targetedTask.setTitle(keyboard.nextLine());
@@ -402,7 +382,7 @@ public class Console {
         displayAllSteps(targetedTask);
         System.out.println("Which step to complete? (index start with 0)");
         int stepIndexComplete = Integer.parseInt(keyboard.nextLine());
-        isValid(0, targetedTask.getStep().size() - 1, stepIndexComplete);
+        toDoListProgram.isValid(0, targetedTask.getStep().size() - 1, stepIndexComplete);
         targetedTask.completeStep(stepIndexComplete);
     }
 
@@ -412,7 +392,7 @@ public class Console {
         displayAllSteps(targetedTask);
         System.out.println("Which step to delete? (index start with 0)");
         int stepIndex = Integer.parseInt(keyboard.nextLine());
-        isValid(0, targetedTask.getStep().size() - 1, stepIndex);
+        toDoListProgram.isValid(0, targetedTask.getStep().size() - 1, stepIndex);
         targetedTask.deleteStep(stepIndex);
     }
 
