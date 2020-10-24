@@ -34,7 +34,6 @@ public class BasicList implements Writable {
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-        json.put("MAX_LENGTH", MAX_LENGTH);
         json.put("taskList", taskListToJson());
         json.put("completedTaskList", completedTaskListToJson());
         json.put("listTitle", listTitle);

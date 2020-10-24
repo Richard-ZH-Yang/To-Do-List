@@ -3,19 +3,24 @@ package ui;
 import exceptions.InvalidDateException;
 
 import exceptions.ListFullException;
+import persistence.*;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import model.*;
 
 // create an instance of this class to start the to do list program
 public class Console {
-    ToDoListProgram toDoListProgram;
-    Scanner keyboard;
-    List<BasicList> defaultList;
-    List<BasicList> customizedList;
-
+    private static final String JSON_STORE = "./data/workroom.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private ToDoListProgram toDoListProgram;
+    private Scanner keyboard;
+    private List<BasicList> defaultList;
+    private List<BasicList> customizedList;
 
     public Console() {
         toDoListProgram = new ToDoListProgram();
@@ -42,6 +47,31 @@ public class Console {
                 System.out.println("Please try again");
             }
         } while (!toDoListProgram.isEndProgram());
+
+    }
+
+    private void saveWorkRoom() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(toDoListProgram);
+            jsonWriter.close();
+            System.out.println("Saved successfully to " + JSON_STORE);
+        } catch (FileNotFoundException fileNotFoundException) {
+            System.out.println("Unable to write to file: " + JSON_STORE + "\nFile is not found!");
+        }
+    }
+
+    private void loadToDoListProgram() {
+        try {
+            toDoListProgram = jsonReader.read();
+            System.out.println("Load successfully from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        } catch (ListFullException listFullException) {
+            System.out.println("Failed! List is full");
+        } catch (InvalidDateException invalidDateException) {
+            System.out.println("Failed! Date in the file is invalid");
+        }
 
     }
 

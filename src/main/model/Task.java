@@ -48,7 +48,7 @@ public class Task implements Writable {
             return false;
         }
         Task task2 = (Task) o;
-        if (title.equals(task2.title) && todayDate.equals(task2.todayDate) && dueDay.equals(task2.dueDay)
+        if (title.equals(task2.title)  && dueDay.equals(task2.dueDay)
                 && createdDate.equals(task2.createdDate) && note.equals(task2.note) && isImportant == task2.isImportant
                 && isComplete == task2.isComplete && isVisible == task2.isVisible && isOverDue == task2.isOverDue) {
             if (step.size() == task2.step.size() && isStepComplete.size() == task2.isStepComplete.size()) {
@@ -71,18 +71,17 @@ public class Task implements Writable {
 
     @Override
     public JSONObject toJson() {
+        // not for todayDate and isOverDue.
         JSONObject json = new JSONObject();
         json.put("title", title);
         json.put("step", stepToJson());
         json.put("isStepComplete", isStepCompleteToJson());
-        json.put("todayDate", todayDate);
         json.put("dueDay", dueDay);
         json.put("createdDate", createdDate);
         json.put("note", note);
         json.put("isImportant", isImportant);
         json.put("isComplete", isComplete);
         json.put("isVisible", isVisible);
-        json.put("isOverDue", isOverDue);
         return json;
     }
 
@@ -90,8 +89,10 @@ public class Task implements Writable {
     private JSONArray stepToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (String step: step) {
-            jsonArray.put(step);
+        Integer i = 0;
+        for (String steps: step) {
+            jsonArray.put(i, steps);
+            i++;
         }
 
         return jsonArray;
@@ -101,18 +102,16 @@ public class Task implements Writable {
     private JSONArray isStepCompleteToJson() {
         JSONArray jsonArray = new JSONArray();
 
+        int i = 0;
         for (Boolean status: isStepComplete) {
-            jsonArray.put(status.toString());
+            jsonArray.put(i, status.toString());
+            i++;
         }
+
 
         return jsonArray;
     }
 
-//    // EFFECTS: compare every element in the task to other task objects
-//    public boolean equals(Task task2) {
-//        boolean isEqual = false;
-//
-//    }
 
     // MODIFIES: this
     // EFFECTS: add a step to the step list
@@ -148,6 +147,20 @@ public class Task implements Writable {
                     + "And index should start with 0");
         } else {
             isStepComplete.set(index, Boolean.TRUE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: If index is invalid, throw IndexOutOfBoundsException. Otherwise, set the boolean in isStepComplete to
+    //          false
+    public void inCompleteStep(int index) {
+        //assert (step.size() == isStepComplete.size());
+        if (index < 0 || step.size() <= index) {
+            throw new IndexOutOfBoundsException("Index out of bound, there are " + step.size()
+                    + " elements in the list. "
+                    + "And index should start with 0");
+        } else {
+            isStepComplete.set(index, Boolean.FALSE);
         }
     }
 
@@ -215,7 +228,9 @@ public class Task implements Writable {
         createdDate = todayDate;
     }
 
-
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
 
 
     // normal setters methods
@@ -239,7 +254,6 @@ public class Task implements Writable {
     public void setComplete(boolean complete) {
         isComplete = complete;
     }
-
 
     // getters methods
 

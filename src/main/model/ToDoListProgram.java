@@ -1,15 +1,19 @@
 package model;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 // create an instance of this class to start the to do list program
-public class ToDoListProgram {
-    List<BasicList> defaultList;
-    List<BasicList> customizedList;
-    boolean endProgram;     // when equal to true, the program will end
+public class ToDoListProgram implements Writable {
+    private List<BasicList> defaultList;
+    private List<BasicList> customizedList;
+    private boolean endProgram;     // when equal to true, the program will end
 
     // constructor
     // MODIFIES: this
@@ -31,6 +35,30 @@ public class ToDoListProgram {
 
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("defaultList", defaultListToJson());
+        json.put("customizedList", customizedListToJson());
+        json.put("endProgram", endProgram);
+        return json;
+    }
+
+    private JSONArray defaultListToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (BasicList basicList : defaultList) {
+            jsonArray.put(basicList.toJson());
+        }
+        return jsonArray;
+    }
+
+    private JSONArray customizedListToJson() {
+        JSONArray jsonArray = new JSONArray();
+        for (BasicList basicList : customizedList) {
+            jsonArray.put(basicList.toJson());
+        }
+        return jsonArray;
+    }
 
 
     // EFFECTS: if the third parameter value is outside of the integral [lower, upper], throw IndexOutOfBoundsException
@@ -41,6 +69,13 @@ public class ToDoListProgram {
         }
     }
 
+    public void setCustomizedList(List<BasicList> customizedList) {
+        this.customizedList = customizedList;
+    }
+
+    public void setDefaultList(List<BasicList> defaultList) {
+        this.defaultList = defaultList;
+    }
 
     // EFFECTS: returns true if program ends
     public boolean isEndProgram() {
