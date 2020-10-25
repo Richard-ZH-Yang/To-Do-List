@@ -103,25 +103,10 @@ public class JsonReader {
         JSONArray stepArray = taskJson.getJSONArray("step");
         JSONArray isStepCompleteArray = taskJson.getJSONArray("isStepComplete");
 
-//        int i1 = 0;
-//        for (Object inStep : stepArray) {
-//            JSONObject nextStep = (JSONObject) inStep;
-//            addStep(task, nextStep, i1);
-//            i1++;
-//        }
-//
-        // TODO check for loop effect, use this format because the method is too long :(
         for (int i = 0; i < stepArray.length(); i++) {
             JSONObject nextStep = (JSONObject) stepArray.get(i);
             addStep(task, nextStep, i);
         }
-
-//        int i2 = 0;
-//        for (Object inIsStepComplete : isStepCompleteArray) {
-//            JSONObject nextStepStatus = (JSONObject) inIsStepComplete;
-//            addIsStepComplete(task, nextStepStatus, i2);
-//            i2++;
-//        }
 
         for (int i = 0; i < isStepCompleteArray.length(); i++) {
             JSONObject nextStepStatus = (JSONObject) isStepCompleteArray.get(i);

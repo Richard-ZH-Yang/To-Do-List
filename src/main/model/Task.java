@@ -95,7 +95,7 @@ public class Task implements Writable {
         int i = 0;
         for (String steps: step) {
             jsonObject.put(Integer.toString(i), steps);
-            jsonArray.put(jsonObject);
+            jsonArray.put(i, jsonObject);
             i++;
         }
 
@@ -110,7 +110,7 @@ public class Task implements Writable {
         int i = 0;
         for (Boolean status: isStepComplete) {
             jsonObject.put(Integer.toString(i), status);
-            jsonArray.put(jsonObject);
+            jsonArray.put(i, jsonObject);
             i++;
         }
 

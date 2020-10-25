@@ -39,6 +39,7 @@ class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderGeneralWorkRoom() throws FileNotFoundException {
+        // TODO to be done
         JsonReader reader = new JsonReader("./data/testReaderGeneralWorkRoom.json");
         try {
             ToDoListProgram checkToDo = reader.read();
