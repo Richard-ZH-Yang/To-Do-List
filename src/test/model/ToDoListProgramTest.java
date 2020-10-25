@@ -34,6 +34,13 @@ public class ToDoListProgramTest {
         } catch (IndexOutOfBoundsException e) {
             //pass
         }
+
+        try {
+            toDoListProgram.isValid(0, 1, -1);
+            fail("Should throw IndexOutOfBoundsException ");
+        } catch (IndexOutOfBoundsException e) {
+            //pass
+        }
     }
 
     @Test

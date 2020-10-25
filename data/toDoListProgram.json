@@ -1,6 +1,42 @@
 {
-    "endProgram": false,
-    "customizedList": [],
+    "endProgram": true,
+    "customizedList": [
+        {
+            "listTitle": "list1 in customized list",
+            "completedTaskList": [{
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-10-25",
+                "isImportant": false,
+                "isStepComplete": {
+                    "0": false,
+                    "1": true
+                },
+                "step": {
+                    "0": "s1",
+                    "1": "s2"
+                },
+                "isVisible": true,
+                "title": "task1 c1 l1",
+                "dueDay": "NA",
+                "isComplete": true
+            }],
+            "taskList": [],
+            "isVisible": true
+        },
+        {
+            "listTitle": "list2",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        },
+        {
+            "listTitle": "list3 c",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        }
+    ],
     "defaultList": [
         {
             "listTitle": "My Day",
@@ -8,30 +44,12 @@
             "taskList": [{
                 "note": "NA",
                 "isOverDue": false,
-                "createdDate": "2020-10-24",
+                "createdDate": "2020-10-25",
                 "isImportant": false,
-                "isStepComplete": [
-                    {
-                        "0": false,
-                        "1": true
-                    },
-                    {
-                        "0": false,
-                        "1": true
-                    }
-                ],
-                "step": [
-                    {
-                        "0": "step1",
-                        "1": "step2"
-                    },
-                    {
-                        "0": "step1",
-                        "1": "step2"
-                    }
-                ],
+                "isStepComplete": {},
+                "step": {},
                 "isVisible": true,
-                "title": "jadsbnfjknaskef",
+                "title": "task1 in my day",
                 "dueDay": "NA",
                 "isComplete": false
             }],

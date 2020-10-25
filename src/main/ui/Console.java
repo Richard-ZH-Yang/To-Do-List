@@ -33,6 +33,7 @@ public class Console {
     }
 
     private void runToDoListProgram() {
+        loadFirst();
         do {
             displayHomeScreen();
             try {
@@ -44,7 +45,7 @@ public class Console {
                     saveToDoListProgram();
                 } else if (whichModule == -1) {
                     toDoListProgram.setEndProgram(true);
-                    System.out.println("Thank you for using this program");
+                    saveBeforeQuit();
                 } else if (whichModule == 0) {
                     operationInDefaultListModule();
                 } else if (whichModule == 1) {
@@ -54,6 +55,26 @@ public class Console {
                 System.out.println(exception.getMessage() + "\nPlease try again");
             }
         } while (!toDoListProgram.isEndProgram());
+    }
+
+    public void saveBeforeQuit() {
+        System.out.println("Would you like to save before leaving? (0 = don't save, 1 = save)");
+        int isSaving = Integer.parseInt(keyboard.nextLine());
+        toDoListProgram.isValid(0,1,isSaving);
+        if (isSaving == 1) {
+            saveToDoListProgram();
+        }
+
+        System.out.println("Thank you for using this program");
+    }
+
+    public void loadFirst() {
+        System.out.println("Would you like to load before using this program? (0 = don't load, 1 = load)");
+        int isLoading = Integer.parseInt(keyboard.nextLine());
+        toDoListProgram.isValid(0,1,isLoading);
+        if (isLoading == 1) {
+            loadToDoListProgram();
+        }
     }
 
     private void saveToDoListProgram() {

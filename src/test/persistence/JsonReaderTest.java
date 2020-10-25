@@ -39,11 +39,21 @@ class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderGeneralWorkRoom() throws FileNotFoundException {
-        // TODO to be done
         JsonReader reader = new JsonReader("./data/testReaderGeneralWorkRoom.json");
+        ToDoListProgram toDoListProgram = new ToDoListProgram();
+
         try {
+            toDoListProgram.getDefaultList().get(0).addTask(new Task("task1 in my day"));
+            toDoListProgram.getCustomizedList().add(new BasicList("list1 in customized list"));
+            toDoListProgram.getCustomizedList().add(new BasicList("list2"));
+            toDoListProgram.getCustomizedList().get(0).getCompletedTaskList().add(new Task("task1 c1 l1"));
+            toDoListProgram.getCustomizedList().get(0).getCompletedTaskList().get(0).addStep("s1");
+            toDoListProgram.getCustomizedList().get(0).getCompletedTaskList().get(0).addStep("s2");
+            toDoListProgram.getCustomizedList().get(0).getCompletedTaskList().get(0).completeStep(1);
+            toDoListProgram.getCustomizedList().get(0).getCompletedTaskList().get(0).setComplete(true);
+
             ToDoListProgram checkToDo = reader.read();
-            checkToDoListProgram(checkToDo, new ToDoListProgram());
+            checkToDoListProgram(checkToDo, toDoListProgram);
         } catch (IOException e) {
             fail("Couldn't read from file");
         } catch (ListFullException | InvalidDateException e) {
