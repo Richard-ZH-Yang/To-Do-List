@@ -88,34 +88,34 @@ public class Task implements Writable {
     }
 
     // EFFECTS: return step list as a JSON array
-    private JSONArray stepToJson() {
+    private JSONObject stepToJson() {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
 
         int i = 0;
         for (String steps: step) {
             jsonObject.put(Integer.toString(i), steps);
-            jsonArray.put(i, jsonObject);
+            //jsonArray.put(i, jsonObject);
             i++;
         }
 
-        return jsonArray;
+        return jsonObject;
     }
 
     // EFFECTS: return isStepComplete list as a JSON array
-    private JSONArray isStepCompleteToJson() {
+    private JSONObject isStepCompleteToJson() {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
 
         int i = 0;
         for (Boolean status: isStepComplete) {
             jsonObject.put(Integer.toString(i), status);
-            jsonArray.put(i, jsonObject);
+            //jsonArray.put(i, jsonObject);
             i++;
         }
 
 
-        return jsonArray;
+        return jsonObject;
     }
 
 

@@ -7,8 +7,8 @@
             "isOverDue": false,
             "createdDate": "2020-10-24",
             "isImportant": false,
-            "isStepComplete": [],
-            "step": [],
+            "isStepComplete": {},
+            "step": {},
             "isVisible": true,
             "title": "",
             "dueDay": "NA",
@@ -20,40 +20,16 @@
                 "isOverDue": false,
                 "createdDate": "2020-10-24",
                 "isImportant": true,
-                "isStepComplete": [
-                    {
-                        "0": false,
-                        "1": true,
-                        "2": false
-                    },
-                    {
-                        "0": false,
-                        "1": true,
-                        "2": false
-                    },
-                    {
-                        "0": false,
-                        "1": true,
-                        "2": false
-                    }
-                ],
-                "step": [
-                    {
-                        "0": "This is task 1 step 1",
-                        "1": "step 2",
-                        "2": "step 3"
-                    },
-                    {
-                        "0": "This is task 1 step 1",
-                        "1": "step 2",
-                        "2": "step 3"
-                    },
-                    {
-                        "0": "This is task 1 step 1",
-                        "1": "step 2",
-                        "2": "step 3"
-                    }
-                ],
+                "isStepComplete": {
+                    "0": false,
+                    "1": true,
+                    "2": false
+                },
+                "step": {
+                    "0": "This is task 1 step 1",
+                    "1": "step 2",
+                    "2": "step 3"
+                },
                 "isVisible": true,
                 "title": "task1",
                 "dueDay": "2020-10-30",
@@ -64,26 +40,14 @@
                 "isOverDue": false,
                 "createdDate": "2020-10-24",
                 "isImportant": false,
-                "isStepComplete": [
-                    {
-                        "0": true,
-                        "1": false
-                    },
-                    {
-                        "0": true,
-                        "1": false
-                    }
-                ],
-                "step": [
-                    {
-                        "0": "This is task 2 step 1",
-                        "1": "step 2"
-                    },
-                    {
-                        "0": "This is task 2 step 1",
-                        "1": "step 2"
-                    }
-                ],
+                "isStepComplete": {
+                    "0": true,
+                    "1": false
+                },
+                "step": {
+                    "0": "This is task 2 step 1",
+                    "1": "step 2"
+                },
                 "isVisible": false,
                 "title": "task2",
                 "dueDay": "2020-10-30",
@@ -102,40 +66,16 @@
                     "isOverDue": false,
                     "createdDate": "2020-10-24",
                     "isImportant": true,
-                    "isStepComplete": [
-                        {
-                            "0": false,
-                            "1": true,
-                            "2": false
-                        },
-                        {
-                            "0": false,
-                            "1": true,
-                            "2": false
-                        },
-                        {
-                            "0": false,
-                            "1": true,
-                            "2": false
-                        }
-                    ],
-                    "step": [
-                        {
-                            "0": "This is task 1 step 1",
-                            "1": "step 2",
-                            "2": "step 3"
-                        },
-                        {
-                            "0": "This is task 1 step 1",
-                            "1": "step 2",
-                            "2": "step 3"
-                        },
-                        {
-                            "0": "This is task 1 step 1",
-                            "1": "step 2",
-                            "2": "step 3"
-                        }
-                    ],
+                    "isStepComplete": {
+                        "0": false,
+                        "1": true,
+                        "2": false
+                    },
+                    "step": {
+                        "0": "This is task 1 step 1",
+                        "1": "step 2",
+                        "2": "step 3"
+                    },
                     "isVisible": true,
                     "title": "task1",
                     "dueDay": "2020-10-30",
@@ -146,26 +86,14 @@
                     "isOverDue": false,
                     "createdDate": "2020-10-24",
                     "isImportant": false,
-                    "isStepComplete": [
-                        {
-                            "0": true,
-                            "1": false
-                        },
-                        {
-                            "0": true,
-                            "1": false
-                        }
-                    ],
-                    "step": [
-                        {
-                            "0": "This is task 2 step 1",
-                            "1": "step 2"
-                        },
-                        {
-                            "0": "This is task 2 step 1",
-                            "1": "step 2"
-                        }
-                    ],
+                    "isStepComplete": {
+                        "0": true,
+                        "1": false
+                    },
+                    "step": {
+                        "0": "This is task 2 step 1",
+                        "1": "step 2"
+                    },
                     "isVisible": false,
                     "title": "task2",
                     "dueDay": "2020-10-30",

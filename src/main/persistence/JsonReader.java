@@ -100,17 +100,13 @@ public class JsonReader {
         task.setVisible(taskJson.getBoolean("isVisible"));
         task.setOverDue(taskJson.getBoolean("isOverDue"));
 
-        JSONArray stepArray = taskJson.getJSONArray("step");
-        JSONArray isStepCompleteArray = taskJson.getJSONArray("isStepComplete");
 
-        for (int i = 0; i < stepArray.length(); i++) {
-            JSONObject nextStep = (JSONObject) stepArray.get(i);
-            addStep(task, nextStep, i);
-        }
+        JSONObject stepJson = taskJson.getJSONObject("step");
+        JSONObject isStepCompleteJson = taskJson.getJSONObject("isStepComplete");
 
-        for (int i = 0; i < isStepCompleteArray.length(); i++) {
-            JSONObject nextStepStatus = (JSONObject) isStepCompleteArray.get(i);
-            addIsStepComplete(task, nextStepStatus, i);
+        for (int i = 0; i < stepJson.length(); i++) {
+            addStep(task, stepJson, i);
+            addIsStepComplete(task, isStepCompleteJson, i);
         }
 
 

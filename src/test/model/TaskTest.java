@@ -174,6 +174,40 @@ public class TaskTest {
     }
 
     @Test
+    public void testInCompleteStepWithException() {
+        task2.completeStep(1);
+        assertEquals(true, task2.getIsStepComplete().get(1));
+        assertEquals(3, task2.getIsStepComplete().size());
+
+        try {
+            task2.inCompleteStep(-1);
+            fail("Should throw exception");
+        } catch (IndexOutOfBoundsException e) {
+            //pass
+        }
+
+        try {
+            task2.inCompleteStep(3);
+            fail("Should throw exception");
+        } catch (IndexOutOfBoundsException e) {
+            //pass
+        }
+    }
+
+    @Test
+    public void testInCompleteStepNOException() {
+        task2.completeStep(2);
+
+        try {
+            task2.inCompleteStep(2);
+        } catch (IndexOutOfBoundsException e) {
+            fail("This should not occur");
+        }
+
+        assertEquals(false, task2.getIsStepComplete().get(2));
+    }
+
+    @Test
     public void testDecodeDate() {
         String testDate1 = "2020-03-06";
         String testDate2 = "0020-00-02";
@@ -243,6 +277,26 @@ public class TaskTest {
             assertEquals(false, task2.isOverDue());
         }
 
+    }
+
+    @Test
+    public void testSetOverDue() {
+        try {
+            task1.setDueDay("2018-10-25");
+        } catch (InvalidDateException invalidDateException) {
+            fail("check today's date");
+        }
+        task1.setOverDue();
+        assertEquals(true, task1.isOverDue());
+
+        try {
+            task1.setDueDay("2029-10-25");
+        } catch (InvalidDateException invalidDateException) {
+            fail("check today's date");
+        }
+
+        task1.setOverDue();
+        assertEquals(false, task1.isOverDue());
     }
 
     @Test
