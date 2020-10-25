@@ -38,13 +38,14 @@ I can demonstrate the concept of polymorphism of Java in this application smooth
  smy programming skill.  
 
 ## User Stories
-**Please Grade the following four user stories:**
+**Phase 1 user stories:**
 - As a user, I want to be able to add a task to my to-do list
 - As a user, I want to be able to view the list of tasks from a specific task list
 - As a user, I want to be able to delete a task from my to-do list
 - As a user, I want to be able to mark a task as complete on my to-do list
 
 
+**Phase 2 user stories:**
 - As a user, I want to be able to save my to-do list to file
 - As a user, I want to be able to be able to load my to-do list from file 
 - As a user, when I select the quit option from the application menu, I want to be reminded to save my to-do list 

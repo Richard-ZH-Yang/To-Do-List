@@ -217,6 +217,10 @@ public class Task implements Writable {
         createdDate = todayDate;
     }
 
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
     // MODIFIES: this
     // EFFECTS: set overDue to true if it todayDate greater than dueDay
     public void setOverDue() {
@@ -228,11 +232,6 @@ public class Task implements Writable {
     public void setOverDue(boolean overDue) {
         isOverDue = overDue;
     }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
-
 
     public void setImportant(boolean important) {
         isImportant = important;
