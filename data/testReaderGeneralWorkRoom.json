@@ -1,0 +1,30 @@
+{
+    "endProgram": false,
+    "customizedList": [],
+    "defaultList": [
+        {
+            "listTitle": "My Day",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        },
+        {
+            "listTitle": "Important",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        },
+        {
+            "listTitle": "Planned",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        },
+        {
+            "listTitle": "Tasks",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        }
+    ]
+}

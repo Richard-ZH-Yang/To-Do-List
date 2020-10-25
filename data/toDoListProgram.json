@@ -1,0 +1,59 @@
+{
+    "endProgram": false,
+    "customizedList": [],
+    "defaultList": [
+        {
+            "listTitle": "My Day",
+            "completedTaskList": [],
+            "taskList": [{
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-10-24",
+                "isImportant": false,
+                "isStepComplete": [
+                    {
+                        "0": false,
+                        "1": true
+                    },
+                    {
+                        "0": false,
+                        "1": true
+                    }
+                ],
+                "step": [
+                    {
+                        "0": "step1",
+                        "1": "step2"
+                    },
+                    {
+                        "0": "step1",
+                        "1": "step2"
+                    }
+                ],
+                "isVisible": true,
+                "title": "jadsbnfjknaskef",
+                "dueDay": "NA",
+                "isComplete": false
+            }],
+            "isVisible": true
+        },
+        {
+            "listTitle": "Important",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        },
+        {
+            "listTitle": "Planned",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        },
+        {
+            "listTitle": "Tasks",
+            "completedTaskList": [],
+            "taskList": [],
+            "isVisible": true
+        }
+    ]
+}
