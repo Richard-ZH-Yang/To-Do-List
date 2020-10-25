@@ -60,7 +60,6 @@ public class ToDoListProgram implements Writable {
         return jsonArray;
     }
 
-
     // EFFECTS: if the third parameter value is outside of the integral [lower, upper], throw IndexOutOfBoundsException
     public void isValid(int lower, int upper, int value) {
         boolean isWorking = (value >= lower) && (value <= upper);

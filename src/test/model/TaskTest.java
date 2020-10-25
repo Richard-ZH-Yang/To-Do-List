@@ -54,7 +54,7 @@ public class TaskTest {
 
     @Test
     public void testSetTodayDate() {
-        task3.setTodayDate();
+        Task.setTodayDate();
         assertEquals(task1.getTodayDate(), task2.getTodayDate());
         assertEquals(task1.getTodayDate(), task3.getTodayDate());
         assertEquals(10, task1.getTodayDate().length());

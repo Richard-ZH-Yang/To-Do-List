@@ -14,7 +14,7 @@ import model.*;
 
 // create an instance of this class to start the to do list program
 public class Console {
-    private static final String JSON_STORE = "./data/workroom.json";
+    private static final String JSON_STORE = "./data/toDoListProgram.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
     private ToDoListProgram toDoListProgram;
@@ -27,30 +27,36 @@ public class Console {
         keyboard = new Scanner(System.in);  // for user input
         defaultList = toDoListProgram.getDefaultList();
         customizedList = toDoListProgram.getCustomizedList();
-        
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
+        runToDoListProgram();
+    }
+
+    private void runToDoListProgram() {
         do {
             displayHomeScreen();
             try {
                 int whichModule = Integer.parseInt(keyboard.nextLine());
-                if (whichModule == 0) {
+                toDoListProgram.isValid(-3,1,whichModule);
+                if (whichModule == -3) {
+                    loadToDoListProgram();
+                } else if (whichModule == -2) {
+                    saveToDoListProgram();
+                } else if (whichModule == -1) {
                     toDoListProgram.setEndProgram(true);
                     System.out.println("Thank you for using this program");
-                } else if (whichModule == 1) {
+                } else if (whichModule == 0) {
                     operationInDefaultListModule();
-                } else if (whichModule == 2) {
+                } else if (whichModule == 1) {
                     operationInCustomizedListModule();
-                } else {
-                    throw new IndexOutOfBoundsException("Number out of bound");
                 }
             } catch (RuntimeException | ListFullException | InvalidDateException exception) {
-                System.out.println(exception.getMessage());
-                System.out.println("Please try again");
+                System.out.println(exception.getMessage() + "\nPlease try again");
             }
         } while (!toDoListProgram.isEndProgram());
-
     }
 
-    private void saveWorkRoom() {
+    private void saveToDoListProgram() {
         try {
             jsonWriter.open();
             jsonWriter.write(toDoListProgram);
@@ -61,9 +67,14 @@ public class Console {
         }
     }
 
+    // REQUIRES: need to initialize defaultList and customizedList immediately after this method
+    // MODIFIES: toDoListProgram
+    // EFFECTS:
     private void loadToDoListProgram() {
         try {
             toDoListProgram = jsonReader.read();
+            defaultList = toDoListProgram.getDefaultList();
+            customizedList = toDoListProgram.getCustomizedList();
             System.out.println("Load successfully from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -86,8 +97,8 @@ public class Console {
         System.out.println("\n○ Lists inside Customized List:");
         displayAllCustomizedListIndexNTitle();
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println("Which module of list do you want to get access? (0 - End the program,"
-                + "1 - Default List, 2 - Customized List)");
+        System.out.println("Which module of list do you want to get access? (-3 = load,  -2 = Save,  "
+                + "-1 = End the program, 0 = Default List, 1 = Customized List)");
 
     }
 

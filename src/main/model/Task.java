@@ -12,10 +12,10 @@ import java.util.List;
 
 // Task class collects different properties for each task
 public class Task implements Writable {
+    public static String todayDate;   // using JAVA's library to obtain. Time zone is America/Vancouver
     private String title;
     private List<String> step;      // the step title list
     private List<Boolean> isStepComplete;   // list of status for each step, true means step is complete
-    private String todayDate;   // using JAVA's library to obtain. Time zone is America/Vancouver
     private String dueDay;      // can be set within 10 years of today's date
     private String createdDate; // equal to today's date when created, difference is that today's date can update
     private String note;        // note for each tasks
@@ -48,6 +48,7 @@ public class Task implements Writable {
             return false;
         }
         Task task2 = (Task) o;
+        // not for todayDate
         if (title.equals(task2.title)  && dueDay.equals(task2.dueDay)
                 && createdDate.equals(task2.createdDate) && note.equals(task2.note) && isImportant == task2.isImportant
                 && isComplete == task2.isComplete && isVisible == task2.isVisible && isOverDue == task2.isOverDue) {
@@ -71,7 +72,7 @@ public class Task implements Writable {
 
     @Override
     public JSONObject toJson() {
-        // not for todayDate and isOverDue.
+        // not for todayDate
         JSONObject json = new JSONObject();
         json.put("title", title);
         json.put("step", stepToJson());
@@ -82,16 +83,19 @@ public class Task implements Writable {
         json.put("isImportant", isImportant);
         json.put("isComplete", isComplete);
         json.put("isVisible", isVisible);
+        json.put("isOverDue", isOverDue);
         return json;
     }
 
     // EFFECTS: return step list as a JSON array
     private JSONArray stepToJson() {
         JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
 
-        Integer i = 0;
+        int i = 0;
         for (String steps: step) {
-            jsonArray.put(i, steps);
+            jsonObject.put(Integer.toString(i), steps);
+            jsonArray.put(jsonObject);
             i++;
         }
 
@@ -101,10 +105,12 @@ public class Task implements Writable {
     // EFFECTS: return isStepComplete list as a JSON array
     private JSONArray isStepCompleteToJson() {
         JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
 
         int i = 0;
         for (Boolean status: isStepComplete) {
-            jsonArray.put(i, status.toString());
+            jsonObject.put(Integer.toString(i), status);
+            jsonArray.put(jsonObject);
             i++;
         }
 
@@ -192,7 +198,7 @@ public class Task implements Writable {
 
     // MODIFIES: this
     // set today's date to the date in Vancouver timezone with String format like "2020-10-13"
-    public void setTodayDate() {
+    public static void setTodayDate() {
         ZoneId zonedId = ZoneId.of("America/Vancouver");
         LocalDate today = LocalDate.now(zonedId);
         todayDate = today.toString().substring(0, 10);
@@ -220,6 +226,16 @@ public class Task implements Writable {
                 this.dueDay = dueDay;
             }
         }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: set overDue to true if it todayDate greater than dueDay
+    public void setOverDue() {
+        isOverDue = (decodeDate(todayDate) - decodeDate(dueDay))  > 0;
+    }
+
+    public void setOverDue(boolean overDue) {
+        isOverDue = overDue;
     }
 
     // MODIFIES: this

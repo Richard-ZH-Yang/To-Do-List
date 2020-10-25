@@ -45,6 +45,8 @@ public class JsonReader {
     // EFFECTS: parses ToDoListProgram from JSON object and returns it
     private ToDoListProgram parseToDoListProgram(JSONObject jsonObject) throws InvalidDateException, ListFullException {
         ToDoListProgram toDoListProgram = new ToDoListProgram();
+        toDoListProgram.getDefaultList().clear();
+
         toDoListProgram.setEndProgram(jsonObject.getBoolean("endProgram"));
         JSONArray defaultListArray = jsonObject.getJSONArray("defaultList");
         JSONArray customizedListArray = jsonObject.getJSONArray("customizedList");
@@ -53,6 +55,8 @@ public class JsonReader {
             JSONObject nextBasicList = (JSONObject) inDefaultList;
             addBasicList(toDoListProgram.getDefaultList(), nextBasicList);
         }
+
+
         for (Object inCustomizedList : customizedListArray) {
             JSONObject nextBasicList = (JSONObject) inCustomizedList;
             addBasicList(toDoListProgram.getCustomizedList(), nextBasicList);
@@ -94,22 +98,34 @@ public class JsonReader {
         task.setImportant(taskJson.getBoolean("isImportant"));
         task.setComplete(taskJson.getBoolean("isComplete"));
         task.setVisible(taskJson.getBoolean("isVisible"));
+        task.setOverDue(taskJson.getBoolean("isOverDue"));
 
         JSONArray stepArray = taskJson.getJSONArray("step");
         JSONArray isStepCompleteArray = taskJson.getJSONArray("isStepComplete");
 
-        int i1 = 0;
-        for (Object inStep : stepArray) {
-            JSONObject nextStep = (JSONObject) inStep;
-            addStep(task, nextStep, i1);
-            i1++;
+//        int i1 = 0;
+//        for (Object inStep : stepArray) {
+//            JSONObject nextStep = (JSONObject) inStep;
+//            addStep(task, nextStep, i1);
+//            i1++;
+//        }
+//
+        // TODO check for loop effect, use this format because the method is too long :(
+        for (int i = 0; i < stepArray.length(); i++) {
+            JSONObject nextStep = (JSONObject) stepArray.get(i);
+            addStep(task, nextStep, i);
         }
 
-        int i2 = 0;
-        for (Object inIsStepComplete : isStepCompleteArray) {
-            JSONObject nextStepStatus = (JSONObject) inIsStepComplete;
-            addIsStepComplete(task, nextStepStatus, i2);
-            i2++;
+//        int i2 = 0;
+//        for (Object inIsStepComplete : isStepCompleteArray) {
+//            JSONObject nextStepStatus = (JSONObject) inIsStepComplete;
+//            addIsStepComplete(task, nextStepStatus, i2);
+//            i2++;
+//        }
+
+        for (int i = 0; i < isStepCompleteArray.length(); i++) {
+            JSONObject nextStepStatus = (JSONObject) isStepCompleteArray.get(i);
+            addIsStepComplete(task, nextStepStatus, i);
         }
 
 
