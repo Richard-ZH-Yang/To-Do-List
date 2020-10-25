@@ -204,6 +204,10 @@ public class BasicList implements Writable {
         }
     }
 
+    public boolean isVisible() {
+        return isVisible;
+    }
+
     // MODIFIES: this
     // EFFECTS: set the title
     public void setListTitle(String listTitle) {

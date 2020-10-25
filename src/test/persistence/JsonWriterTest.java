@@ -11,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 // reference:https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-public class JsonWriterTest {
+public class JsonWriterTest extends JsonTest{
 
     @Test
     void testWriterInvalidFile() {
@@ -35,9 +35,9 @@ public class JsonWriterTest {
             writer.close();
 
             JsonReader reader = new JsonReader("./data/testWriterEmptyToDoListProgram.json");
-            toDoListProgram = reader.read();
-            assertEquals("My work room", wr.getName());
-            assertEquals(0, wr.numThingies());
+            ToDoListProgram checkToDo = reader.read();
+            checkToDoListProgram(checkToDo, toDoListProgram);
+
         } catch (IOException | ListFullException | InvalidDateException e) {
             fail("Exception should not have been thrown");
         }
@@ -46,23 +46,19 @@ public class JsonWriterTest {
     @Test
     void testWriterGeneralWorkroom() {
         try {
-            WorkRoom wr = new WorkRoom("My work room");
-            wr.addThingy(new Thingy("saw", Category.METALWORK));
-            wr.addThingy(new Thingy("needle", Category.STITCHING));
-            JsonWriter writer = new JsonWriter("./data/testWriterGeneralWorkroom.json");
+            ToDoListProgram toDoListProgram = new ToDoListProgram();
+            JsonWriter writer = new JsonWriter("./data/testWriterGeneralToDoListProgram.json");
             writer.open();
-            writer.write(wr);
+            writer.write(toDoListProgram);
             writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterGeneralWorkroom.json");
-            wr = reader.read();
-            assertEquals("My work room", wr.getName());
-            List<Thingy> thingies = wr.getThingies();
-            assertEquals(2, thingies.size());
-            checkThingy("saw", Category.METALWORK, thingies.get(0));
-            checkThingy("needle", Category.STITCHING, thingies.get(1));
+            JsonReader reader = new JsonReader("./data/testWriterGeneralToDoListProgram.json");
+            ToDoListProgram checkToDo = reader.read();
+            // TODO test more situations
 
-        } catch (IOException e) {
+            checkToDoListProgram(checkToDo, toDoListProgram);
+
+        } catch (IOException | InvalidDateException | ListFullException e) {
             fail("Exception should not have been thrown");
         }
     }

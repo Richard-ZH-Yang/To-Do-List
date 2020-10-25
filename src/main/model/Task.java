@@ -42,32 +42,32 @@ public class Task implements Writable {
         isVisible = true;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Task)) {
-            return false;
-        }
-        Task task2 = (Task) o;
-        // not for todayDate
-        if (title.equals(task2.title)  && dueDay.equals(task2.dueDay)
-                && createdDate.equals(task2.createdDate) && note.equals(task2.note) && isImportant == task2.isImportant
-                && isComplete == task2.isComplete && isVisible == task2.isVisible && isOverDue == task2.isOverDue) {
-            if (step.size() == task2.step.size() && isStepComplete.size() == task2.isStepComplete.size()) {
-                for (int i = 0; i < step.size(); i++) {
-                    if (!(step.get(i).equals(task2.step.get(i))
-                            && isStepComplete.get(i).equals(task2.isStepComplete.get(i)))) {
-                        return false;
-                    }
-                }
-            } else {
-                return false;
-            }
-
-        } else {
-            return false;
-        }
-        return true;
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (!(o instanceof Task)) {
+//            return false;
+//        }
+//        Task task2 = (Task) o;
+//        // not for todayDate
+//        if (title.equals(task2.title)  && dueDay.equals(task2.dueDay)
+//                && createdDate.equals(task2.createdDate) && note.equals(task2.note) && isImportant ==task2.isImportant
+//                && isComplete == task2.isComplete && isVisible == task2.isVisible && isOverDue == task2.isOverDue) {
+//            if (step.size() == task2.step.size() && isStepComplete.size() == task2.isStepComplete.size()) {
+//                for (int i = 0; i < step.size(); i++) {
+//                    if (!(step.get(i).equals(task2.step.get(i))
+//                            && isStepComplete.get(i).equals(task2.isStepComplete.get(i)))) {
+//                        return false;
+//                    }
+//                }
+//            } else {
+//                return false;
+//            }
+//
+//        } else {
+//            return false;
+//        }
+//        return true;
+//    }
 
 
     @Override
