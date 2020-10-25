@@ -10,7 +10,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-// Task class collects different properties for each task
+// Represents task inside the basicList, Task class stores different properties for each task
 public class Task implements Writable {
     public static String todayDate;   // using JAVA's library to obtain. Time zone is America/Vancouver
     private String title;
@@ -24,11 +24,22 @@ public class Task implements Writable {
     private boolean isVisible;
     private boolean isOverDue;
 
+    // constructor
+    // EFFECTS: construct a new Task, set title to parameter String
+    //          set todayDate to today's date, dueDay to "NA", createdDate to todayDate,
+    //          initialize step and isStepComplete, set note to "NA", set isImportant to false
+    //          set isComplete to false, set isVisible to true. Set isOverDue to true if dueDay is smaller than
+    //          todayDate, the last operation is done inside setDueDay()
     public Task(String title) throws InvalidDateException {
         this();
         this.title = title;
     }
 
+    // constructor
+    // EFFECTS: construct a new Task, set todayDate to today's date, dueDay to "NA", createdDate to todayDate,
+    //          title to "", initialize step and isStepComplete, set note to "NA", set isImportant to false
+    //          set isComplete to false, set isVisible to true. Set isOverDue to true if dueDay is smaller than
+    //          todayDate, this operation is done inside setDueDay()
     public Task() throws InvalidDateException {
         setTodayDate();
         setDueDay("NA");
@@ -42,34 +53,7 @@ public class Task implements Writable {
         isVisible = true;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (!(o instanceof Task)) {
-//            return false;
-//        }
-//        Task task2 = (Task) o;
-//        // not for todayDate
-//        if (title.equals(task2.title)  && dueDay.equals(task2.dueDay)
-//                && createdDate.equals(task2.createdDate) && note.equals(task2.note) && isImportant ==task2.isImportant
-//                && isComplete == task2.isComplete && isVisible == task2.isVisible && isOverDue == task2.isOverDue) {
-//            if (step.size() == task2.step.size() && isStepComplete.size() == task2.isStepComplete.size()) {
-//                for (int i = 0; i < step.size(); i++) {
-//                    if (!(step.get(i).equals(task2.step.get(i))
-//                            && isStepComplete.get(i).equals(task2.isStepComplete.get(i)))) {
-//                        return false;
-//                    }
-//                }
-//            } else {
-//                return false;
-//            }
-//
-//        } else {
-//            return false;
-//        }
-//        return true;
-//    }
-
-
+    // EFFECTS: Convert Task to a JSONObject
     @Override
     public JSONObject toJson() {
         // not for todayDate
@@ -87,7 +71,7 @@ public class Task implements Writable {
         return json;
     }
 
-    // EFFECTS: return step list as a JSON array
+    // EFFECTS: return step list as a JSONObject
     private JSONObject stepToJson() {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
@@ -102,7 +86,7 @@ public class Task implements Writable {
         return jsonObject;
     }
 
-    // EFFECTS: return isStepComplete list as a JSON array
+    // EFFECTS: return isStepComplete list as a JSONObject
     private JSONObject isStepCompleteToJson() {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
@@ -113,7 +97,6 @@ public class Task implements Writable {
             //jsonArray.put(i, jsonObject);
             i++;
         }
-
 
         return jsonObject;
     }
@@ -229,27 +212,27 @@ public class Task implements Writable {
     }
 
     // MODIFIES: this
+    // EFFECTS: set created date to today's date
+    public void setCreatedDate() {
+        createdDate = todayDate;
+    }
+
+    // MODIFIES: this
     // EFFECTS: set overDue to true if it todayDate greater than dueDay
     public void setOverDue() {
         isOverDue = (decodeDate(todayDate) - decodeDate(dueDay))  > 0;
     }
 
+    // normal setters methods
+
     public void setOverDue(boolean overDue) {
         isOverDue = overDue;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: set created date to today's date
-    public void setCreatedDate() {
-        createdDate = todayDate;
     }
 
     public void setCreatedDate(String createdDate) {
         this.createdDate = createdDate;
     }
 
-
-    // normal setters methods
 
     public void setImportant(boolean important) {
         isImportant = important;
@@ -271,7 +254,13 @@ public class Task implements Writable {
         isComplete = complete;
     }
 
-    // getters methods
+    // EFFECTS: initialize todayDate first, then return todayDate
+    public String getTodayDate() {
+        setTodayDate();
+        return todayDate;
+    }
+
+    // normal getters methods
 
     public boolean isComplete() {
         return isComplete;
@@ -313,8 +302,31 @@ public class Task implements Writable {
         return title;
     }
 
-    public String getTodayDate() {
-        setTodayDate();
-        return todayDate;
-    }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (!(o instanceof Task)) {
+//            return false;
+//        }
+//        Task task2 = (Task) o;
+//        // not for todayDate
+//        if (title.equals(task2.title)  && dueDay.equals(task2.dueDay)
+//                && createdDate.equals(task2.createdDate) && note.equals(task2.note) && isImportant ==task2.isImportant
+//                && isComplete == task2.isComplete && isVisible == task2.isVisible && isOverDue == task2.isOverDue) {
+//            if (step.size() == task2.step.size() && isStepComplete.size() == task2.isStepComplete.size()) {
+//                for (int i = 0; i < step.size(); i++) {
+//                    if (!(step.get(i).equals(task2.step.get(i))
+//                            && isStepComplete.get(i).equals(task2.isStepComplete.get(i)))) {
+//                        return false;
+//                    }
+//                }
+//            } else {
+//                return false;
+//            }
+//
+//        } else {
+//            return false;
+//        }
+//        return true;
+//    }
 }

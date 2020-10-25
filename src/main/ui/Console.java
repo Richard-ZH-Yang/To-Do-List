@@ -22,6 +22,10 @@ public class Console {
     private List<BasicList> defaultList;
     private List<BasicList> customizedList;
 
+    // constructor
+    // EFFECTS: construct a new Console, initialize toDoListProgram, set defaultList to toDoListProgram's defaultList,
+    //          set customizedList to toDoListProgram's customizedList, set keyboard to read from user input,
+    //          initialize jsonWriter and jsonReader to the file file directory: JSON_STORE. Run the toDoListProgram
     public Console() {
         toDoListProgram = new ToDoListProgram();
         keyboard = new Scanner(System.in);  // for user input
@@ -32,6 +36,10 @@ public class Console {
         runToDoListProgram();
     }
 
+    // MODIFIES: this
+    // EFFECTS: ask user if they want to load first, then start the toDoListProgram. User can choose to end the program,
+    //          load, save, and operate in defaultList or customizedList. It will catch any expected exception.
+    //          It will keep going until user choose to end the program
     private void runToDoListProgram() {
         loadFirst();
         do {
@@ -57,6 +65,7 @@ public class Console {
         } while (!toDoListProgram.isEndProgram());
     }
 
+    // EFFECTS: ask user if they want to save before leaving, if yes, save the program
     public void saveBeforeQuit() {
         System.out.println("Would you like to save before leaving? (0 = don't save, 1 = save)");
         int isSaving = Integer.parseInt(keyboard.nextLine());
@@ -68,6 +77,7 @@ public class Console {
         System.out.println("Thank you for using this program");
     }
 
+    // EFFECTS: ask user if they want to load before starting, if yes, load the file
     public void loadFirst() {
         System.out.println("Would you like to load before using this program? (0 = don't load, 1 = load)");
         int isLoading = Integer.parseInt(keyboard.nextLine());
@@ -77,6 +87,7 @@ public class Console {
         }
     }
 
+    // EFFECTS: save the toDoListProgram to JSON_STORE directory
     private void saveToDoListProgram() {
         try {
             jsonWriter.open();
@@ -88,9 +99,8 @@ public class Console {
         }
     }
 
-    // REQUIRES: need to initialize defaultList and customizedList immediately after this method
-    // MODIFIES: toDoListProgram
-    // EFFECTS:
+    // MODIFIES: this
+    // EFFECTS: load the toDoListProgram from JSON_STORE directory
     private void loadToDoListProgram() {
         try {
             toDoListProgram = jsonReader.read();

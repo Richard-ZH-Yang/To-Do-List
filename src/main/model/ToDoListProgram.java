@@ -11,13 +11,13 @@ import java.util.Scanner;
 
 // create an instance of this class to start the to do list program
 public class ToDoListProgram implements Writable {
-    private List<BasicList> defaultList;
+    private List<BasicList> defaultList;        // user should not change defaultList size
     private List<BasicList> customizedList;
     private boolean endProgram;     // when equal to true, the program will end
 
     // constructor
-    // MODIFIES: this
-    // EFFECTS: initialize defaultList and customizedList field in this class. And add four default task list to the
+    // EFFECTS: construct a new ToDoListProgram, set endProgram to false,
+    //          initialize defaultList and customizedList field in this class. And add four default task lists to the
     //          default task list module.
     public ToDoListProgram() {
         endProgram = false;
@@ -35,6 +35,7 @@ public class ToDoListProgram implements Writable {
 
     }
 
+    // EFFECTS: convert toDoListProgram to a JSONObject
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -44,6 +45,7 @@ public class ToDoListProgram implements Writable {
         return json;
     }
 
+    // EFFECTS: return defaultList as a JSONArray
     private JSONArray defaultListToJson() {
         JSONArray jsonArray = new JSONArray();
         for (BasicList basicList : defaultList) {
@@ -52,6 +54,7 @@ public class ToDoListProgram implements Writable {
         return jsonArray;
     }
 
+    // EFFECTS: return customizedList as a JSONArray
     private JSONArray customizedListToJson() {
         JSONArray jsonArray = new JSONArray();
         for (BasicList basicList : customizedList) {
@@ -68,22 +71,26 @@ public class ToDoListProgram implements Writable {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: set the customizedList to parameter's BasicListList
     public void setCustomizedList(List<BasicList> customizedList) {
         this.customizedList = customizedList;
     }
 
+    // MODIFIES: this
+    // EFFECTS: set the defaultList to parameter's BasicListList
     public void setDefaultList(List<BasicList> defaultList) {
         this.defaultList = defaultList;
     }
 
-    // EFFECTS: returns true if program ends
-    public boolean isEndProgram() {
-        return endProgram;
-    }
-
-    // MODIFIES: this
     public void setEndProgram(boolean endProgram) {
         this.endProgram = endProgram;
+    }
+
+    // normal getters method
+
+    public boolean isEndProgram() {
+        return endProgram;
     }
 
     public List<BasicList> getCustomizedList() {

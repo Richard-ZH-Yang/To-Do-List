@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-// The superclass of CustomizedList and DefaultList
+// Represents the list inside the ToDoListProgram. It contains different tasks and the information for that list
 public class BasicList implements Writable {
     public static final int MAX_LENGTH = 1000;  // the maximum length a List<Task> can have
     protected List<Task> taskList;  // uncompleted tasks
@@ -19,6 +19,8 @@ public class BasicList implements Writable {
     protected String listTitle; // the tile of the task list
     protected boolean isVisible;    // decide whether the completed task can be seen
 
+    // constructor
+    // EFFECTS: construct a new BasicList, initialize two Task List, set isVisible to true, listTitle to "Untitled List"
     public BasicList() {
         taskList = new ArrayList<>();
         completedTaskList = new ArrayList<>();
@@ -26,11 +28,15 @@ public class BasicList implements Writable {
         listTitle = "Untitled List";
     }
 
+    // constructor
+    // EFFECTS: construct a new BasicList, set listTitle to parameter String,
+    //          initialize two Task List, set isVisible to true, listTitle to "Untitled List"
     public BasicList(String listTitle) {
         this();
         setListTitle(listTitle);
     }
 
+    // EFFECTS: convert the basicList to a JSONObject
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -204,10 +210,6 @@ public class BasicList implements Writable {
         }
     }
 
-    public boolean isVisible() {
-        return isVisible;
-    }
-
     // MODIFIES: this
     // EFFECTS: set the title
     public void setListTitle(String listTitle) {
@@ -227,6 +229,10 @@ public class BasicList implements Writable {
 
     public String getListTitle() {
         return listTitle;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
     }
 
     //    public void changeTheme() {

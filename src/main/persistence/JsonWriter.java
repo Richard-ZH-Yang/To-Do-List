@@ -19,14 +19,13 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: opens writer; throws FileNotFoundException if destination file cannot
-    // be opened for writing
+    // EFFECTS: opens writer; throws FileNotFoundException if destination file cannot be opened for writing
     public void open() throws FileNotFoundException {
         writer = new PrintWriter(new File(destination));
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of workroom to file
+    // EFFECTS: writes JSON representation of ToDoListProgram to file
     public void write(ToDoListProgram toDoListProgram) {
         JSONObject json = toDoListProgram.toJson();
         saveToFile(json.toString(TAB));

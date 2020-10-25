@@ -13,8 +13,8 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
-// reference:https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-// Represents a reader that reads BasicList from JSON data stored in file
+// reference: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+// Represents a reader that reads ToDoListProgram from JSON data stored in file
 public class JsonReader {
     private String source;
 
@@ -66,7 +66,7 @@ public class JsonReader {
     }
 
     // MODIFIES: toDoListProgram
-    // EFFECTS: parses thingies from JSON object and adds them to workroom
+    // EFFECTS: parses BasicList from JSON object and adds them to List<BasicList>
     private void addBasicList(List<BasicList> basicListList, JSONObject basicListJson) throws ListFullException,
             InvalidDateException {
         BasicList basicList = new BasicList();
@@ -113,10 +113,14 @@ public class JsonReader {
         basicList.addTask(task);
     }
 
+    // MODIFIES: toDoListProgram
+    // EFFECTS: parses Step from JSON object and adds it to Task
     private void addStep(Task task, JSONObject stepJson, Integer index) {
         task.addStep(stepJson.getString(index.toString()));
     }
 
+    // MODIFIES: toDoListProgram
+    // EFFECTS: parses IsStepComplete from JSON object and adds it to Task
     private void addIsStepComplete(Task task, JSONObject isStepCompleteJson, Integer index) {
         boolean hasDone = isStepCompleteJson.getBoolean(index.toString());
         if (hasDone) {
