@@ -22,6 +22,11 @@ public class Console {
     private List<BasicList> defaultList;
     private List<BasicList> customizedList;
 
+    // EFFECTS: run this method to start the Console Program
+    public static void main(String[] args) {
+        new Console();
+    }
+
     // constructor
     // EFFECTS: construct a new Console, initialize toDoListProgram, set defaultList to toDoListProgram's defaultList,
     //          set customizedList to toDoListProgram's customizedList, set keyboard to read from user input,

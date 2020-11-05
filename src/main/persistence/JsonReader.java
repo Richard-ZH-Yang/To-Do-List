@@ -47,7 +47,7 @@ public class JsonReader {
         ToDoListProgram toDoListProgram = new ToDoListProgram();
         toDoListProgram.getDefaultList().clear();
 
-        toDoListProgram.setEndProgram(jsonObject.getBoolean("endProgram"));
+        toDoListProgram.setEndProgram(false);
         JSONArray defaultListArray = jsonObject.getJSONArray("defaultList");
         JSONArray customizedListArray = jsonObject.getJSONArray("customizedList");
 

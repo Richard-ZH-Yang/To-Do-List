@@ -41,7 +41,6 @@ public class ToDoListProgram implements Writable {
         JSONObject json = new JSONObject();
         json.put("defaultList", defaultListToJson());
         json.put("customizedList", customizedListToJson());
-        json.put("endProgram", endProgram);
         return json;
     }
 

@@ -18,7 +18,7 @@ public class JsonTest {
         checkStepAndStatus(checkTask, task);
         assertEquals(checkTask.getTodayDate(), task.getTodayDate());
         assertEquals(checkTask.getDueDay(), task.getDueDay());
-        assertEquals(checkTask.getCreatedDate(), task.getCreatedDate());
+        assertEquals(Task.todayDate, task.getCreatedDate());
         assertEquals(checkTask.getNote(), task.getNote());
         assertEquals(checkTask.isImportant(), task.isImportant());
         assertEquals(checkTask.isComplete(), task.isComplete());
