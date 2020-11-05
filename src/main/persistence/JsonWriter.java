@@ -30,6 +30,14 @@ public class JsonWriter {
         JSONObject json = toDoListProgram.toJson();
         saveToFile(json.toString(TAB));
     }
+//
+//    // MODIFIES: this
+//    // EFFECTS: writes JSON representation of BasicList to file
+//    public void write(BasicList basicList) {
+//        JSONObject json = basicList.toJson();
+//        saveToFile(json.toString(TAB));
+//    }
+
 
     // MODIFIES: this
     // EFFECTS: closes writer

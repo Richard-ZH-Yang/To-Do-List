@@ -1,18 +1,10 @@
 {
-    "customizedList": [
-        {
-            "listTitle": "customizedList 1",
-            "completedTaskList": [],
-            "taskList": [],
-            "isVisible": true
-        },
-        {
-            "listTitle": "c2",
-            "completedTaskList": [],
-            "taskList": [],
-            "isVisible": true
-        }
-    ],
+    "customizedList": [{
+        "listTitle": "Untitled List",
+        "completedTaskList": [],
+        "taskList": [],
+        "isVisible": true
+    }],
     "defaultList": [
         {
             "listTitle": "My Day",
