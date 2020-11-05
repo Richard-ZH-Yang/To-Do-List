@@ -2,7 +2,18 @@
     "customizedList": [{
         "listTitle": "Untitled List",
         "completedTaskList": [],
-        "taskList": [],
+        "taskList": [{
+            "note": "NA",
+            "isOverDue": false,
+            "createdDate": "2020-11-05",
+            "isImportant": false,
+            "isStepComplete": {},
+            "step": {},
+            "isVisible": true,
+            "title": "task1",
+            "dueDay": "NA",
+            "isComplete": false
+        }],
         "isVisible": true
     }],
     "defaultList": [

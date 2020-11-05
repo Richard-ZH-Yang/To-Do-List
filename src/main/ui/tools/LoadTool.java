@@ -46,6 +46,7 @@ public class LoadTool extends Tool {
         } catch (InvalidDateException invalidDateException) {
             JOptionPane.showMessageDialog(null, "Failed! Date in the file is invalid");
         }
+        editor.initializeCenter();
     }
 
     private class LoadToolClickHandler implements ActionListener {
