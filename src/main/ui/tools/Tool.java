@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 
 
+// This class is derived from UBC SimpleDrawingPlayer sample program
+// https://github.students.cs.ubc.ca/CPSC210/SimpleDrawingPlayer-Complete
 public abstract class Tool {
 
     protected JButton button;

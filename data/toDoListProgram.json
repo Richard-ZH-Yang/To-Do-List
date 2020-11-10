@@ -1,19 +1,44 @@
 {
     "customizedList": [{
-        "listTitle": "Untitled List",
-        "completedTaskList": [],
-        "taskList": [{
+        "listTitle": "Basic List 1",
+        "completedTaskList": [{
             "note": "NA",
             "isOverDue": false,
-            "createdDate": "2020-11-05",
+            "createdDate": "2020-11-09",
             "isImportant": false,
             "isStepComplete": {},
             "step": {},
             "isVisible": true,
-            "title": "task1",
+            "title": "completed task 1",
             "dueDay": "NA",
-            "isComplete": false
+            "isComplete": true
         }],
+        "taskList": [
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-09",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task 1 uncomplteted",
+                "dueDay": "NA",
+                "isComplete": false
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-09",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task2",
+                "dueDay": "NA",
+                "isComplete": false
+            }
+        ],
         "isVisible": true
     }],
     "defaultList": [

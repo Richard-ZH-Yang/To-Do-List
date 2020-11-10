@@ -3,17 +3,17 @@ package ui;
 import model.BasicList;
 import model.Task;
 import model.ToDoListProgram;
-import ui.tools.AddTaskTool;
-import ui.tools.LoadTool;
-import ui.tools.SaveTool;
-import ui.tools.Tool;
+import ui.tools.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +24,6 @@ public class TaskListEditor extends JFrame {
 
     private List<Tool> tools;
 
-    private JLabel label;
-    private JTextField field;
 
     public TaskListEditor() {
         super("To Do List Program");
@@ -82,53 +80,86 @@ public class TaskListEditor extends JFrame {
         centerArea.setLayout(new GridLayout(1,0));
         centerArea.setSize(new Dimension(0, 0));
 
-        initializeTable(centerArea);
+        JPanel upperCenter = new JPanel();
+        JPanel lowerCenter = new JPanel();
+
+        initializeUnCTasks(upperCenter);
+        initializeCTasks(lowerCenter);
         add(BorderLayout.CENTER, centerArea);
 
-
-
     }
 
-    private void initializeTable(JPanel panel) {
-        String[] colNames = {"Title", "Due Date", "Created Date", "Notes", "Important?", "Complete?",
-                "OverDue?"};
-        DefaultTableModel tableModelUncompletedTasks = new DefaultTableModel(colNames, 0);
-        DefaultTableModel tableModelCompletedTasks = new DefaultTableModel(colNames, 0);
-        JTable uncompletedTasksTable = new JTable(tableModelUncompletedTasks);
-        JTable completedTasksTable = new JTable(tableModelCompletedTasks);
-
-        addToTable(basicList.getTaskList(), tableModelUncompletedTasks);
-        addToTable(basicList.getCompletedTaskList(), tableModelCompletedTasks);
-
-        uncompletedTasksTable.setPreferredScrollableViewportSize(new Dimension(100, 25));
-        completedTasksTable.setPreferredScrollableViewportSize(new Dimension(100, 25));
-        uncompletedTasksTable.setFillsViewportHeight(true);
-        completedTasksTable.setFillsViewportHeight(true);
-
-        JScrollPane scrollPaneUncompleted = new JScrollPane(uncompletedTasksTable);
-        JScrollPane scrollPaneCompleted = new JScrollPane(completedTasksTable);
-        panel.add(BorderLayout.NORTH, scrollPaneUncompleted);
-        panel.add(BorderLayout.SOUTH, scrollPaneCompleted);
-
-
-    }
-    
-    private void addToTable(List<Task> tasks, DefaultTableModel tableModel) {
-        for (int i = 0; i < tasks.size(); i++) {
-            String title = tasks.get(i).getTitle();
-            String dueDate = tasks.get(i).getDueDay();
-            String createdDate = tasks.get(i).getCreatedDate();
-            String notes = tasks.get(i).getNote();
-            boolean isImportant = tasks.get(i).isImportant();
-            boolean isComplete = tasks.get(i).isComplete();
-            boolean isOverDue = tasks.get(i).isOverDue();
-
-            Object[] data = {title, dueDate, createdDate, notes, isImportant, isComplete, isOverDue};
-
-            tableModel.addRow(data);
-
+    public void initializeUnCTasks(JPanel upperCenter) {
+        for (Task task : basicList.getTaskList()) {
+            JPanel innerTaskPane = new JPanel();
+            IsTaskCompleteCheckBox completeCheckBox = new IsTaskCompleteCheckBox(task, this, innerTaskPane);
+            DisplayTaskTool displayTaskTool = new DisplayTaskTool(this, innerTaskPane, task);
+            upperCenter.add(innerTaskPane);
         }
     }
+
+    public void initializeCTasks(JPanel lowerCenter) {
+        for (Task task : basicList.getTaskList()) {
+            JPanel innerTaskPane = new JPanel();
+            IsTaskCompleteCheckBox completeCheckBox = new IsTaskCompleteCheckBox(task, this, innerTaskPane);
+            DisplayTaskTool displayTaskTool = new DisplayTaskTool(this, innerTaskPane, task);
+            lowerCenter.add(innerTaskPane);
+        }
+    }
+
+
+
+//    private void initializeTable(JPanel panel) {
+//
+//        TableModel uncompletedTasksModel = new TaskListTableModel(basicList.getTaskList());
+//        JTable uncompletedTaskTable = new JTable(uncompletedTasksModel);
+//        JScrollPane scrollPane1 = new JScrollPane(uncompletedTaskTable);
+//        panel.add(scrollPane1);
+//
+//    }
+
+//    private void initializeTable(JPanel panel) {
+//        String[] colNames = {"Title", "Due Date", "Created Date", "Notes", "Important?", "Complete?",
+//                "OverDue?"};
+//        DefaultTableModel tableModelUncompletedTasks = new DefaultTableModel(colNames, 0);
+//        DefaultTableModel tableModelCompletedTasks = new DefaultTableModel(colNames, 0);
+//        JTable uncompletedTasksTable = new JTable(tableModelUncompletedTasks);
+//        JTable completedTasksTable = new JTable(tableModelCompletedTasks);
+//
+//        addToTable(basicList.getTaskList(), tableModelUncompletedTasks);
+//        addToTable(basicList.getCompletedTaskList(), tableModelCompletedTasks);
+//
+//        uncompletedTasksTable.setPreferredScrollableViewportSize(new Dimension(100, 25));
+//        completedTasksTable.setPreferredScrollableViewportSize(new Dimension(100, 25));
+//        uncompletedTasksTable.setFillsViewportHeight(true);
+//        completedTasksTable.setFillsViewportHeight(true);
+//
+//        //JScrollPane scrollPaneUncompleted = new JScrollPane(uncompletedTasksTable);
+//        JScrollPane scrollPaneUncompleted = new JScrollPane(new JTextArea(5,40));
+////        JScrollPane scrollPaneCompleted = new JScrollPane(completedTasksTable);
+//        panel.add(BorderLayout.NORTH, scrollPaneUncompleted);
+//        //panel.add(BorderLayout.SOUTH, scrollPaneCompleted);
+////        panel.repaint();
+//
+//    }
+//
+//    private void addToTable(List<Task> tasks, DefaultTableModel tableModel) {
+//        for (Task task : tasks) {
+//            String title = task.getTitle();
+//            String dueDate = task.getDueDay();
+//            String createdDate = task.getCreatedDate();
+//            String notes = task.getNote();
+//            boolean isImportant = task.isImportant();
+//            boolean isComplete = task.isComplete();
+//            boolean isOverDue = task.isOverDue();
+//
+//
+//            Object[] data = {title, dueDate, createdDate, notes, isImportant, isComplete, isOverDue};
+//
+//            tableModel.addRow(data);
+//
+//        }
+//    }
 
 
     public ToDoListProgram getToDoListProgram() {

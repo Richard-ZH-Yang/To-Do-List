@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 // Represents task inside the basicList, Task class stores different properties for each task
 public class Task implements Writable {
@@ -301,31 +302,31 @@ public class Task implements Writable {
         return title;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (!(o instanceof Task)) {
-//            return false;
-//        }
-//        Task task2 = (Task) o;
-//        // not for todayDate
-//        if (title.equals(task2.title)  && dueDay.equals(task2.dueDay)
-//                && createdDate.equals(task2.createdDate) && note.equals(task2.note) && isImportant ==task2.isImportant
-//                && isComplete == task2.isComplete && isVisible == task2.isVisible && isOverDue == task2.isOverDue) {
-//            if (step.size() == task2.step.size() && isStepComplete.size() == task2.isStepComplete.size()) {
-//                for (int i = 0; i < step.size(); i++) {
-//                    if (!(step.get(i).equals(task2.step.get(i))
-//                            && isStepComplete.get(i).equals(task2.isStepComplete.get(i)))) {
-//                        return false;
-//                    }
-//                }
-//            } else {
-//                return false;
-//            }
-//
-//        } else {
-//            return false;
-//        }
-//        return true;
-//    }
+        Task task = (Task) o;
+        return isImportant == task.isImportant
+                && isComplete == task.isComplete
+                && isVisible == task.isVisible
+                && isOverDue == task.isOverDue
+                && Objects.equals(title, task.title)
+                && Objects.equals(step, task.step)
+                && Objects.equals(isStepComplete, task.isStepComplete)
+                && Objects.equals(dueDay, task.dueDay)
+                && Objects.equals(createdDate, task.createdDate)
+                && Objects.equals(note, task.note);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, step, isStepComplete, dueDay, createdDate, note, isImportant, isComplete,
+                isVisible, isOverDue);
+    }
 }
