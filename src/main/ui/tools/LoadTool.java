@@ -4,13 +4,17 @@ import exceptions.InvalidDateException;
 import exceptions.ListFullException;
 import model.*;
 import persistence.*;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 import ui.TaskListEditor;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class LoadTool extends Tool {
     private JsonReader jsonReader;
@@ -34,7 +38,7 @@ public class LoadTool extends Tool {
     }
 
     // EFFECTS: load the file to the default path
-    private void loadFile() {
+    public void loadFile() {
         try {
             ToDoListProgram toDoListProgram = jsonReader.read();
             editor.setToDoListProgram(toDoListProgram);
@@ -55,6 +59,15 @@ public class LoadTool extends Tool {
         @Override
         public void actionPerformed(ActionEvent e) {
             loadFile();
+            InputStream inputStream;
+            try {
+                inputStream = new FileInputStream("./data/sound/load.wav");
+                AudioStream audioStream = new AudioStream(inputStream);
+                AudioPlayer.player.start(audioStream);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Unable to play from file: ./data/sound/load.wav");
+            }
         }
     }
 }
