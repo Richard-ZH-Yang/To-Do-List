@@ -7,7 +7,7 @@ import model.ToDoListProgram;
 import persistence.JsonReader;
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
-import ui.table.TaskListTableModel;
+import ui.table.TaskTableModel;
 import ui.tools.*;
 
 import javax.swing.*;
@@ -32,7 +32,6 @@ public class TaskListEditor extends JFrame {
     private ToDoListProgram toDoListProgram;
     private BasicList basicList;
     private JPanel centerArea;
-    private List<Tool> tools;
     private int row;
     private int col;
     private JPanel upperArea;
@@ -43,7 +42,6 @@ public class TaskListEditor extends JFrame {
         toDoListProgram = new ToDoListProgram();
         toDoListProgram.getCustomizedList().add(new BasicList());
         basicList = toDoListProgram.getCustomizedList().get(0);
-        tools = new ArrayList<>();
 
         loadFirst();
 
@@ -72,10 +70,8 @@ public class TaskListEditor extends JFrame {
         add(upperArea, BorderLayout.NORTH);
 
         SaveTool saveTool = new SaveTool(this, upperArea);
-        tools.add(saveTool);
 
         LoadTool loadTool = new LoadTool(this, upperArea);
-        tools.add(loadTool);
 
         CompleteTaskTool completeTaskTool = new CompleteTaskTool(this, upperArea, row);
         ToggleImportanceTool toggleImportanceTool = new ToggleImportanceTool(this, upperArea, row);
@@ -117,7 +113,6 @@ public class TaskListEditor extends JFrame {
         add(BorderLayout.SOUTH, southArea);
 
         AddTaskTool addTaskTool = new AddTaskTool(this, southArea, addTaskField);
-        tools.add(addTaskTool);
     }
 
 
@@ -139,8 +134,31 @@ public class TaskListEditor extends JFrame {
     // this class is derived from the following source
     // https://blog.csdn.net/xietansheng/article/details/78079806
     private void initializeTable(JPanel panel) {
-        TableModel uncompletedTasksModel = new TaskListTableModel(basicList.getTaskList());
-        uncompletedTasksModel.addTableModelListener(new TableModelListener() {
+        TableModel taskTableModel = new TaskTableModel(basicList.getTaskList());
+        addTableListener(taskTableModel);
+
+        JTable taskTable = new JTable(taskTableModel);
+        taskTable.getTableHeader().setReorderingAllowed(false);
+
+
+        initializeTableCellEditor(taskTableModel, taskTable);
+
+        initializeTableSelection(taskTable);
+
+        initializeTableRenderer(taskTableModel, taskTable);
+
+        initializeRowSorter(taskTableModel, taskTable);
+
+
+        JScrollPane scrollPane1 = new JScrollPane(taskTable);
+        panel.add(taskTable.getTableHeader(), BorderLayout.NORTH);
+        panel.add(BorderLayout.CENTER, scrollPane1);
+
+
+    }
+
+    private void addTableListener(TableModel taskTableModel) {
+        taskTableModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
                 // The first and last line that was changed. If only change one line, then they are the same
@@ -154,67 +172,56 @@ public class TaskListEditor extends JFrame {
                 //     TableModelEvent.DELETE   remove row or column
                 int type = e.getType();
                 if (type == TableModelEvent.UPDATE) {
-                    // cannot change created Date
-//                    if (column == 2) {
-//                        return;
-//                    }
 
                     for (int row = firstRow; row <= lastRow; row++) {
-                        makeChangesInTable(row, uncompletedTasksModel);
+                        makeChangesInTable(row, taskTableModel);
                     }
                 }
             }
         });
-        JTable uncompletedTaskTable = new JTable(uncompletedTasksModel);
-        uncompletedTaskTable.getTableHeader().setReorderingAllowed(false);
+    }
 
-        // table cell editor
-        TaskTableCellEditor cellEditor = new TaskTableCellEditor(new JTextField());
-        for (int i = 1; i < uncompletedTasksModel.getColumnCount(); i++) {
-            TableColumn tableColumn = uncompletedTaskTable.getColumn(uncompletedTasksModel.getColumnName(i));
-            tableColumn.setCellEditor(cellEditor);
-        }
 
+    private void initializeTableSelection(JTable taskTable) {
         // table selection
-        uncompletedTaskTable.setCellSelectionEnabled(true);
-        ListSelectionModel selectionModel = uncompletedTaskTable.getSelectionModel();
+        taskTable.setCellSelectionEnabled(true);
+        ListSelectionModel selectionModel = taskTable.getSelectionModel();
         // single selection
         selectionModel.setSelectionMode(0);
         selectionModel.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                row = uncompletedTaskTable.getSelectedRow();
-                col = uncompletedTaskTable.getSelectedColumn();
+                row = taskTable.getSelectedRow();
+                col = taskTable.getSelectedColumn();
                 initializeNorth();
             }
         });
+    }
 
+    private void initializeRowSorter(TableModel taskTableModel, JTable taskTable) {
+        // row sorter
+        RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(taskTableModel);
+        taskTable.setRowSorter(rowSorter);
+    }
 
+    private void initializeTableCellEditor(TableModel taskTableModel, JTable taskTable) {
+        // table cell editor
+        TaskTableCellEditor cellEditor = new TaskTableCellEditor(new JTextField());
+        for (int i = 1; i < taskTableModel.getColumnCount(); i++) {
+            TableColumn tableColumn = taskTable.getColumn(taskTableModel.getColumnName(i));
+            tableColumn.setCellEditor(cellEditor);
+        }
+    }
+
+    private void initializeTableRenderer(TableModel taskTableModel, JTable taskTable) {
         // table renderer
         TaskTableCellRenderer renderer = new TaskTableCellRenderer();
-        for (int i = 0; i < uncompletedTasksModel.getColumnCount(); i++) {
+        for (int i = 0; i < taskTableModel.getColumnCount(); i++) {
             // 根据 列名 获取 表格列
-            TableColumn tableColumn = uncompletedTaskTable.getColumn(uncompletedTasksModel.getColumnName(i));;
+            TableColumn tableColumn = taskTable.getColumn(taskTableModel.getColumnName(i));;
             // 设置 表格列 的 单元格渲染器
             tableColumn.setCellRenderer(renderer);
         }
-
-
-        // row sorter
-        RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(uncompletedTasksModel);
-        uncompletedTaskTable.setRowSorter(rowSorter);
-
-
-        JScrollPane scrollPane1 = new JScrollPane(uncompletedTaskTable);
-        panel.add(uncompletedTaskTable.getTableHeader(), BorderLayout.NORTH);
-        panel.add(BorderLayout.CENTER, scrollPane1);
-
-        // below are duplicate code
-//        TableModel completedTasksModel = new TaskListTableModel(basicList.getCompletedTaskList());
-//        JTable completedTaskTable = new JTable(completedTasksModel);
-//        JScrollPane scrollPane2 = new JScrollPane(completedTaskTable);
-//        panel.add(BorderLayout.SOUTH, scrollPane2);
-
     }
 
 
@@ -223,15 +230,12 @@ public class TaskListEditor extends JFrame {
         Object title = uncompletedTasksModel.getValueAt(row, 0);
         Object dueDate = uncompletedTasksModel.getValueAt(row, 1);
         Object notes = uncompletedTasksModel.getValueAt(row, 3);
-//        Object isImportant = uncompletedTasksModel.getValueAt(row, 4);
-//        Object isComplete = uncompletedTasksModel.getValueAt(row, 5);
 
         try {
             basicList.getTaskList().get(row).setNote(notes.toString());
             basicList.getTaskList().get(row).setTitle(title.toString());
             basicList.getTaskList().get(row).setDueDay(dueDate.toString());
-//            basicList.getTaskList().get(row).setImportant(isImportant.toString());
-//            basicList.getTaskList().get(row).setComplete(isComplete.toString());
+
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, "Failed Operation! Please enter the correct format.");
@@ -319,7 +323,7 @@ public class TaskListEditor extends JFrame {
 
 
             // 设置提示文本，当鼠标移动到当前(row, column)所在单元格时显示的提示文本
-            setToolTipText("提示的内容: " + row + ", " + column);
+            setToolTipText(table.getColumnName(column) + ": " + table.getValueAt(row, column));
 
             // PS: 多个单元格使用同一渲染器时，需要自定义的属性，必须每次都设置，否则将自动沿用上一次的设置。
 
