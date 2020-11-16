@@ -238,6 +238,13 @@ public class Task implements Writable {
         isImportant = important;
     }
 
+    public void setImportant(String isImportant) {
+        if (!(isImportant.equals("true") || isImportant.equals("false"))) {
+            throw new IllegalArgumentException("must be true or false");
+        }
+        this.isImportant = Boolean.parseBoolean(isImportant);
+    }
+
     public void setNote(String note) {
         this.note = note;
     }
@@ -252,6 +259,13 @@ public class Task implements Writable {
 
     public void setComplete(boolean complete) {
         isComplete = complete;
+    }
+
+    public void setComplete(String isComplete) {
+        if (!(isComplete.equals("true") || isComplete.equals("false"))) {
+            throw new IllegalArgumentException("must be true or false");
+        }
+        this.isComplete = Boolean.parseBoolean(isComplete);
     }
 
     // EFFECTS: initialize todayDate first, then return todayDate

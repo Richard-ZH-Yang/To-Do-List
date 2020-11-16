@@ -58,16 +58,8 @@ public class LoadTool extends Tool {
         //          called by the framework when the tool is clicked
         @Override
         public void actionPerformed(ActionEvent e) {
+            editor.playSound("load.wav");
             loadFile();
-            InputStream inputStream;
-            try {
-                inputStream = new FileInputStream("./data/sound/load.wav");
-                AudioStream audioStream = new AudioStream(inputStream);
-                AudioPlayer.player.start(audioStream);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Unable to play from file: ./data/sound/load.wav");
-            }
         }
     }
 }

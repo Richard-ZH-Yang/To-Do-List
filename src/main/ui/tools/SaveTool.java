@@ -32,6 +32,7 @@ public class SaveTool extends Tool {
 
     // EFFECTS: save the file to the default path
     private void saveFile() {
+        editor.playSound("save.wav");
         try {
             jsonWriter.open();
             jsonWriter.write(editor.getToDoListProgram());

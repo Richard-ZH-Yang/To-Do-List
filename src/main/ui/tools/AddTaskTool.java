@@ -32,7 +32,7 @@ public class AddTaskTool extends Tool {
     private void addTask() throws InvalidDateException, ListFullException {
         editor.getToDoListProgram().getCustomizedList().get(0).addTask(new Task(field.getText()));
         editor.initializeCenter();
-
+        //editor.playSound("addTask.wav");
     }
 
     private class AddTaskToolClickHandler implements ActionListener {

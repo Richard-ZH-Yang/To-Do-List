@@ -1,25 +1,27 @@
 package ui;
 
-import exceptions.InvalidDateException;
-import exceptions.ListFullException;
+import com.sun.javafx.tk.Toolkit;
 import model.BasicList;
-import model.Task;
 import model.ToDoListProgram;
 import persistence.JsonReader;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+import ui.table.TaskListTableModel;
 import ui.tools.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,8 +29,10 @@ public class TaskListEditor extends JFrame {
     public static final String JSON_STORE = "./data/toDoListProgram.json";
     private ToDoListProgram toDoListProgram;
     private BasicList basicList;
-
+    private JPanel centerArea;
     private List<Tool> tools;
+    private int row;
+    private int col;
 
 
     public TaskListEditor() {
@@ -47,6 +51,10 @@ public class TaskListEditor extends JFrame {
         }
         basicList = toDoListProgram.getCustomizedList().get(0);
         ///////////////////////////////////////////////////////load first///////////////////////////////
+        centerArea = new JPanel(new BorderLayout());
+        row = 0;
+        col = 0;
+
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
@@ -91,48 +99,9 @@ public class TaskListEditor extends JFrame {
     }
 
 
-//    public void initializeCenter() {
-//        JPanel centerArea = new JPanel();
-//        centerArea.setLayout(new GridLayout(1,0));
-//        centerArea.setSize(new Dimension(0, 0));
-//
-//        JPanel upperCenter = new JPanel();
-//        JPanel lowerCenter = new JPanel();
-//
-//        initializeUnCTasks(upperCenter);
-//        initializeCTasks(lowerCenter);
-//        centerArea.add(upperCenter);
-//        centerArea.add(lowerCenter);
-//        add(BorderLayout.CENTER, centerArea);
-//
-//    }
-//
-//    public void initializeUnCTasks(JPanel upperCenter) {
-//        for (Task task : basicList.getTaskList()) {
-//            JPanel innerTaskPane = new JPanel();
-//            IsTaskCompleteCheckBox completeCheckBox = new IsTaskCompleteCheckBox(task, this, innerTaskPane);
-//            //DisplayTaskTool displayTaskTool = new DisplayTaskTool(this, innerTaskPane, task);
-//            upperCenter.add(innerTaskPane);
-//        }
-//    }
-//
-//    public void initializeCTasks(JPanel lowerCenter) {
-//        for (Task task : basicList.getTaskList()) {
-//            JPanel innerTaskPane = new JPanel();
-//            IsTaskCompleteCheckBox completeCheckBox = new IsTaskCompleteCheckBox(task, this, innerTaskPane);
-//            //DisplayTaskTool displayTaskTool = new DisplayTaskTool(this, innerTaskPane, task);
-//            lowerCenter.add(innerTaskPane);
-//        }
-//    }
-
-
-
-
-
-
     public void initializeCenter() {
+        centerArea.removeAll();
         basicList = toDoListProgram.getCustomizedList().get(0);
-        JPanel centerArea = new JPanel(new BorderLayout());
         centerArea.setLayout(new GridLayout(0,1));
         centerArea.setSize(new Dimension(0, 0));
 
@@ -140,72 +109,124 @@ public class TaskListEditor extends JFrame {
 
         centerArea.revalidate();
         centerArea.repaint();
+        //setContentPane(centerArea);
         add(BorderLayout.CENTER, centerArea);
-
+//        pack();
     }
 
-
-    // reference: https://blog.csdn.net/xietansheng/article/details/78079806
+    // this class is derived from the following source
+    // https://blog.csdn.net/xietansheng/article/details/78079806
     private void initializeTable(JPanel panel) {
-        // TODO refactor: eliminate duplication
-
         TableModel uncompletedTasksModel = new TaskListTableModel(basicList.getTaskList());
         uncompletedTasksModel.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
-                // 第一个 和 最后一个 被改变的行（只改变了一行，则两者相同）
+                // The first and last line that was changed. If only change one line, then they are the same
                 int firstRow = e.getFirstRow();
                 int lastRow = e.getLastRow();
                 int column = e.getColumn();
 
-                // 事件的类型，可能的值有:
-                //     TableModelEvent.INSERT   新行或新列的添加
-                //     TableModelEvent.UPDATE   现有数据的更改
-                //     TableModelEvent.DELETE   有行或列被移除
+                // possible events include:
+                //     TableModelEvent.INSERT   New row or column insert
+                //     TableModelEvent.UPDATE   change current data frame
+                //     TableModelEvent.DELETE   remove row or column
                 int type = e.getType();
                 if (type == TableModelEvent.UPDATE) {
+                    // cannot change created Date
+//                    if (column == 2) {
+//                        return;
+//                    }
+
                     for (int row = firstRow; row <= lastRow; row++) {
-                        Object notes = uncompletedTasksModel.getValueAt(row, 3);
-
-                        try {
-                            basicList.getTaskList().get(row).setNote(notes.toString());
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-
+                        makeChangesInTable(row, uncompletedTasksModel);
                     }
                 }
             }
         });
         JTable uncompletedTaskTable = new JTable(uncompletedTasksModel);
+        uncompletedTaskTable.getTableHeader().setReorderingAllowed(false);
+
+        // table cell editor
+        TaskTableCellEditor cellEditor = new TaskTableCellEditor(new JTextField());
+        for (int i = 1; i < uncompletedTasksModel.getColumnCount(); i++) {
+            TableColumn tableColumn = uncompletedTaskTable.getColumn(uncompletedTasksModel.getColumnName(i));
+            tableColumn.setCellEditor(cellEditor);
+        }
+
+        // table selection
+        uncompletedTaskTable.setCellSelectionEnabled(true);
+        ListSelectionModel selectionModel = uncompletedTaskTable.getSelectionModel();
+        // single selection
+        selectionModel.setSelectionMode(0);
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                row = uncompletedTaskTable.getSelectedRow();
+                col = uncompletedTaskTable.getSelectedColumn();
+            }
+        });
+
+
+        // table renderer
+        TaskTableCellRenderer renderer = new TaskTableCellRenderer();
+        for (int i = 0; i < uncompletedTasksModel.getColumnCount(); i++) {
+            // 根据 列名 获取 表格列
+            TableColumn tableColumn = uncompletedTaskTable.getColumn(uncompletedTasksModel.getColumnName(i));;
+            // 设置 表格列 的 单元格渲染器
+            tableColumn.setCellRenderer(renderer);
+        }
+
+
+        // row sorter
+        RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(uncompletedTasksModel);
+        uncompletedTaskTable.setRowSorter(rowSorter);
+
         JScrollPane scrollPane1 = new JScrollPane(uncompletedTaskTable);
-        panel.add(BorderLayout.NORTH, scrollPane1);
+        panel.add(uncompletedTaskTable.getTableHeader(), BorderLayout.NORTH);
+        panel.add(BorderLayout.CENTER, scrollPane1);
 
         // below are duplicate code
-        TableModel completedTasksModel = new TaskListTableModel(basicList.getCompletedTaskList());
-        JTable completedTaskTable = new JTable(completedTasksModel);
-        JScrollPane scrollPane2 = new JScrollPane(completedTaskTable);
-        panel.add(BorderLayout.SOUTH, scrollPane2);
+//        TableModel completedTasksModel = new TaskListTableModel(basicList.getCompletedTaskList());
+//        JTable completedTaskTable = new JTable(completedTasksModel);
+//        JScrollPane scrollPane2 = new JScrollPane(completedTaskTable);
+//        panel.add(BorderLayout.SOUTH, scrollPane2);
 
     }
 
 
-    private void addToTable(List<Task> tasks, DefaultTableModel tableModel) {
-        for (Task task : tasks) {
-            String title = task.getTitle();
-            String dueDate = task.getDueDay();
-            String createdDate = task.getCreatedDate();
-            String notes = task.getNote();
-            boolean isImportant = task.isImportant();
-            boolean isComplete = task.isComplete();
-            boolean isOverDue = task.isOverDue();
 
+    private void makeChangesInTable(int row, TableModel uncompletedTasksModel) {
+        Object title = uncompletedTasksModel.getValueAt(row, 0);
+        Object dueDate = uncompletedTasksModel.getValueAt(row, 1);
+        Object notes = uncompletedTasksModel.getValueAt(row, 3);
+        Object isImportant = uncompletedTasksModel.getValueAt(row, 4);
+        Object isComplete = uncompletedTasksModel.getValueAt(row, 5);
 
-            Object[] data = {title, dueDate, createdDate, notes, isImportant, isComplete, isOverDue};
-
-            tableModel.addRow(data);
-
+        try {
+            basicList.getTaskList().get(row).setNote(notes.toString());
+            basicList.getTaskList().get(row).setTitle(title.toString());
+            basicList.getTaskList().get(row).setDueDay(dueDate.toString());
+            basicList.getTaskList().get(row).setImportant(isImportant.toString());
+            basicList.getTaskList().get(row).setComplete(isComplete.toString());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Failed Operation! Please enter the correct format.");
         }
+
+    }
+
+
+    public void playSound(String fileName) {
+        InputStream inputStream;
+        String address = "./data/sound/" + fileName;
+        try {
+            inputStream = new FileInputStream(address);
+            AudioStream audioStream = new AudioStream(inputStream);
+            AudioPlayer.player.start(audioStream);
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(null, "Unable to play from file: " + address);
+        }
+
     }
 
 
@@ -218,7 +239,90 @@ public class TaskListEditor extends JFrame {
         basicList = toDoListProgram.getCustomizedList().get(0);
     }
 
+    // reference: https://blog.csdn.net/xietansheng/article/details/78079806
+    public static class TaskTableCellEditor extends DefaultCellEditor {
+        public TaskTableCellEditor(JTextField textField) {
+            super(textField);
+        }
+
+        public TaskTableCellEditor(JCheckBox checkBox) {
+            super(checkBox);
+        }
+
+        public TaskTableCellEditor(JComboBox comboBox) {
+            super(comboBox);
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            // get current editor component
+            Component comp = getComponent();
+
+            // get current editor value
+            Object obj = getCellEditorValue();
+
+            // return false if it's a null or nothing
+            if (obj == null || obj.toString().matches("") || obj.toString().matches("null")) {
+                // set the content to red if it's illegal
+                comp.setForeground(Color.RED);
+                return false;
+            }
+
+            // when it's legal, set color ot green
+            comp.setForeground(Color.GREEN);
+
+            return super.stopCellEditing();
+        }
+    }
+
+
+    //reference: https://blog.csdn.net/xietansheng/article/details/78079806
+    public static class TaskTableCellRenderer extends DefaultTableCellRenderer {
+        /**
+         * 返回默认的表单元格渲染器，此方法在父类中已实现，直接调用父类方法返回，在返回前做相关参数的设置即可
+         */
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
+            // 偶数行背景设置为白色，奇数行背景设置为灰色
+            if (row % 2 == 0) {
+                setBackground(Color.WHITE);
+            } else {
+                setBackground(Color.LIGHT_GRAY);
+            }
+
+            // 第一列的内容水平居中对齐，最后一列的内容水平右对齐，其他列的内容水平左对齐
+            if (column == 0) {
+                setHorizontalAlignment(SwingConstants.CENTER);
+            } else if (column == (table.getColumnCount() - 1)) {
+                setHorizontalAlignment(SwingConstants.RIGHT);
+            } else {
+                setHorizontalAlignment(SwingConstants.LEFT);
+            }
+
+            // 设置提示文本，当鼠标移动到当前(row, column)所在单元格时显示的提示文本
+            setToolTipText("提示的内容: " + row + ", " + column);
+
+            // PS: 多个单元格使用同一渲染器时，需要自定义的属性，必须每次都设置，否则将自动沿用上一次的设置。
+
+            /*
+             * 单元格渲染器为表格单元格提供具体的显示，实现了单元格渲染器的 DefaultTableCellRenderer 继承自
+             * 一个标准的组件类 JLabel，因此 JLabel 中相应的 API 在该渲染器实现类中都可以使用。
+             *
+             * super.getTableCellRendererComponent(...) 返回的实际上是当前对象（this），即 JLabel 实例，
+             * 也就是以 JLabel 的形式显示单元格。
+             *
+             * 如果需要自定义单元格的显示形式（比如显示成按钮、复选框、内嵌表格等），可以在此自己创建一个标准组件
+             * 实例返回。
+             */
+
+            return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        }
+    }
+
+
     public static void main(String[] args) {
         new TaskListEditor();
     }
+
 }

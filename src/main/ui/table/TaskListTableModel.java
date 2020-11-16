@@ -1,4 +1,4 @@
-package ui;
+package ui.table;
 
 import model.Task;
 
@@ -6,11 +6,11 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-// this class is derived from a stack overflow code
+// this class is derived from the following two sources
+// https://blog.csdn.net/xietansheng/article/details/78079806
 // https://stackoverflow.com/questions/20526917/load-arraylist-data-into-jtable
 public class TaskListTableModel extends AbstractTableModel {
-    private String[] colNames = {"Title", "Due Date", "Created Date", "Notes", "Important?", "Complete?",
-            "OverDue?"};
+    private String[] colNames = {"Title", "Due Date", "Created Date", "Notes", "Important?", "Complete?"};
     private List<Task> taskList;
     private Object[][] rowData;
 
@@ -30,9 +30,22 @@ public class TaskListTableModel extends AbstractTableModel {
             rowData[row][3] = taskList.get(row).getNote();
             rowData[row][4] = taskList.get(row).isImportant();
             rowData[row][5] = taskList.get(row).isComplete();
-            rowData[row][6] = taskList.get(row).isOverDue();
         }
     }
+
+//    public void addRow(Task task) {
+//        taskList.add(task);
+//        rowData = new Object[getRowCount()][getColumnCount()];
+//        for (int row = 0; row < getRowCount(); row++) {
+//            rowData[row][0] = taskList.get(row).getTitle();
+//            rowData[row][1] = taskList.get(row).getDueDay();
+//            rowData[row][2] = taskList.get(row).getCreatedDate();
+//            rowData[row][3] = taskList.get(row).getNote();
+//            rowData[row][4] = taskList.get(row).isImportant();
+//            rowData[row][5] = taskList.get(row).isComplete();
+//            rowData[row][6] = taskList.get(row).isOverDue();
+//        }
+//    }
 
     @Override
     public int getRowCount() {
@@ -69,7 +82,7 @@ public class TaskListTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return true;
+        return columnIndex != 2;
     }
 
     @Override
