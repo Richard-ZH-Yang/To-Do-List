@@ -33,6 +33,7 @@ public class TaskListEditor extends JFrame {
     private List<Tool> tools;
     private int row;
     private int col;
+    private JPanel upperArea;
 
 
     public TaskListEditor() {
@@ -52,6 +53,7 @@ public class TaskListEditor extends JFrame {
         basicList = toDoListProgram.getCustomizedList().get(0);
         ///////////////////////////////////////////////////////load first///////////////////////////////
         centerArea = new JPanel(new BorderLayout());
+        upperArea = new JPanel(new GridLayout(2,2));
         row = 0;
         col = 0;
 
@@ -71,15 +73,20 @@ public class TaskListEditor extends JFrame {
     }
 
     public void initializeNorth() {
-        JPanel toolArea = new JPanel();
-        toolArea.setLayout(new GridLayout(1,0));
-        toolArea.setSize(new Dimension(0, 0));
-        add(toolArea, BorderLayout.NORTH);
-        SaveTool saveTool = new SaveTool(this, toolArea);
+        upperArea.removeAll();
+        add(upperArea, BorderLayout.NORTH);
+
+        SaveTool saveTool = new SaveTool(this, upperArea);
         tools.add(saveTool);
 
-        LoadTool loadTool = new LoadTool(this, toolArea);
+        LoadTool loadTool = new LoadTool(this, upperArea);
         tools.add(loadTool);
+
+        CompleteTaskTool completeTaskTool = new CompleteTaskTool(this, upperArea, row);
+        ToggleImportanceTool toggleImportanceTool = new ToggleImportanceTool(this, upperArea, row);
+
+        centerArea.revalidate();
+        centerArea.repaint();
 
     }
 
@@ -163,6 +170,7 @@ public class TaskListEditor extends JFrame {
             public void valueChanged(ListSelectionEvent e) {
                 row = uncompletedTaskTable.getSelectedRow();
                 col = uncompletedTaskTable.getSelectedColumn();
+                initializeNorth();
             }
         });
 
@@ -180,6 +188,7 @@ public class TaskListEditor extends JFrame {
         // row sorter
         RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(uncompletedTasksModel);
         uncompletedTaskTable.setRowSorter(rowSorter);
+
 
         JScrollPane scrollPane1 = new JScrollPane(uncompletedTaskTable);
         panel.add(uncompletedTaskTable.getTableHeader(), BorderLayout.NORTH);
@@ -224,7 +233,7 @@ public class TaskListEditor extends JFrame {
             AudioStream audioStream = new AudioStream(inputStream);
             AudioPlayer.player.start(audioStream);
         } catch (Exception exception) {
-            JOptionPane.showMessageDialog(null, "Unable to play from file: " + address);
+            JOptionPane.showMessageDialog(null, "Unable to play sound from file: " + address);
         }
 
     }
@@ -291,14 +300,8 @@ public class TaskListEditor extends JFrame {
                 setBackground(Color.LIGHT_GRAY);
             }
 
-            // 第一列的内容水平居中对齐，最后一列的内容水平右对齐，其他列的内容水平左对齐
-            if (column == 0) {
-                setHorizontalAlignment(SwingConstants.CENTER);
-            } else if (column == (table.getColumnCount() - 1)) {
-                setHorizontalAlignment(SwingConstants.RIGHT);
-            } else {
-                setHorizontalAlignment(SwingConstants.LEFT);
-            }
+            setHorizontalAlignment(SwingConstants.CENTER);
+
 
             // 设置提示文本，当鼠标移动到当前(row, column)所在单元格时显示的提示文本
             setToolTipText("提示的内容: " + row + ", " + column);
@@ -320,6 +323,9 @@ public class TaskListEditor extends JFrame {
         }
     }
 
+    public void setRow(int row) {
+        this.row = row;
+    }
 
     public static void main(String[] args) {
         new TaskListEditor();

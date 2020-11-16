@@ -212,6 +212,10 @@ public class Task implements Writable {
         }
     }
 
+    public void toggleImportance() {
+        isImportant = !isImportant;
+    }
+
     // MODIFIES: this
     // EFFECTS: set created date to today's date
     public void setCreatedDate() {

@@ -1,18 +1,116 @@
 {
     "customizedList": [{
         "listTitle": "Basic List 1",
-        "completedTaskList": [{
-            "note": "NA",
-            "isOverDue": false,
-            "createdDate": "2020-11-09",
-            "isImportant": false,
-            "isStepComplete": {},
-            "step": {},
-            "isVisible": true,
-            "title": "completed task 1",
-            "dueDay": "NA",
-            "isComplete": true
-        }],
+        "completedTaskList": [
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-09",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "completed task 1",
+                "dueDay": "NA",
+                "isComplete": true
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-13",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "new task",
+                "dueDay": "NA",
+                "isComplete": true
+            },
+            {
+                "note": "t6",
+                "isOverDue": false,
+                "createdDate": "2020-11-13",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task 6",
+                "dueDay": "NA",
+                "isComplete": true
+            },
+            {
+                "note": "this is t3",
+                "isOverDue": false,
+                "createdDate": "2020-11-09",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task3",
+                "dueDay": "NA",
+                "isComplete": true
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-13",
+                "isImportant": true,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "t8",
+                "dueDay": "2020-11-15",
+                "isComplete": true
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-10",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "new task",
+                "dueDay": "NA",
+                "isComplete": true
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-15",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task6",
+                "dueDay": "NA",
+                "isComplete": true
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-15",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task6",
+                "dueDay": "NA",
+                "isComplete": true
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-13",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "new task",
+                "dueDay": "NA",
+                "isComplete": true
+            }
+        ],
         "taskList": [
             {
                 "note": "asdasd",
@@ -39,54 +137,6 @@
                 "isComplete": false
             },
             {
-                "note": "this is t3",
-                "isOverDue": false,
-                "createdDate": "2020-11-09",
-                "isImportant": false,
-                "isStepComplete": {},
-                "step": {},
-                "isVisible": true,
-                "title": "task3",
-                "dueDay": "NA",
-                "isComplete": false
-            },
-            {
-                "note": "NA",
-                "isOverDue": false,
-                "createdDate": "2020-11-10",
-                "isImportant": false,
-                "isStepComplete": {},
-                "step": {},
-                "isVisible": true,
-                "title": "new task",
-                "dueDay": "NA",
-                "isComplete": false
-            },
-            {
-                "note": "NA",
-                "isOverDue": false,
-                "createdDate": "2020-11-13",
-                "isImportant": false,
-                "isStepComplete": {},
-                "step": {},
-                "isVisible": true,
-                "title": "new task",
-                "dueDay": "NA",
-                "isComplete": false
-            },
-            {
-                "note": "t6",
-                "isOverDue": false,
-                "createdDate": "2020-11-13",
-                "isImportant": false,
-                "isStepComplete": {},
-                "step": {},
-                "isVisible": true,
-                "title": "task 6",
-                "dueDay": "NA",
-                "isComplete": false
-            },
-            {
                 "note": "NA",
                 "isOverDue": false,
                 "createdDate": "2020-11-13",
@@ -101,24 +151,60 @@
             {
                 "note": "NA",
                 "isOverDue": false,
-                "createdDate": "2020-11-13",
+                "createdDate": "2020-11-15",
                 "isImportant": false,
                 "isStepComplete": {},
                 "step": {},
                 "isVisible": true,
-                "title": "new task",
+                "title": "task3",
                 "dueDay": "NA",
                 "isComplete": false
             },
             {
                 "note": "NA",
                 "isOverDue": false,
-                "createdDate": "2020-11-13",
+                "createdDate": "2020-11-15",
                 "isImportant": false,
                 "isStepComplete": {},
                 "step": {},
                 "isVisible": true,
-                "title": "t8",
+                "title": "task4",
+                "dueDay": "NA",
+                "isComplete": false
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-15",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task5",
+                "dueDay": "NA",
+                "isComplete": false
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-15",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task6",
+                "dueDay": "NA",
+                "isComplete": false
+            },
+            {
+                "note": "NA",
+                "isOverDue": false,
+                "createdDate": "2020-11-15",
+                "isImportant": false,
+                "isStepComplete": {},
+                "step": {},
+                "isVisible": true,
+                "title": "task6",
                 "dueDay": "NA",
                 "isComplete": false
             }
