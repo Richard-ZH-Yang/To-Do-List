@@ -212,6 +212,8 @@ public class Task implements Writable {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: toggle the isImportant boolean field
     public void toggleImportance() {
         isImportant = !isImportant;
     }
@@ -242,12 +244,12 @@ public class Task implements Writable {
         isImportant = important;
     }
 
-    public void setImportant(String isImportant) {
-        if (!(isImportant.equals("true") || isImportant.equals("false"))) {
-            throw new IllegalArgumentException("must be true or false");
-        }
-        this.isImportant = Boolean.parseBoolean(isImportant);
-    }
+//    public void setImportant(String isImportant) {
+//        if (!(isImportant.equals("true") || isImportant.equals("false"))) {
+//            throw new IllegalArgumentException("must be true or false");
+//        }
+//        this.isImportant = Boolean.parseBoolean(isImportant);
+//    }
 
     public void setNote(String note) {
         this.note = note;
@@ -265,12 +267,12 @@ public class Task implements Writable {
         isComplete = complete;
     }
 
-    public void setComplete(String isComplete) {
-        if (!(isComplete.equals("true") || isComplete.equals("false"))) {
-            throw new IllegalArgumentException("must be true or false");
-        }
-        this.isComplete = Boolean.parseBoolean(isComplete);
-    }
+//    public void setComplete(String isComplete) {
+//        if (!(isComplete.equals("true") || isComplete.equals("false"))) {
+//            throw new IllegalArgumentException("must be true or false");
+//        }
+//        this.isComplete = Boolean.parseBoolean(isComplete);
+//    }
 
     // EFFECTS: initialize todayDate first, then return todayDate
     public String getTodayDate() {
@@ -319,32 +321,32 @@ public class Task implements Writable {
     public String getTitle() {
         return title;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Task task = (Task) o;
-        return isImportant == task.isImportant
-                && isComplete == task.isComplete
-                && isVisible == task.isVisible
-                && isOverDue == task.isOverDue
-                && Objects.equals(title, task.title)
-                && Objects.equals(step, task.step)
-                && Objects.equals(isStepComplete, task.isStepComplete)
-                && Objects.equals(dueDay, task.dueDay)
-                && Objects.equals(createdDate, task.createdDate)
-                && Objects.equals(note, task.note);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, step, isStepComplete, dueDay, createdDate, note, isImportant, isComplete,
-                isVisible, isOverDue);
-    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//
+//        Task task = (Task) o;
+//        return isImportant == task.isImportant
+//                && isComplete == task.isComplete
+//                && isVisible == task.isVisible
+//                && isOverDue == task.isOverDue
+//                && Objects.equals(title, task.title)
+//                && Objects.equals(step, task.step)
+//                && Objects.equals(isStepComplete, task.isStepComplete)
+//                && Objects.equals(dueDay, task.dueDay)
+//                && Objects.equals(createdDate, task.createdDate)
+//                && Objects.equals(note, task.note);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(title, step, isStepComplete, dueDay, createdDate, note, isImportant, isComplete,
+//                isVisible, isOverDue);
+//    }
 }

@@ -100,13 +100,13 @@ public class BasicList implements Writable {
     // MODIFIES: this
     // EFFECTS: throw IndexOutOfBoundsException if index is not valid. Otherwise set the task status to complete.
     //           Add that task to completedTaskList and remove it from taskList
-    public void finishTask(Task task) {
-        for (int i = 0; i < taskList.size(); i++) {
-            if (taskList.get(i).equals(task)) {
-                finishTask(i);
-            }
-        }
-    }
+//    public void finishTask(Task task) {
+//        for (int i = 0; i < taskList.size(); i++) {
+//            if (taskList.get(i).equals(task)) {
+//                finishTask(i);
+//            }
+//        }
+//    }
 
     // MODIFIES: this
     // EFFECTS: throw IndexOutOfBoundsException if index is not valid. Otherwise take the parameter int as an index from
@@ -127,13 +127,13 @@ public class BasicList implements Writable {
     // MODIFIES: this
     // EFFECTS: throw IndexOutOfBoundsException if index is not valid. Otherwise set the task status to incomplete.
     //          Add that task to taskList and remove it from completedTaskList
-    public void undoFinishTask(Task task) {
-        for (int i = 0; i < completedTaskList.size(); i++) {
-            if (completedTaskList.get(i).equals(task)) {
-                undoFinishTask(i);
-            }
-        }
-    }
+//    public void undoFinishTask(Task task) {
+//        for (int i = 0; i < completedTaskList.size(); i++) {
+//            if (completedTaskList.get(i).equals(task)) {
+//                undoFinishTask(i);
+//            }
+//        }
+//    }
 
 
     // MODIFIES: this

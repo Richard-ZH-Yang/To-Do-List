@@ -9,13 +9,14 @@ import java.awt.event.MouseEvent;
 
 // This class is derived from UBC SimpleDrawingPlayer sample program
 // https://github.students.cs.ubc.ca/CPSC210/SimpleDrawingPlayer-Complete
+// this is class is the superclass for all the tools, consists information about a button, taskListEditor
 public abstract class Tool {
-
     protected JButton button;
     protected TaskListEditor editor;
     private boolean active;
 
-
+    // constructor
+    // EFFECTS: construct a new Tool, create a button and add this to JComponent. Add the action listener
     public Tool(TaskListEditor editor, JComponent parent) {
         this.editor = editor;
         createButton(parent);
@@ -60,11 +61,5 @@ public abstract class Tool {
         parent.add(button);
     }
 
-
-    // EFFECTS: default behaviour does nothing
-    public void mouseClickedInDrawingArea(MouseEvent e) {}
-
-    // EFFECTS: default behaviour does nothing
-    public void mouseDraggedInDrawingArea(MouseEvent e) {}
 
 }

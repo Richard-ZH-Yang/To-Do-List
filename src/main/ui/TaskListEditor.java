@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+// GUI for the 
 public class TaskListEditor extends JFrame {
     public static final String JSON_STORE = "./data/toDoListProgram.json";
     private ToDoListProgram toDoListProgram;
