@@ -1,6 +1,7 @@
 package ui;
 
-import com.sun.javafx.tk.Toolkit;
+import exceptions.InvalidDateException;
+import exceptions.ListFullException;
 import model.BasicList;
 import model.ToDoListProgram;
 import persistence.JsonReader;
@@ -21,6 +22,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,15 +45,8 @@ public class TaskListEditor extends JFrame {
         basicList = toDoListProgram.getCustomizedList().get(0);
         tools = new ArrayList<>();
 
-        ///////////////////////////////////////////////////////load first///////////////////////////////
-        try {
-            JsonReader jsonReader = new JsonReader(TaskListEditor.JSON_STORE);
-            toDoListProgram = jsonReader.read();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        basicList = toDoListProgram.getCustomizedList().get(0);
-        ///////////////////////////////////////////////////////load first///////////////////////////////
+        loadFirst();
+
         centerArea = new JPanel(new BorderLayout());
         upperArea = new JPanel(new GridLayout(2,2));
         row = 0;
@@ -87,6 +82,26 @@ public class TaskListEditor extends JFrame {
 
         centerArea.revalidate();
         centerArea.repaint();
+
+    }
+
+    public void loadFirst() {
+        int result = JOptionPane.showConfirmDialog(this, "Do you want to load first?",
+                                                    "load file from " + JSON_STORE,
+                                                            JOptionPane.YES_NO_OPTION);
+        if (result == 0) {
+            try {
+                JsonReader jsonReader = new JsonReader(JSON_STORE);
+                ToDoListProgram toDoListProgram = jsonReader.read();
+                setToDoListProgram(toDoListProgram);
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Unable to read from file: " + TaskListEditor.JSON_STORE);
+            } catch (ListFullException listFullException) {
+                JOptionPane.showMessageDialog(null, "Failed! List is full");
+            } catch (InvalidDateException invalidDateException) {
+                JOptionPane.showMessageDialog(null, "Failed! Date in the file is invalid");
+            }
+        }
 
     }
 
@@ -208,15 +223,15 @@ public class TaskListEditor extends JFrame {
         Object title = uncompletedTasksModel.getValueAt(row, 0);
         Object dueDate = uncompletedTasksModel.getValueAt(row, 1);
         Object notes = uncompletedTasksModel.getValueAt(row, 3);
-        Object isImportant = uncompletedTasksModel.getValueAt(row, 4);
-        Object isComplete = uncompletedTasksModel.getValueAt(row, 5);
+//        Object isImportant = uncompletedTasksModel.getValueAt(row, 4);
+//        Object isComplete = uncompletedTasksModel.getValueAt(row, 5);
 
         try {
             basicList.getTaskList().get(row).setNote(notes.toString());
             basicList.getTaskList().get(row).setTitle(title.toString());
             basicList.getTaskList().get(row).setDueDay(dueDate.toString());
-            basicList.getTaskList().get(row).setImportant(isImportant.toString());
-            basicList.getTaskList().get(row).setComplete(isComplete.toString());
+//            basicList.getTaskList().get(row).setImportant(isImportant.toString());
+//            basicList.getTaskList().get(row).setComplete(isComplete.toString());
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             JOptionPane.showMessageDialog(null, "Failed Operation! Please enter the correct format.");

@@ -82,7 +82,7 @@ public class TaskListTableModel extends AbstractTableModel {
 
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
-        return columnIndex != 2;
+        return columnIndex != 2 && columnIndex != 4 && columnIndex != 5;
     }
 
     @Override
