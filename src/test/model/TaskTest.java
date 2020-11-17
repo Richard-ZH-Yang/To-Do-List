@@ -53,6 +53,15 @@ public class TaskTest {
     }
 
     @Test
+    public void testToggleImportance() {
+        assertEquals(true,task2.isImportant());
+        task2.toggleImportance();
+        assertEquals(false, task2.isImportant());
+        task2.toggleImportance();
+        assertEquals(true,task2.isImportant());
+    }
+
+    @Test
     public void testSetTodayDate() {
         Task.setTodayDate();
         assertEquals(task1.getTodayDate(), task2.getTodayDate());

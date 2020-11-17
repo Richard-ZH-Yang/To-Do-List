@@ -27,19 +27,20 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-// GUI for the 
+// GUI for the ToDoListProgram. Able to add task, edit task from a table, save load and play sound
 public class TaskListEditor extends JFrame {
-    public static final String JSON_STORE = "./data/toDoListProgram.json";
+    public static final String JSON_STORE = "./data/toDoListProgram.json";      // directory for save and load
     private ToDoListProgram toDoListProgram;
-    private BasicList basicList;
-    private JPanel centerArea;
-    private int row;
+    private BasicList basicList;            // represents the 0th customized list inside the toDoListProgram
+    private JPanel centerArea;              // contains a JTable to display information
+    private int row;                        // current row in the JTable
     private int col;
-    private JPanel upperArea;
+    private JPanel upperArea;               // contains four buttons
 
-
+    // constructor
+    // EFFECTS: constructs a new TaskListEditor object. Initialize everything related to JFrame and JTable and buttons
     public TaskListEditor() {
-        super("To Do List Program");
+        super("To Do List Program");        // the name for the main frame
         toDoListProgram = new ToDoListProgram();
         toDoListProgram.getCustomizedList().add(new BasicList());
         basicList = toDoListProgram.getCustomizedList().get(0);
@@ -51,11 +52,10 @@ public class TaskListEditor extends JFrame {
         row = 0;
         col = 0;
 
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
-        ((JPanel) getContentPane()).setBorder(new EmptyBorder(13, 13, 13, 13));
-        setLayout(new BorderLayout());
+        ((JPanel) getContentPane()).setBorder(new EmptyBorder(14, 14, 14, 14));
+        setLayout(new BorderLayout());  // has north, south and center
 
         initializeNorth();
         initializeSouth();
@@ -66,6 +66,8 @@ public class TaskListEditor extends JFrame {
 
     }
 
+    // MODIFIES: this
+    // EFFECTS: clears and add four buttons into the northern region of the JFrame
     public void initializeNorth() {
         upperArea.removeAll();
         add(upperArea, BorderLayout.NORTH);
@@ -82,6 +84,8 @@ public class TaskListEditor extends JFrame {
 
     }
 
+    // MODIFIES: this, toDoListProgram
+    // EFFECTS: ask user if they want to load first. If yes, then load the data from directory
     public void loadFirst() {
         int result = JOptionPane.showConfirmDialog(this, "Do you want to load first?",
                                                     "load file from " + JSON_STORE,
@@ -103,7 +107,8 @@ public class TaskListEditor extends JFrame {
     }
 
 
-
+    // MODIFIES: this
+    // EFFECTS: add a JTextField and a button in the southern region of the JFrame.
     public void initializeSouth() {
         JTextField addTaskField = new JTextField("new task", 10);
         JPanel southArea = new JPanel();
@@ -117,6 +122,8 @@ public class TaskListEditor extends JFrame {
     }
 
 
+    // MODIFIES: this
+    // EFFECTS: clear the center region and then initialize the JTable that represents the tasks
     public void initializeCenter() {
         centerArea.removeAll();
         basicList = toDoListProgram.getCustomizedList().get(0);
@@ -127,20 +134,20 @@ public class TaskListEditor extends JFrame {
 
         centerArea.revalidate();
         centerArea.repaint();
-        //setContentPane(centerArea);
         add(BorderLayout.CENTER, centerArea);
-//        pack();
     }
 
     // this class is derived from the following source
     // https://blog.csdn.net/xietansheng/article/details/78079806
+    // MODIFIES: this
+    // EFFECTS: initialize the JTable that represents tasks, and also initialize all features for the table.
+    //          add this table into the center region
     private void initializeTable(JPanel panel) {
         TableModel taskTableModel = new TaskTableModel(basicList.getTaskList());
         addTableListener(taskTableModel);
 
         JTable taskTable = new JTable(taskTableModel);
         taskTable.getTableHeader().setReorderingAllowed(false);
-
 
         initializeTableCellEditor(taskTableModel, taskTable);
 
@@ -150,14 +157,14 @@ public class TaskListEditor extends JFrame {
 
         initializeRowSorter(taskTableModel, taskTable);
 
-
         JScrollPane scrollPane1 = new JScrollPane(taskTable);
         panel.add(taskTable.getTableHeader(), BorderLayout.NORTH);
         panel.add(BorderLayout.CENTER, scrollPane1);
 
-
     }
 
+    // MODIFIES: this
+    // EFFECTS: add the table listener for the taskTableModel, and will only handle UPDATE events
     private void addTableListener(TableModel taskTableModel) {
         taskTableModel.addTableModelListener(new TableModelListener() {
             @Override
@@ -182,7 +189,9 @@ public class TaskListEditor extends JFrame {
         });
     }
 
-
+    // MODIFIES: this
+    // EFFECTS: initialize the table selection functionality. Will change the row and col field to corresponding row
+    //          and column when selecting in the table
     private void initializeTableSelection(JTable taskTable) {
         // table selection
         taskTable.setCellSelectionEnabled(true);
@@ -199,34 +208,43 @@ public class TaskListEditor extends JFrame {
         });
     }
 
+    // MODIFIES: this
+    // EFFECTS: initialize the table row sorter functionality. Will now sort the row when clicking the table header
     private void initializeRowSorter(TableModel taskTableModel, JTable taskTable) {
         // row sorter
         RowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(taskTableModel);
         taskTable.setRowSorter(rowSorter);
     }
 
+    // MODIFIES: this
+    // EFFECTS: initialize the table cell editor functionality. With the help of TaskTableCellEditor static class,
+    //          it can customized the effect when editing a cell
     private void initializeTableCellEditor(TableModel taskTableModel, JTable taskTable) {
         // table cell editor
         TaskTableCellEditor cellEditor = new TaskTableCellEditor(new JTextField());
-        for (int i = 1; i < taskTableModel.getColumnCount(); i++) {
+        for (int i = 0; i < taskTableModel.getColumnCount(); i++) {
             TableColumn tableColumn = taskTable.getColumn(taskTableModel.getColumnName(i));
             tableColumn.setCellEditor(cellEditor);
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: initialize the table cell renderer functionality. With the help of TaskTableCellRenderer static class,
+    //          it can customized the effect for the format of the table
     private void initializeTableRenderer(TableModel taskTableModel, JTable taskTable) {
         // table renderer
         TaskTableCellRenderer renderer = new TaskTableCellRenderer();
         for (int i = 0; i < taskTableModel.getColumnCount(); i++) {
-            // 根据 列名 获取 表格列
+            // get the column depends on the column name
             TableColumn tableColumn = taskTable.getColumn(taskTableModel.getColumnName(i));;
-            // 设置 表格列 的 单元格渲染器
+            // set the render for those columns
             tableColumn.setCellRenderer(renderer);
         }
     }
 
 
-
+    // MODIFIES: this
+    // EFFECTS: When a change is made in table, mutate the basicList to the corresponding changes
     private void makeChangesInTable(int row, TableModel uncompletedTasksModel) {
         Object title = uncompletedTasksModel.getValueAt(row, 0);
         Object dueDate = uncompletedTasksModel.getValueAt(row, 1);
@@ -245,6 +263,7 @@ public class TaskListEditor extends JFrame {
     }
 
 
+    // EFFECTS: play the sound effect in the data package. If the file cannot be found, display information
     public void playSound(String fileName) {
         InputStream inputStream;
         String address = "./data/sound/" + fileName;
@@ -258,30 +277,42 @@ public class TaskListEditor extends JFrame {
 
     }
 
-
+    // EFFECTS: getter for toDoListProgram field
     public ToDoListProgram getToDoListProgram() {
         return toDoListProgram;
     }
 
+    // MODIFIES: this
+    // EFFECTS: set the toDoListProgram with respect to parameter, and also set basicList to be the 0th List in
+    //          toDoListProgram's customizedList
     public void setToDoListProgram(ToDoListProgram toDoListProgram) {
         this.toDoListProgram = toDoListProgram;
         basicList = toDoListProgram.getCustomizedList().get(0);
     }
 
     // reference: https://blog.csdn.net/xietansheng/article/details/78079806
+    // this class represents the effects when editing a table cell
     public static class TaskTableCellEditor extends DefaultCellEditor {
+        // constructor
+        // EFFECTS: construct a new TaskTableCellEditor with respect to textField
         public TaskTableCellEditor(JTextField textField) {
             super(textField);
         }
 
+        // constructor
+        // EFFECTS: construct a new TaskTableCellEditor with respect to checkBox
         public TaskTableCellEditor(JCheckBox checkBox) {
             super(checkBox);
         }
 
+        // constructor
+        // EFFECTS: construct a new TaskTableCellEditor with respect to comboBox
         public TaskTableCellEditor(JComboBox comboBox) {
             super(comboBox);
         }
 
+        // EFFECTS: when user editing the cell, if the input is "null" or"", it will make the word in cell turn into red
+        //          and make the cell not editable until user inputs other things, which it will turn word into green
         @Override
         public boolean stopCellEditing() {
             // get current editor component
@@ -306,47 +337,38 @@ public class TaskListEditor extends JFrame {
 
 
     //reference: https://blog.csdn.net/xietansheng/article/details/78079806
+    // this class represents the format for the table
     public static class TaskTableCellRenderer extends DefaultTableCellRenderer {
-        /**
-         * 返回默认的表单元格渲染器，此方法在父类中已实现，直接调用父类方法返回，在返回前做相关参数的设置即可
-         */
+
+        // EFFECTS: set the row colour, make the data frame align center.Also when moving the mouse on top of the cell,
+        //          display information about that cell. Finally return the DefaultTableCellRenderer
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                        boolean hasFocus, int row, int column) {
-            // 偶数行背景设置为白色，奇数行背景设置为灰色
+            // make the row color to white - light grey - white format
             if (row % 2 == 0) {
                 setBackground(Color.WHITE);
             } else {
                 setBackground(Color.LIGHT_GRAY);
             }
 
+            // align center for the word inside the data frame, except header
             setHorizontalAlignment(SwingConstants.CENTER);
 
-
-            // 设置提示文本，当鼠标移动到当前(row, column)所在单元格时显示的提示文本
+            // display detail the information about which column, and the vlaue that cell
             setToolTipText(table.getColumnName(column) + ": " + table.getValueAt(row, column));
-
-            // PS: 多个单元格使用同一渲染器时，需要自定义的属性，必须每次都设置，否则将自动沿用上一次的设置。
-
-            /*
-             * 单元格渲染器为表格单元格提供具体的显示，实现了单元格渲染器的 DefaultTableCellRenderer 继承自
-             * 一个标准的组件类 JLabel，因此 JLabel 中相应的 API 在该渲染器实现类中都可以使用。
-             *
-             * super.getTableCellRendererComponent(...) 返回的实际上是当前对象（this），即 JLabel 实例，
-             * 也就是以 JLabel 的形式显示单元格。
-             *
-             * 如果需要自定义单元格的显示形式（比如显示成按钮、复选框、内嵌表格等），可以在此自己创建一个标准组件
-             * 实例返回。
-             */
 
             return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: set the row number. Used after delete a row from a table to initialize the row
     public void setRow(int row) {
         this.row = row;
     }
 
+    // EFFECTS: run this method to run the GUI
     public static void main(String[] args) {
         new TaskListEditor();
     }
