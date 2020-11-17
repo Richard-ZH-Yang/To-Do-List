@@ -53,6 +53,64 @@ public class TaskTest {
     }
 
     @Test
+    public void testSetDueDateWithinRange() {
+        int dueDateTenYearsLaterNum = Task.decodeDate(todayDate) + 100000;
+        String dueDateTenYearsLater = Task.parseDate(dueDateTenYearsLaterNum);
+        try {
+            task1.setDueDay(dueDateTenYearsLater);
+        } catch (InvalidDateException invalidDateException) {
+            fail("This should have not thrown an exception.");
+        }
+        assertEquals(dueDateTenYearsLater, task1.getDueDay());
+        assertEquals(false, task1.isOverDue());
+
+        int dueDateTenYearsEarlierNum = Task.decodeDate(todayDate) - 100000;
+        String dueDateTenYearsEarlier = Task.parseDate(dueDateTenYearsEarlierNum);
+        try {
+            task1.setDueDay(dueDateTenYearsEarlier);
+        } catch (InvalidDateException invalidDateException) {
+            fail("This should have not thrown an exception.");
+        }
+        assertEquals(dueDateTenYearsEarlier, task1.getDueDay());
+        assertEquals(true, task1.isOverDue());
+
+        try {
+            task1.setDueDay("NA");
+        } catch (InvalidDateException invalidDateException) {
+            fail("This should have not thrown an exception.");
+        }
+        assertEquals("NA", task1.getDueDay());
+        assertEquals(false, task1.isOverDue());
+    }
+
+    @Test
+    public void testSetDueDateOutsideRange() {
+        int dueDateTenNOneLaterNum = Task.decodeDate(todayDate) + 100001;
+        String dueDateTenNOneLater = Task.parseDate(dueDateTenNOneLaterNum);
+        try {
+            task2.setDueDay(dueDateTenNOneLater);
+            fail("This should have thrown an exception");
+        } catch (InvalidDateException invalidDateException) {
+            // pass
+        }
+        assertEquals("NA", task2.getDueDay());
+        assertEquals(false, task2.isOverDue());
+
+
+        int dueDateTenNOneEarlierNum = Task.decodeDate(todayDate) - 100001;
+        String dueDateTenNOneEarlier = Task.parseDate(dueDateTenNOneEarlierNum);
+        try {
+            task2.setDueDay(dueDateTenNOneEarlier);
+            fail("This should have thrown an exception");
+        } catch (InvalidDateException invalidDateException) {
+            // pass
+        }
+        assertEquals("NA", task2.getDueDay());
+        assertEquals(false, task2.isOverDue());
+
+    }
+
+    @Test
     public void testToggleImportance() {
         assertEquals(true,task2.isImportant());
         task2.toggleImportance();
@@ -229,63 +287,6 @@ public class TaskTest {
         assertEquals("2020-10-13", Task.parseDate(20201013));
         assertEquals("2234-10-13", Task.parseDate(22341013));
         assertEquals("2020-10-13", Task.parseDate(2020101365));
-    }
-
-    @Test
-    public void testSetDueDate() {
-        int dueDateTenYearsLaterNum = Task.decodeDate(todayDate) + 100000;
-        String dueDateTenYearsLater = Task.parseDate(dueDateTenYearsLaterNum);
-        try {
-            task1.setDueDay(dueDateTenYearsLater);
-        } catch (InvalidDateException invalidDateException) {
-            fail("This should have not thrown an exception.");
-        } finally {
-            assertEquals(dueDateTenYearsLater, task1.getDueDay());
-            assertEquals(false, task1.isOverDue());
-        }
-
-        int dueDateTenYearsEarlierNum = Task.decodeDate(todayDate) - 100000;
-        String dueDateTenYearsEarlier = Task.parseDate(dueDateTenYearsEarlierNum);
-        try {
-            task1.setDueDay(dueDateTenYearsEarlier);
-        } catch (InvalidDateException invalidDateException) {
-            fail("This should have not thrown an exception.");
-        } finally {
-            assertEquals(dueDateTenYearsEarlier, task1.getDueDay());
-            assertEquals(true, task1.isOverDue());
-        }
-
-        try {
-            task1.setDueDay("NA");
-        } catch (InvalidDateException invalidDateException) {
-            fail("This should have not thrown an exception.");
-        } finally {
-            assertEquals("NA", task1.getDueDay());
-            assertEquals(false, task1.isOverDue());
-        }
-
-        int dueDateTenNOneLaterNum = Task.decodeDate(todayDate) + 100001;
-        String dueDateTenNOneLater = Task.parseDate(dueDateTenNOneLaterNum);
-        try {
-            task2.setDueDay(dueDateTenNOneLater);
-        } catch (InvalidDateException invalidDateException) {
-            invalidDateException.getMessage();
-        } finally {
-            assertEquals("NA", task2.getDueDay());
-            assertEquals(false, task2.isOverDue());
-        }
-
-        int dueDateTenNOneEarlierNum = Task.decodeDate(todayDate) - 100001;
-        String dueDateTenNOneEarlier = Task.parseDate(dueDateTenNOneEarlierNum);
-        try {
-            task2.setDueDay(dueDateTenNOneEarlier);
-        } catch (InvalidDateException invalidDateException) {
-            invalidDateException.getMessage();
-        } finally {
-            assertEquals("NA", task2.getDueDay());
-            assertEquals(false, task2.isOverDue());
-        }
-
     }
 
     @Test

@@ -51,3 +51,40 @@ I can demonstrate the concept of polymorphism of Java in this application smooth
 - As a user, when I select the quit option from the application menu, I want to be reminded to save my to-do list 
 to file and have the option to do so or not.
 - As a user, when I start the application, I want to be given the option to load my to-do list from file.
+
+###Phase 4:
+**Phase4: Task2:**
+I choose to implement the first option which is to design a robust class. In my Task class inside the model package, 
+I made the setDueDay method able to throw InvalidDateException when the due date and today's date difference is
+greater than 10 years.
+
+**Phase4: Task3:**
+If I had more time to work on this project, I would first remove the association from Console and TaskListEditor to BasicList
+class. As BasicList is part of ToDoListProgram, and it is redundant to make the ui class have association with BasicList.
+It will also create possible coupling as when changing either in ToDoListProgram or BasicList directly, other class
+must change simultaneously. 
+
+Another change I would make is that make TaskListEditor has association with TaskTableModel with multiplicity of 
+1 if only implement uncompleted task table, 2 if implement both uncompleted task table and completed task table in
+the future.
+
+Finally, if I have more time, I would make a bidirectional association between TaskListEditor and Tool. I would create 
+a feature for the current tool, which user could use the keyboard input like ENTER to keep using this tool.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

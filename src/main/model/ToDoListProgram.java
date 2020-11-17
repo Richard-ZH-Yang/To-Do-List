@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// create an instance of this class to start the to do list program
+// represents the running toDoListProgram. It contains 2 lists of BasicList
 public class ToDoListProgram implements Writable {
     private List<BasicList> defaultList;        // user should not change defaultList size
     private List<BasicList> customizedList;
