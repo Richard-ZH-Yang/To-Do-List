@@ -53,12 +53,13 @@ to file and have the option to do so or not.
 - As a user, when I start the application, I want to be given the option to load my to-do list from file.
 
 ###Phase 4:
-**Phase4: Task2:**
+####Phase4: Task2:
 I choose to implement the first option which is to design a robust class. In my Task class inside the model package, 
 I made the setDueDay method able to throw InvalidDateException when the due date and today's date difference is
 greater than 10 years.
 
-**Phase4: Task3:**
+
+####Phase4: Task3:
 If I had more time to work on this project, I would first remove the association from Console and TaskListEditor to BasicList
 class. As BasicList is part of ToDoListProgram, and it is redundant to make the ui class have association with BasicList.
 It will also create possible coupling as when changing either in ToDoListProgram or BasicList directly, other class
@@ -68,8 +69,17 @@ Another change I would make is that make TaskListEditor has association with Tas
 1 if only implement uncompleted task table, 2 if implement both uncompleted task table and completed task table in
 the future.
 
-Finally, if I have more time, I would make a bidirectional association between TaskListEditor and Tool. I would create 
+Moreover, I would make ToDoListProgram only has one List of BasicList and BasicList only has one List of Task. When I 
+first make this program, I was planning to separate the tasks into completed task and uncompleted task, but it is 
+enough too only make the Task class has one field named isImportant. And I also planed to separate default list module 
+and customized module. But it is really not necessary to have two lists of that.
+
+To add more features, I would make a bidirectional association between TaskListEditor and Tool. I would create 
 a feature for the current tool, which user could use the keyboard input like ENTER to keep using this tool.
+
+Finally, I would finish implementing the TaskEditor GUI to have the same feature as Console UI. In current stage, my
+GUI can only focus on one BasicList, but it should have contained a list of BasicList, and user could do operations 
+about these lists.
 
 
 
