@@ -56,7 +56,7 @@ to file and have the option to do so or not.
 ####Phase4: Task2:
 I choose to implement the first option which is to design a robust class. In my Task class inside the model package, 
 I made the setDueDay method able to throw InvalidDateException when the due date and today's date difference is
-greater than 10 years.
+greater than 10 years. I catch this exception efficiently in my UI classes. 
 
 
 ####Phase4: Task3:
