@@ -74,10 +74,13 @@ first make this program, I was planning to separate the tasks into completed tas
 enough too only make the Task class has one field named isImportant. And I also planed to separate default list module 
 and customized module. But it is really not necessary to have two lists of that.
 
+Furthermore, I should have a method that can add BasicList to the field customizedList and defaultList instead of 
+doing this operation in the UI package. And I should also make the getter for the 2 list of BasicList to be unmodifiable.
+
 To add more features, I would make a bidirectional association between TaskListEditor and Tool. I would create 
 a feature for the current tool, which user could use the keyboard input like ENTER to keep using this tool.
 
-Finally, I would finish implementing the TaskEditor GUI to have the same feature as Console UI. In current stage, my
+Finally, I would finish implementing the TaskEditor GUI to have the same feature as Console UI. In current stage, my    
 GUI can only focus on one BasicList, but it should have contained a list of BasicList, and user could do operations 
 about these lists.
 
