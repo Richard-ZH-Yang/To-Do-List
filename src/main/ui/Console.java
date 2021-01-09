@@ -19,8 +19,8 @@ public class Console {
     private JsonReader jsonReader;
     private ToDoListProgram toDoListProgram;
     private Scanner keyboard;
-    private List<BasicList> defaultList;
-    private List<BasicList> customizedList;
+    private boolean endProgram;
+
 
     // EFFECTS: run this method to start the Console Program
     public static void main(String[] args) {
@@ -32,12 +32,12 @@ public class Console {
     //          set customizedList to toDoListProgram's customizedList, set keyboard to read from user input,
     //          initialize jsonWriter and jsonReader to the file file directory: JSON_STORE. Run the toDoListProgram
     public Console() {
+        endProgram = false;
         toDoListProgram = new ToDoListProgram();
         keyboard = new Scanner(System.in);  // for user input
-        defaultList = toDoListProgram.getDefaultList();
-        customizedList = toDoListProgram.getCustomizedList();
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);
+        toDoListProgram.addObserver(new PrintInformation());
         runToDoListProgram();
     }
 
@@ -50,24 +50,42 @@ public class Console {
         do {
             displayHomeScreen();
             try {
-                int whichModule = Integer.parseInt(keyboard.nextLine());
-                toDoListProgram.isValid(-3,1,whichModule);
-                if (whichModule == -3) {
-                    loadToDoListProgram();
-                } else if (whichModule == -2) {
-                    saveToDoListProgram();
-                } else if (whichModule == -1) {
-                    toDoListProgram.setEndProgram(true);
-                    saveBeforeQuit();
-                } else if (whichModule == 0) {
-                    operationInDefaultListModule();
-                } else if (whichModule == 1) {
-                    operationInCustomizedListModule();
-                }
+                runOperationFromHomeScreen();
             } catch (RuntimeException | ListFullException | InvalidDateException exception) {
                 System.out.println(exception.getMessage() + "\nPlease try again");
             }
-        } while (!toDoListProgram.isEndProgram());
+        } while (!endProgram);
+    }
+
+
+    public void runOperationFromHomeScreen() throws InvalidDateException, ListFullException {
+        int whichOperation = Integer.parseInt(keyboard.nextLine());
+        toDoListProgram.isValid(-3,3,whichOperation);
+        if (whichOperation == -3) {
+            loadToDoListProgram();
+        } else if (whichOperation == -2) {
+            saveToDoListProgram();
+        } else if (whichOperation == -1) {
+            endProgram = true;
+            saveBeforeQuit();
+        } else if (whichOperation == 0) {
+            addBasicList();
+        } else if (whichOperation == 1) {
+            deleteBasicList();
+        } else if (whichOperation == 2) {
+            renameBasicList();
+        } else if (whichOperation == 3) {
+            editList();
+        }
+    }
+
+    
+    public void editList() throws ListFullException, InvalidDateException {
+        System.out.println("Which list do you want to operate:   ");
+        displayAllCustomizedListIndexNTitle();
+        int whichList = Integer.parseInt(keyboard.nextLine());
+        BasicList targetedList = toDoListProgram.getSpecificBasicList(whichList);
+        operationInList(targetedList);
     }
 
     // EFFECTS: ask user if they want to save before leaving, if yes, save the program
@@ -109,8 +127,7 @@ public class Console {
     private void loadToDoListProgram() {
         try {
             toDoListProgram = jsonReader.read();
-            defaultList = toDoListProgram.getDefaultList();
-            customizedList = toDoListProgram.getCustomizedList();
+            toDoListProgram.addObserver(new PrintInformation());
             System.out.println("Load successfully from " + JSON_STORE);
         } catch (IOException e) {
             System.out.println("Unable to read from file: " + JSON_STORE);
@@ -126,103 +143,65 @@ public class Console {
     // EFFECTS: Display the home screen, including every task list titles from default module and customized module
     public void displayHomeScreen() {
         System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println("○ Lists inside Default List:");
-        for (BasicList list: defaultList) {
-            System.out.println(list.getListTitle());
-        }
-        System.out.println("\n○ Lists inside Customized List:");
         displayAllCustomizedListIndexNTitle();
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println("Which module of list do you want to get access? (-3 = load,  -2 = Save,  "
-                + "-1 = End the program, 0 = Default List, 1 = Customized List)");
+        System.out.println("Which operation to run? (-3 = load,  -2 = Save,  "
+                + "-1 = End the program, 0 = Add list, 1 = Delete List, 2 = Rename List, 3 = Edit List)");
 
     }
 
     // EFFECTS: if the customized module is empty, display empty. Other wise display all the task list title in
     //          customized module with index
     public void displayAllCustomizedListIndexNTitle() {
-        if (customizedList.size() == 0) {
+        if (toDoListProgram.isEmpty()) {
             System.out.println("-- empty --");
         }
-        for (int i = 0; i < customizedList.size(); i++) {
-            System.out.println(i + ". " + customizedList.get(i).getListTitle());
+
+        int i = 0;
+        for (BasicList basicList : toDoListProgram) {
+            System.out.println(i + ". " + basicList.getListTitle());
+            i++;
         }
     }
 
-    // EFFECTS: display and let user choose the unique operations that can only preform in customized module
-    public void operationInCustomizedListModule() throws ListFullException, InvalidDateException {
-        System.out.println("0 - Add a customized list, 1 - delete a customized list, 2 - rename a customized list"
-                + ", 3 - edit the list");
-        int whichCustomizedListOperation = Integer.parseInt(keyboard.nextLine());
-        toDoListProgram.isValid(0, 3, whichCustomizedListOperation);
-        if (whichCustomizedListOperation == 0) {
-            addCustomizedList();
-        } else if (whichCustomizedListOperation == 1) {
-            deleteCustomizedList();
-        } else if (whichCustomizedListOperation == 2) {
-            renameCustomizedList();
-        } else if (whichCustomizedListOperation == 3) {
-            System.out.println("Which list do you want to operate:   ");
-            displayAllCustomizedListIndexNTitle();
-            int whichList = Integer.parseInt(keyboard.nextLine());
-            toDoListProgram.isValid(0, customizedList.size() - 1, whichList);
-            BasicList targetedList = customizedList.get(whichList);
-            operationInList(targetedList);
-        }
-    }
 
     // MODIFIES: this
     // EFFECTS: add a new customized task list to customized module. And let user decide the task list title
-    public void addCustomizedList() {
-        System.out.println("What's the name of the new Customized List?");
-        customizedList.add(new BasicList(keyboard.nextLine()));
+    public void addBasicList() {
+        System.out.println("What's the name of the new List?");
+        toDoListProgram.addBasicList(keyboard.nextLine());
     }
 
     // MODIFIES: this
     // EFFECTS: delete a customized task list in the customized module. If customized module is not empty,
     //          let user decide which task list to delete, then delete it.
-    public void deleteCustomizedList() {
-        if (customizedList.size() == 0) {
+    public void deleteBasicList() {
+        if (toDoListProgram.isEmpty()) {
             System.out.println("Sorry, the list is empty");
         } else {
             displayAllCustomizedListIndexNTitle();
             System.out.println("What's the index of the list to delete? (starts from 0)");
             int indexToDelete = Integer.parseInt(keyboard.nextLine());
-            toDoListProgram.isValid(0, customizedList.size() - 1, indexToDelete);
-            customizedList.remove(indexToDelete);
+            toDoListProgram.deleteBasicList(indexToDelete);
         }
     }
 
     // MODIFIES: this
     // EFFECTS: rename a customized list in the customized module. If the customized module is not empty,
     //          let user rename the task list based on the index and new name.
-    public void renameCustomizedList() {
-        if (customizedList.size() == 0) {
+    public void renameBasicList() {
+        if (toDoListProgram.isEmpty()) {
             System.out.println("Sorry, the list is empty");
         } else {
             displayAllCustomizedListIndexNTitle();
             System.out.println("What's the index of the list to rename? (starts from 0)");
             int indexToRename = Integer.parseInt(keyboard.nextLine());
-            toDoListProgram.isValid(0, customizedList.size() - 1, indexToRename);
             System.out.println("What's the new list name?");
             String listName = keyboard.nextLine();
-            customizedList.get(indexToRename).setListTitle(listName);
+            toDoListProgram.renameBasicList(indexToRename, listName);
         }
     }
 
-    // EFFECTS:: display all the task list in default module first, then
-    //          let user choose which task list inside the default module that is need to operate
-    public void operationInDefaultListModule() throws ListFullException, InvalidDateException {
-        System.out.println("Which list do you want to operate:   ");
-        for (int i = 0; i < defaultList.size(); i++) { // display the title for each list
-            System.out.println(i + " - " + defaultList.get(i).getListTitle() + ",       ");
-        }
-        int whichList = Integer.parseInt(keyboard.nextLine());
-        toDoListProgram.isValid(0, defaultList.size() - 1, whichList);
-
-        BasicList targetedList = defaultList.get(whichList);
-        operationInList(targetedList);
-    }
 
     // EFFECTS: used by both default module and customized module. Able to perform basic operations in a task list.
     public void operationInList(BasicList targetedList) throws InvalidDateException, ListFullException {
@@ -249,7 +228,7 @@ public class Console {
         } else if (whichOperation == 6) {
             displayAllTheTaskInformation(targetedList);
         } else {
-            System.out.println("ERROR! check operationInDefaultList");
+            System.out.println("ERROR!");
         }
     }
 
@@ -438,7 +417,7 @@ public class Console {
         } else if (whichEditTaskOption == 1) {
             System.out.println("What's the step");
             targetedTask.addStep(keyboard.nextLine());
-        } else if (whichEditTaskOption == 2) {             // TODO this needs improvement, situation where step is empty
+        } else if (whichEditTaskOption == 2) {
             deleteStep(targetedTask);
         } else if (whichEditTaskOption == 3) {
             completeStep(targetedTask);

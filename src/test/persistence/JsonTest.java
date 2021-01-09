@@ -40,18 +40,14 @@ public class JsonTest {
     }
 
     protected void checkToDoListProgram(ToDoListProgram checkToDo, ToDoListProgram toDoListProgram) {
-        assertEquals(checkToDo.isEndProgram(), toDoListProgram.isEndProgram());
 
-        assertEquals(checkToDo.getCustomizedList().size(), toDoListProgram.getCustomizedList().size());
-        assertEquals(checkToDo.getDefaultList().size(), toDoListProgram.getDefaultList().size());
+        assertEquals(checkToDo.getBasicListsSize(), toDoListProgram.getBasicListsSize());
 
-        for (int i = 0; i < checkToDo.getCustomizedList().size(); i++) {
-            checkBasicList(checkToDo.getCustomizedList().get(i), toDoListProgram.getCustomizedList().get(i));
+
+        for (int i = 0; i < checkToDo.getBasicListsSize(); i++) {
+            checkBasicList(checkToDo.getSpecificBasicList(i), toDoListProgram.getSpecificBasicList(i));
         }
 
-        for (int i = 0; i < checkToDo.getDefaultList().size(); i++) {
-            checkBasicList(checkToDo.getDefaultList().get(i), toDoListProgram.getDefaultList().get(i));
-        }
     }
 
 

@@ -76,15 +76,15 @@ public class JsonWriterTest extends JsonTest{
             task2.addStep("step 2");
             task2.completeStep(0);
 
-            toDoListProgram.getDefaultList().get(0).getTaskList().add(task1);
-            toDoListProgram.getDefaultList().get(0).getTaskList().add(task2);
+            toDoListProgram.getSpecificBasicList(0).getTaskList().add(task1);
+            toDoListProgram.getSpecificBasicList(0).getTaskList().add(task2);
 
             BasicList inCustomizedList = new BasicList();
             inCustomizedList.addTask(task1);
             inCustomizedList.addTask(task2);
             inCustomizedList.addTask(new Task());
             inCustomizedList.finishTask(2);
-            toDoListProgram.getCustomizedList().add(inCustomizedList);
+            toDoListProgram.addBasicList(inCustomizedList);
 
             writer.open();
             writer.write(toDoListProgram);

@@ -45,21 +45,13 @@ public class JsonReader {
     // EFFECTS: parses ToDoListProgram from JSON object and returns it
     private ToDoListProgram parseToDoListProgram(JSONObject jsonObject) throws InvalidDateException, ListFullException {
         ToDoListProgram toDoListProgram = new ToDoListProgram();
-        toDoListProgram.getDefaultList().clear();
+        toDoListProgram.deleteAllBasicList();
 
-        toDoListProgram.setEndProgram(false);
-        JSONArray defaultListArray = jsonObject.getJSONArray("defaultList");
-        JSONArray customizedListArray = jsonObject.getJSONArray("customizedList");
+        JSONArray basicListsArray = jsonObject.getJSONArray("basicLists");
 
-        for (Object inDefaultList : defaultListArray) {
-            JSONObject nextBasicList = (JSONObject) inDefaultList;
-            addBasicList(toDoListProgram.getDefaultList(), nextBasicList);
-        }
-
-
-        for (Object inCustomizedList : customizedListArray) {
-            JSONObject nextBasicList = (JSONObject) inCustomizedList;
-            addBasicList(toDoListProgram.getCustomizedList(), nextBasicList);
+        for (Object inBasicList : basicListsArray) {
+            JSONObject nextBasicList = (JSONObject) inBasicList;
+            addBasicList(toDoListProgram, nextBasicList);
         }
 
         return toDoListProgram;
@@ -67,8 +59,8 @@ public class JsonReader {
 
     // MODIFIES: toDoListProgram
     // EFFECTS: parses BasicList from JSON object and adds them to List<BasicList>
-    private void addBasicList(List<BasicList> basicListList, JSONObject basicListJson) throws ListFullException,
-            InvalidDateException {
+    private void addBasicList(ToDoListProgram toDoListProgram, JSONObject basicListJson)
+            throws ListFullException, InvalidDateException {
         BasicList basicList = new BasicList();
         basicList.setListTitle(basicListJson.getString("listTitle"));
         basicList.setVisible(basicListJson.getBoolean("isVisible"));
@@ -83,8 +75,9 @@ public class JsonReader {
             JSONObject nextTask = (JSONObject) inCompletedTaskList;
             addTask(basicList, nextTask);
         }
-        basicListList.add(basicList);
 
+
+        toDoListProgram.addBasicList(basicList);
     }
 
     // MODIFIES: toDoListProgram

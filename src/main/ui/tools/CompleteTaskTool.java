@@ -43,7 +43,7 @@ public class CompleteTaskTool extends Tool {
             JOptionPane.showMessageDialog(null, "please select a task!");
         } else {
             editor.playSound("completeTask.wav");
-            editor.getToDoListProgram().getCustomizedList().get(0).finishTask(row);
+            editor.getToDoListProgram().getSpecificBasicList(4).finishTask(row);
             editor.setRow(-1);
             editor.initializeNorth();
             editor.initializeCenter();

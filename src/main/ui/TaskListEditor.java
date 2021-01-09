@@ -2,7 +2,6 @@ package ui;
 
 import exceptions.InvalidDateException;
 import exceptions.ListFullException;
-import model.BasicList;
 import model.ToDoListProgram;
 import persistence.JsonReader;
 import sun.audio.AudioPlayer;
@@ -31,10 +30,8 @@ import java.util.List;
 public class TaskListEditor extends JFrame {
     public static final String JSON_STORE = "./data/toDoListProgram.json";      // directory for save and load
     private ToDoListProgram toDoListProgram;
-    private BasicList basicList;            // represents the 0th customized list inside the toDoListProgram
     private JPanel centerArea;              // contains a JTable to display information
     private int row;                        // current row in the JTable
-    private int col;
     private JPanel upperArea;               // contains four buttons
 
     // constructor
@@ -42,15 +39,14 @@ public class TaskListEditor extends JFrame {
     public TaskListEditor() {
         super("To Do List Program");        // the name for the main frame
         toDoListProgram = new ToDoListProgram();
-        toDoListProgram.getCustomizedList().add(new BasicList());
-        basicList = toDoListProgram.getCustomizedList().get(0);
+        toDoListProgram.addBasicList();
 
         loadFirst();
 
         centerArea = new JPanel(new BorderLayout());
         upperArea = new JPanel(new GridLayout(2,2));
         row = 0;
-        col = 0;
+
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(new Dimension(800, 600));
@@ -126,7 +122,6 @@ public class TaskListEditor extends JFrame {
     // EFFECTS: clear the center region and then initialize the JTable that represents the tasks
     public void initializeCenter() {
         centerArea.removeAll();
-        basicList = toDoListProgram.getCustomizedList().get(0);
         centerArea.setLayout(new GridLayout(0,1));
         centerArea.setSize(new Dimension(0, 0));
 
@@ -143,7 +138,7 @@ public class TaskListEditor extends JFrame {
     // EFFECTS: initialize the JTable that represents tasks, and also initialize all features for the table.
     //          add this table into the center region
     private void initializeTable(JPanel panel) {
-        TableModel taskTableModel = new TaskTableModel(basicList.getTaskList());
+        TableModel taskTableModel = new TaskTableModel(toDoListProgram.getSpecificBasicList(4).getTaskList());
         addTableListener(taskTableModel);
 
         JTable taskTable = new JTable(taskTableModel);
@@ -202,7 +197,7 @@ public class TaskListEditor extends JFrame {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 row = taskTable.getSelectedRow();
-                col = taskTable.getSelectedColumn();
+//                col = taskTable.getSelectedColumn();
                 initializeNorth();
             }
         });
@@ -251,9 +246,9 @@ public class TaskListEditor extends JFrame {
         Object notes = uncompletedTasksModel.getValueAt(row, 3);
 
         try {
-            basicList.getTaskList().get(row).setNote(notes.toString());
-            basicList.getTaskList().get(row).setTitle(title.toString());
-            basicList.getTaskList().get(row).setDueDay(dueDate.toString());
+            toDoListProgram.getSpecificBasicList(4).getTaskList().get(row).setNote(notes.toString());
+            toDoListProgram.getSpecificBasicList(4).getTaskList().get(row).setTitle(title.toString());
+            toDoListProgram.getSpecificBasicList(4).getTaskList().get(row).setDueDay(dueDate.toString());
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -283,11 +278,9 @@ public class TaskListEditor extends JFrame {
     }
 
     // MODIFIES: this
-    // EFFECTS: set the toDoListProgram with respect to parameter, and also set basicList to be the 0th List in
-    //          toDoListProgram's customizedList
+    // EFFECTS: set the toDoListProgram with respect to parameter
     public void setToDoListProgram(ToDoListProgram toDoListProgram) {
         this.toDoListProgram = toDoListProgram;
-        basicList = toDoListProgram.getCustomizedList().get(0);
     }
 
     // reference: https://blog.csdn.net/xietansheng/article/details/78079806

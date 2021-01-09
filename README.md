@@ -60,22 +60,9 @@ greater than 10 years. I catch this exception efficiently in my UI classes.
 
 
 ####Phase4: Task3:
-If I had more time to work on this project, I would first remove the association from Console and TaskListEditor to BasicList
-class. As BasicList is part of ToDoListProgram, and it is redundant to make the ui class have association with BasicList.
-It will also create possible coupling as when changing either in ToDoListProgram or BasicList directly, other class
-must change simultaneously. 
-
-Another change I would make is that make TaskListEditor has association with TaskTableModel with multiplicity of 
+First change I would make is that make TaskListEditor has association with TaskTableModel with multiplicity of 
 1 if only implement uncompleted task table, 2 if implement both uncompleted task table and completed task table in
 the future.
-
-Moreover, I would make ToDoListProgram only has one List of BasicList and BasicList only has one List of Task. When I 
-first make this program, I was planning to separate the tasks into completed task and uncompleted task, but it is 
-enough too only make the Task class has one field named isImportant. And I also planed to separate default list module 
-and customized module. But it is really not necessary to have two lists of that.
-
-Furthermore, I should have a method that can add BasicList to the field customizedList and defaultList instead of 
-doing this operation in the UI package. And I should also make the getter for the 2 list of BasicList to be unmodifiable.
 
 To add more features, I would make a bidirectional association between TaskListEditor and Tool. I would create 
 a feature for the current tool, which user could use the keyboard input like ENTER to keep using this tool.

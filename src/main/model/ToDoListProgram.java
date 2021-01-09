@@ -6,32 +6,32 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Observable;
 
-// represents the running toDoListProgram. It contains 2 lists of BasicList
-public class ToDoListProgram implements Writable {
-    private List<BasicList> defaultList;        // user should not change defaultList size
-    private List<BasicList> customizedList;
-    private boolean endProgram;     // when equal to true, the program will end
+
+public class ToDoListProgram extends Observable implements Writable, Iterable<BasicList> {
+    private List<BasicList> basicLists;
+    public static final String EVENT_ADD_LIST = "ADD_LIST";
+    public static final String EVENT_DELETE_LIST = "DELETE_LIST";
+    public static final String EVENT_RENAME_LIST = "RENAME_LIST";
+
 
     // constructor
     // EFFECTS: construct a new ToDoListProgram, set endProgram to false,
     //          initialize defaultList and customizedList field in this class. And add four default task lists to the
     //          default task list module.
     public ToDoListProgram() {
-        endProgram = false;
-        defaultList = new ArrayList<>();
-        customizedList = new ArrayList<>();
-
+        basicLists = new ArrayList<>();
         BasicList important = new BasicList("Important");
         BasicList tasks = new BasicList("Tasks");
         BasicList myDay = new BasicList("My Day");
         BasicList planned = new BasicList("Planned");
-        defaultList.add(myDay);
-        defaultList.add(important);
-        defaultList.add(planned);
-        defaultList.add(tasks);
+        basicLists.add(myDay);
+        basicLists.add(important);
+        basicLists.add(planned);
+        basicLists.add(tasks);
 
     }
 
@@ -39,28 +39,19 @@ public class ToDoListProgram implements Writable {
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-        json.put("defaultList", defaultListToJson());
-        json.put("customizedList", customizedListToJson());
+        json.put("basicLists", basicListsToJson());
         return json;
     }
 
-    // EFFECTS: return defaultList as a JSONArray
-    private JSONArray defaultListToJson() {
+    // EFFECTS: return basicLists as a JSONArray
+    private JSONArray basicListsToJson() {
         JSONArray jsonArray = new JSONArray();
-        for (BasicList basicList : defaultList) {
+        for (BasicList basicList : basicLists) {
             jsonArray.put(basicList.toJson());
         }
         return jsonArray;
     }
 
-    // EFFECTS: return customizedList as a JSONArray
-    private JSONArray customizedListToJson() {
-        JSONArray jsonArray = new JSONArray();
-        for (BasicList basicList : customizedList) {
-            jsonArray.put(basicList.toJson());
-        }
-        return jsonArray;
-    }
 
     // EFFECTS: if the third parameter value is outside of the integral [lower, upper], throw IndexOutOfBoundsException
     public void isValid(int lower, int upper, int value) {
@@ -70,33 +61,63 @@ public class ToDoListProgram implements Writable {
         }
     }
 
-    // MODIFIES: this
-    // EFFECTS: set the customizedList to parameter's BasicListList
-    public void setCustomizedList(List<BasicList> customizedList) {
-        this.customizedList = customizedList;
+    public void addBasicList(String name) {
+        basicLists.add(new BasicList(name));
+        notifyAboutAdding();
     }
 
-    // MODIFIES: this
-    // EFFECTS: set the defaultList to parameter's BasicListList
-    public void setDefaultList(List<BasicList> defaultList) {
-        this.defaultList = defaultList;
+    public void addBasicList() {
+        basicLists.add(new BasicList());
+        notifyAboutAdding();
     }
 
-    public void setEndProgram(boolean endProgram) {
-        this.endProgram = endProgram;
+    public void addBasicList(BasicList basicList) {
+        basicLists.add(basicList);
+        notifyAboutAdding();
     }
 
-    // normal getters method
-
-    public boolean isEndProgram() {
-        return endProgram;
+    private void notifyAboutAdding() {
+        setChanged();
+        notifyObservers(EVENT_ADD_LIST);
     }
 
-    public List<BasicList> getCustomizedList() {
-        return customizedList;
+    private void notifyAboutDeleting() {
+        setChanged();
+        notifyObservers(EVENT_DELETE_LIST);
     }
 
-    public List<BasicList> getDefaultList() {
-        return defaultList;
+    public void deleteBasicList(int index) {
+        isValid(0, basicLists.size() - 1, index);
+        basicLists.remove(index);
+        notifyAboutDeleting();
     }
+
+    public void deleteAllBasicList() {
+        basicLists.clear();
+        notifyAboutDeleting();
+    }
+
+    public void renameBasicList(int index, String name) {
+        isValid(0, basicLists.size() - 1, index);
+        basicLists.get(index).setListTitle(name);
+    }
+
+    public boolean isEmpty() {
+        return basicLists.size() == 0;
+    }
+
+    public BasicList getSpecificBasicList(int index) {
+        isValid(0, basicLists.size() - 1, index);
+        return basicLists.get(index);
+    }
+
+    public int getBasicListsSize() {
+        return basicLists.size();
+    }
+
+    @Override
+    public Iterator<BasicList> iterator() {
+        return basicLists.iterator();
+    }
+
 }

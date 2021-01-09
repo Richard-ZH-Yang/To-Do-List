@@ -1,71 +1,121 @@
-{
-  "endProgram": false,
-  "customizedList": [
-    {
-      "listTitle": "list1 in customized list",
-      "completedTaskList": [{
-        "note": "NA",
-        "isOverDue": false,
-        "createdDate": "2020-10-25",
-        "isImportant": false,
+{"basicLists": [
+  {
+    "listTitle": "My Day",
+    "completedTaskList": [],
+    "taskList": [
+      {
+        "note": "This is the note for task 1",
+        "isOverDue": true,
+        "createdDate": "2021-01-08",
+        "isImportant": true,
         "isStepComplete": {
           "0": false,
-          "1": true
+          "1": true,
+          "2": false
         },
         "step": {
-          "0": "s1",
-          "1": "s2"
+          "0": "This is task 1 step 1",
+          "1": "step 2",
+          "2": "step 3"
         },
         "isVisible": true,
-        "title": "task1 c1 l1",
-        "dueDay": "NA",
-        "isComplete": true
-      }],
-      "taskList": [],
-      "isVisible": true
-    },
-    {
-      "listTitle": "list2",
-      "completedTaskList": [],
-      "taskList": [],
-      "isVisible": true
-    }
-  ],
-  "defaultList": [
-    {
-      "listTitle": "My Day",
-      "completedTaskList": [],
-      "taskList": [{
-        "note": "NA",
-        "isOverDue": false,
-        "createdDate": "2020-10-25",
-        "isImportant": false,
-        "isStepComplete": {},
-        "step": {},
-        "isVisible": true,
-        "title": "task1 in my day",
-        "dueDay": "NA",
+        "title": "task1",
+        "dueDay": "2020-10-30",
         "isComplete": false
-      }],
-      "isVisible": true
-    },
-    {
-      "listTitle": "Important",
-      "completedTaskList": [],
-      "taskList": [],
-      "isVisible": true
-    },
-    {
-      "listTitle": "Planned",
-      "completedTaskList": [],
-      "taskList": [],
-      "isVisible": true
-    },
-    {
-      "listTitle": "Tasks",
-      "completedTaskList": [],
-      "taskList": [],
-      "isVisible": true
-    }
-  ]
-}
+      },
+      {
+        "note": "This is the note for task 2",
+        "isOverDue": true,
+        "createdDate": "2021-01-08",
+        "isImportant": false,
+        "isStepComplete": {
+          "0": true,
+          "1": false
+        },
+        "step": {
+          "0": "This is task 2 step 1",
+          "1": "step 2"
+        },
+        "isVisible": false,
+        "title": "task2",
+        "dueDay": "2020-10-30",
+        "isComplete": false
+      }
+    ],
+    "isVisible": true
+  },
+  {
+    "listTitle": "Important",
+    "completedTaskList": [],
+    "taskList": [],
+    "isVisible": true
+  },
+  {
+    "listTitle": "Planned",
+    "completedTaskList": [],
+    "taskList": [],
+    "isVisible": true
+  },
+  {
+    "listTitle": "Tasks",
+    "completedTaskList": [],
+    "taskList": [],
+    "isVisible": true
+  },
+  {
+    "listTitle": "Untitled List",
+    "completedTaskList": [{
+      "note": "NA",
+      "isOverDue": false,
+      "createdDate": "2021-01-08",
+      "isImportant": false,
+      "isStepComplete": {},
+      "step": {},
+      "isVisible": true,
+      "title": "",
+      "dueDay": "NA",
+      "isComplete": true
+    }],
+    "taskList": [
+      {
+        "note": "This is the note for task 1",
+        "isOverDue": true,
+        "createdDate": "2021-01-08",
+        "isImportant": true,
+        "isStepComplete": {
+          "0": false,
+          "1": true,
+          "2": false
+        },
+        "step": {
+          "0": "This is task 1 step 1",
+          "1": "step 2",
+          "2": "step 3"
+        },
+        "isVisible": true,
+        "title": "task1",
+        "dueDay": "2020-10-30",
+        "isComplete": false
+      },
+      {
+        "note": "This is the note for task 2",
+        "isOverDue": true,
+        "createdDate": "2021-01-08",
+        "isImportant": false,
+        "isStepComplete": {
+          "0": true,
+          "1": false
+        },
+        "step": {
+          "0": "This is task 2 step 1",
+          "1": "step 2"
+        },
+        "isVisible": false,
+        "title": "task2",
+        "dueDay": "2020-10-30",
+        "isComplete": false
+      }
+    ],
+    "isVisible": true
+  }
+]}

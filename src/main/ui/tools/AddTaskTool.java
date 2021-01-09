@@ -38,7 +38,7 @@ public class AddTaskTool extends Tool {
     // EFFECTS: play the sound effects, and add the task to toDoListProgram
     private void addTask() throws InvalidDateException, ListFullException {
         editor.playSound("addTask.wav");
-        editor.getToDoListProgram().getCustomizedList().get(0).addTask(new Task(field.getText()));
+        editor.getToDoListProgram().getSpecificBasicList(4).addTask(new Task(field.getText()));
         editor.initializeCenter();
 
     }

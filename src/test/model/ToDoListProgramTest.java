@@ -43,23 +43,4 @@ public class ToDoListProgramTest {
         }
     }
 
-    @Test
-    public void testSetCustomizedList() {
-        List<BasicList> basicLists = new ArrayList<>();
-        basicLists.add(new BasicList("List name"));
-
-        toDoListProgram.setCustomizedList(basicLists);
-        assertEquals(1, toDoListProgram.getCustomizedList().size());
-        assertEquals("List name", toDoListProgram.getCustomizedList().get(0).getListTitle());
-    }
-
-    @Test
-    public void testSetDefaultList() {
-        List<BasicList> basicLists = new ArrayList<>();
-        basicLists.add(new BasicList("List name"));
-
-        toDoListProgram.setDefaultList(basicLists);
-        assertEquals(1, toDoListProgram.getDefaultList().size());
-        assertEquals("List name", toDoListProgram.getDefaultList().get(0).getListTitle());
-    }
 }

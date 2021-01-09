@@ -9,10 +9,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 // Represents the list inside the ToDoListProgram. It contains different tasks and the information for that list
-public class BasicList implements Writable {
+public class BasicList implements Writable, Iterable<Task> {
     public static final int MAX_LENGTH = 1000;  // the maximum length a List<Task> can have
     protected List<Task> taskList;  // uncompleted tasks
     protected List<Task> completedTaskList; // completed tasks
@@ -54,6 +55,7 @@ public class BasicList implements Writable {
         for (Task t : taskList) {
             jsonArray.put(t.toJson());
         }
+
 
         return jsonArray;
     }
@@ -225,10 +227,7 @@ public class BasicList implements Writable {
     //          corresponding boolean value.
     public void setVisible(boolean visible) {
         isVisible = visible;
-        for (Task task : taskList) {
-            task.setVisible(isVisible);
-        }
-        for (Task task : completedTaskList) {
+        for (Task task : this) {
             task.setVisible(isVisible);
         }
     }
@@ -258,26 +257,25 @@ public class BasicList implements Writable {
         return isVisible;
     }
 
-    //    public void changeTheme() {
-//
-//    }
-//
-//    public void changeTheme(int r, int g, int b) {
-//
-//    }
+    @Override
+    public Iterator<Task> iterator() {
+        return new TaskIterator();
+    }
 
+    private class TaskIterator implements Iterator<Task> {
+        private Iterator<Task> inCompleteTaskIterator = taskList.iterator();
+        private Iterator<Task> completeTaskIterator = completedTaskList.iterator();
 
-//    // MODIFIES: this
-//    // EFFECTS:
-//    public void toggleCompleteTaskVisibility() {
-//        isVisible = !isVisible;
-//        for (Task t : taskList) {
-//            if (isVisible) {
-//                t.setVisible(true);
-//            } else {
-//                t.setVisible(!t.isComplete());
-//            }
-//        }
-//    }
+        @Override
+        public boolean hasNext() {
+            return inCompleteTaskIterator.hasNext() || completeTaskIterator.hasNext();
+        }
+
+        @Override
+        public Task next() {
+            return inCompleteTaskIterator.hasNext() ? inCompleteTaskIterator.next() : completeTaskIterator.next();
+        }
+    }
+
 
 }

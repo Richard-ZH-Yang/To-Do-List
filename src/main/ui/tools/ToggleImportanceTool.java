@@ -35,11 +35,11 @@ public class ToggleImportanceTool extends Tool {
     // EFFECTS: if row is not valid, display information. Otherwise,
     //          play the sound effects, and toggle the importance for the task with respect to row
     private void toggleImportance() {
-        if (row > editor.getToDoListProgram().getCustomizedList().get(0).getTaskList().size() || row < 0) {
+        if (row > editor.getToDoListProgram().getSpecificBasicList(4).getTaskList().size() || row < 0) {
             JOptionPane.showMessageDialog(null, "please select a task to toggle importance");
         } else {
             editor.playSound("toggleImportance.wav");
-            editor.getToDoListProgram().getCustomizedList().get(0).getTaskList().get(row).toggleImportance();
+            editor.getToDoListProgram().getSpecificBasicList(4).getTaskList().get(row).toggleImportance();
             editor.initializeCenter();
         }
 
