@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-  
+
 // Represents task inside the basicList, Task class stores different properties for each task
 public class Task implements Writable {
     public static String todayDate;   // using JAVA's library to obtain. Time zone is America/Vancouver
