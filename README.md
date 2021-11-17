@@ -1,26 +1,24 @@
 # To Do List
 
 ## What will the application do?
-The name of the application is to-do list. It is inspired by *Microsoft to-do*, and there are some innovations to further
-improve user's experience. The to-do List has **four default list**, which are
- - My Day
- - Important
- - Planned 
- - Tasks
+To-Do-List gives you the confidence that everything’s organized and accounted for, so you can make progress on the things 
+that are important to you.It has both a console version as well as a GUI version. And it is implemented with advanced design
+patterns such as Observable pattern and Iterator pattern to improve the user experience. Features in this program including:
 
-And user can also add their customized list to contain their *to-do tasks*. User can add and delete the customized list,
-but cannot delete or add default list. There are some functions that appear both in customized list and default list in 
-the future, which are:
-- sort the list
+- load data from disk
+- save data to disk in JSON format
+- add list
+- delete list
+- edit list
+- sort list
 - add task
 - delete task
 - edit task
 - complete a task
 - undo complete a task
+- sort a list based on task
 - display all the task information
 - hide complete tasks(in future phases)
-
-Each lists contain two sections, one being the unfinished tasks and other being completed tasks.
 
 
 ## Who will use it?
@@ -53,14 +51,15 @@ to file and have the option to do so or not.
 - As a user, when I start the application, I want to be given the option to load my to-do list from file.
 
 ###Phase 4:
-####Phase4: Task2:
-I choose to implement the first option which is to design a robust class. In my Task class inside the model package, 
+
+####Phase4 Task2:
+This program is quite robust, and is ready to handle every exception. In my Task class inside the model package, 
 I made the setDueDay method able to throw InvalidDateException when the due date and today's date difference is
-greater than 10 years. I catch this exception efficiently in my UI classes. 
+greater than 10 years. And this exception will be caught efficiently in my UI classes. 
 
 
-####Phase4: Task3:
-First change I would make is that make TaskListEditor has association with TaskTableModel with multiplicity of 
+####Phase4 Task3:
+In the future, first change I would make is that make TaskListEditor has association with TaskTableModel with multiplicity of 
 1 if only implement uncompleted task table, 2 if implement both uncompleted task table and completed task table in
 the future.
 
